@@ -19,6 +19,17 @@ PatchPilot helps development and security teams manage vulnerabilities from disc
 - Migrations: Alembic
 - AI: Large Language Model
 
+## Backend Quickstart
+```bash
+cd backend
+python -m venv .venv
+# Windows: .venv\Scripts\activate | Linux/macOS: source .venv/bin/activate
+pip install -r requirements.txt
+alembic upgrade head
+uvicorn app.main:app --reload --port 8000
+```
+Interactive API docs: `http://localhost:8000/docs`. See `backend/README.md` for full details.
+
 ## Workflow
 1. Import security findings.
 2. Validate and store findings.
