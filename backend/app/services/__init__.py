@@ -4,6 +4,7 @@ from app.services.finding_service import FindingService
 from app.services.task_service import TaskService
 from app.services.verification_service import VerificationService
 from app.services.dashboard_service import DashboardService
+from app.services.chat_service import ChatService
 
 __all__ = [
     "RiskScoringService",
@@ -12,4 +13,5 @@ __all__ = [
     "TaskService",
     "VerificationService",
     "DashboardService",
+    "ChatService",
 ]

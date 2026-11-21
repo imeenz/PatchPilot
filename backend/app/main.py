@@ -7,7 +7,13 @@ from app.core.config import settings
 from app.database.base import Base
 from app.database.session import engine
 import app.models  # Ensure all SQLAlchemy models are registered
-from app.routers import health_router, findings_router, tasks_router, dashboard_router
+from app.routers import (
+    health_router,
+    findings_router,
+    tasks_router,
+    dashboard_router,
+    chat_router,
+)
 
 # Configure logging
 logging.basicConfig(
@@ -59,6 +65,7 @@ app.include_router(health_router, prefix=settings.API_V1_PREFIX)
 app.include_router(findings_router, prefix=settings.API_V1_PREFIX)
 app.include_router(tasks_router, prefix=settings.API_V1_PREFIX)
 app.include_router(dashboard_router, prefix=settings.API_V1_PREFIX)
+app.include_router(chat_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/", tags=["Root"])

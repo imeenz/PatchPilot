@@ -175,8 +175,75 @@ When no LLM is configured (or if the external provider fails/times out):
 | `/api/v1/findings/{id}/verification` | `POST` | Record verification evidence |
 | `/api/v1/findings/{id}/verification` | `GET` | List verification evidence for finding |
 | `/api/v1/dashboard/summary` | `GET` | Dashboard counts, breakdowns, and statistics |
+| `/api/v1/chat` | `POST` | Send message to AI conversational assistant (multi-turn, finding context, fallback) |
+| `/api/v1/chat/conversations/{id}` | `GET` | Get conversation details and chronological message history |
 
 FastAPI Swagger documentation is accessible at `http://localhost:8000/docs`.
+
+### Conversational AI Assistant (`/api/v1/chat`)
+
+PatchPilot provides an AI-first conversational assistant designed to help developers and students understand and remediate security vulnerabilities.
+
+#### Request Format (`POST /api/v1/chat`):
+```json
+{
+  "message": "How do I remediate this vulnerability?",
+  "conversation_id": "optional-uuid-string-or-null",
+  "finding_id": 1
+}
+```
+
+- `message`: Required string, 1 to 4000 characters.
+- `conversation_id`: Optional UUID. If omitted or `null`, a new conversation is initialized.
+- `finding_id`: Optional integer referencing an existing imported finding. When provided, finding context is injected into the assistant's memory.
+
+#### Response Format:
+```json
+{
+  "conversation_id": "c1a2b3c4-...",
+  "message_id": "m1a2b3c4-...",
+  "role": "assistant",
+  "content": "Explanation and actionable steps...",
+  "structured_guidance": {
+    "vulnerability_explanation": "...",
+    "potential_impact": "...",
+    "recommended_remediation_steps": ["..."],
+    "compatibility_considerations": "...",
+    "verification_steps": ["..."],
+    "uncertainty_or_missing_information": "..."
+  },
+  "is_fallback": false,
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "finding_context": {
+    "id": 1,
+    "title": "Vulnerable library log4j",
+    "severity": "Critical",
+    "risk_score": 98.0,
+    "cve_id": "CVE-2021-44228",
+    "package_name": "log4j-core",
+    "installed_version": "2.14.1",
+    "fixed_version": "2.17.1",
+    "file_path": "pom.xml"
+  },
+  "disclaimer": "AI and rule-based guidance requires human review. PatchPilot does not automatically modify source code or systems.",
+  "created_at": "2026-11-21T14:30:00Z"
+}
+```
+
+#### Multi-turn Conversation & History Retrieval (`GET /api/v1/chat/conversations/{id}`):
+Returns metadata and all messages stored in the database in chronological order.
+
+#### Limits & Safety Guardrails:
+- **Message size limit**: 4000 characters max. Empty or whitespace-only messages are rejected with 422.
+- **Conversation length limit**: Maximum 50 messages per conversation. Exceeding returns 400 Bad Request.
+- **Context sliding window**: Latest 20 messages sent to the LLM to control token costs while preserving full history in the database.
+- **Rule-based fallback**: When no LLM is configured or when the provider is unreachable, PatchPilot engages a deterministic rule-based security knowledge base (`is_fallback: true`, `provider: "rule-based-fallback"`).
+- **Anti-hallucination constraints**: Prompts strictly prohibit inventing CVEs, package versions, or systems.
+- **Independent verification requirement**: AI guidance never claims a vulnerability is fixed without recorded verification evidence.
+
+#### ⚠️ Security and Authentication Limitation:
+The current MVP does not implement user authentication or authorization. Conversations are stored globally and are not user-isolated. This configuration is intended for controlled academic demonstration and local testing, and is **not suitable for public production deployment**.
 
 ---
 

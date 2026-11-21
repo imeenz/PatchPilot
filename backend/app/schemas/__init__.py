@@ -16,6 +16,13 @@ from app.schemas.verification import (
 )
 from app.schemas.remediation import RemediationGuidanceResponse
 from app.schemas.dashboard import DashboardSummaryResponse
+from app.schemas.chat import (
+    ChatRequest,
+    ChatResponse,
+    ChatMessageResponse,
+    ConversationDetailResponse,
+    FindingContextSummary,
+)
 
 __all__ = [
     "SeverityLevel",
@@ -37,4 +44,9 @@ __all__ = [
     "VerificationResponse",
     "RemediationGuidanceResponse",
     "DashboardSummaryResponse",
+    "ChatRequest",
+    "ChatResponse",
+    "ChatMessageResponse",
+    "ConversationDetailResponse",
+    "FindingContextSummary",
 ]
