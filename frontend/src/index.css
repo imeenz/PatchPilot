@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+/*
+ * PatchPilot design tokens
+ * ------------------------------------------------------------------
+ * All colours used by components come from the semantic tokens below.
+ * Components use utilities such as `bg-surface`, `text-fg-muted`,
+ * `border-line`, `bg-primary`, `text-critical` — never raw palette
+ * colours — so both themes stay consistent.
+ *
+ * The active theme is set by `data-theme="dark" | "light"` on <html>
+ * (see src/theme/ThemeProvider.tsx and the pre-paint script in index.html).
+ */
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Surfaces */
+  --color-canvas: var(--pp-canvas);
+  --color-canvas-2: var(--pp-canvas-2);
+  --color-surface: var(--pp-surface);
+  --color-surface-2: var(--pp-surface-2);
+  --color-elevated: var(--pp-elevated);
+  --color-line: var(--pp-line);
+  --color-line-strong: var(--pp-line-strong);
+
+  /* Text */
+  --color-fg: var(--pp-fg);
+  --color-fg-muted: var(--pp-fg-muted);
+  --color-fg-subtle: var(--pp-fg-subtle);
+
+  /* Brand */
+  --color-primary: var(--pp-primary);
+  --color-primary-hover: var(--pp-primary-hover);
+  --color-on-primary: var(--pp-on-primary);
+  --color-accent: var(--pp-accent);
+
+  /* Security status colours */
+  --color-critical: var(--pp-critical);
+  --color-high: var(--pp-high);
+  --color-medium: var(--pp-medium);
+  --color-low: var(--pp-low);
+  --color-info: var(--pp-info);
+  --color-success: var(--pp-success);
+
+  /* Code blocks are dark in both themes */
+  --color-code: var(--pp-code);
+  --color-code-line: var(--pp-code-line);
+  --color-code-fg: var(--pp-code-fg);
+}
+
+/* ---------- Light theme ---------- */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --pp-canvas: #f6f5fb;
+  --pp-canvas-2: #efedf7;
+  --pp-surface: #ffffff;
+  --pp-surface-2: #f3f1f9;
+  --pp-elevated: #ffffff;
+  --pp-line: #e3e0ee;
+  --pp-line-strong: #cbc5de;
+
+  --pp-fg: #1b1830;
+  --pp-fg-muted: #474260;
+  --pp-fg-subtle: #6b6585;
+
+  --pp-primary: #7651d6;
+  --pp-primary-hover: #6542c2;
+  --pp-on-primary: #ffffff;
+  --pp-accent: #5b3cc0;
+
+  --pp-critical: #c32640;
+  --pp-high: #b3510c;
+  --pp-medium: #8a6400;
+  --pp-low: #2861c4;
+  --pp-info: #5e5976;
+  --pp-success: #0c8657;
+
+  --pp-code: #1c1930;
+  --pp-code-line: #2f2a48;
+  --pp-code-fg: #e9e6f2;
+
+  --pp-shadow: 0 1px 2px rgb(27 24 48 / 0.06), 0 1px 3px rgb(27 24 48 / 0.04);
+}
+
+/* ---------- Dark theme (primary identity) ---------- */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --pp-canvas: #11101d;
+  --pp-canvas-2: #161427;
+  --pp-surface: #1c1930;
+  --pp-surface-2: #28243c;
+  --pp-elevated: #28243c;
+  --pp-line: #322d4b;
+  --pp-line-strong: #4a4369;
+
+  --pp-fg: #e9e6f2;
+  --pp-fg-muted: #bfb9d3;
+  --pp-fg-subtle: #918aab;
+
+  --pp-primary: #7651d6;
+  --pp-primary-hover: #8662e3;
+  --pp-on-primary: #ffffff;
+  --pp-accent: #a78bfa;
+
+  --pp-critical: #f06479;
+  --pp-high: #f39a5c;
+  --pp-medium: #e8c45c;
+  --pp-low: #74a9f7;
+  --pp-info: #a29cba;
+  --pp-success: #27c98a;
+
+  --pp-code: #0d0c18;
+  --pp-code-line: #2a2642;
+  --pp-code-fg: #e9e6f2;
+
+  --pp-shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 1px 3px rgb(0 0 0 / 0.25);
+}
+
+:root {
+  font-family: var(--font-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--pp-canvas);
+  color: var(--pp-fg);
+}
+
+@utility shadow-card {
+  box-shadow: var(--pp-shadow);
+}
+
+/* Syntax highlighting (src/components/markdown/highlight.ts) */
+.tok-comment { color: #8b84a8; font-style: italic; }
+.tok-string { color: #9ee6b8; }
+.tok-number { color: #f5b97a; }
+.tok-keyword { color: #c4a7ff; }
+.tok-literal { color: #f39ab0; }
+.tok-key { color: #8cc8ff; }
+
+::selection {
+  background: color-mix(in oklab, var(--pp-primary) 35%, transparent);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--pp-line-strong);
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
