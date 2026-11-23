@@ -1,6 +1,8 @@
 import { AlertTriangle, FlaskConical, Loader2, RefreshCw, ServerCrash, Wifi } from 'lucide-react';
 import { Button } from './Button';
 import { API_BASE_URL, isNetworkError } from '@/services/api';
+import { getApiErrorPresentation } from '@/services/apiPresentation.mjs';
+import type { DataSourceState } from '@/services/apiPresentation.mjs';
 
 /** Inline loading indicator for sections and pages. */
 export function LoadingState({ label = 'Loading…', className = '' }: { label?: string; className?: string }) {
@@ -26,6 +28,7 @@ interface ErrorStateProps {
  */
 export function ErrorState({ error, onRetry, title, className = '', compact = false }: ErrorStateProps) {
   const network = isNetworkError(error);
+  const presentation = getApiErrorPresentation(error);
   const message = error instanceof Error ? error.message : String(error ?? 'Unknown error');
   const Icon = network ? ServerCrash : AlertTriangle;
 
@@ -37,7 +40,7 @@ export function ErrorState({ error, onRetry, title, className = '', compact = fa
       <Icon className="w-5 h-5 text-critical shrink-0 mt-0.5" aria-hidden="true" />
       <div className="flex-1 min-w-0 space-y-1">
         <p className="text-sm font-semibold text-fg">
-          {title ?? (network ? 'Cannot connect to the PatchPilot backend' : 'Request failed')}
+          {title ?? presentation.title}
         </p>
         {network ? (
           <p className="text-xs text-fg-muted leading-relaxed">
@@ -65,16 +68,22 @@ export function ErrorState({ error, onRetry, title, className = '', compact = fa
 }
 
 /** Small pill describing where the data on screen comes from. */
-export function DataSourceBadge({ isDemo }: { isDemo: boolean }) {
-  return isDemo ? (
-    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-medium/12 border border-medium/35 text-medium text-[11px] font-mono font-medium">
-      <FlaskConical className="w-3.5 h-3.5" />
-      <span>Demo dataset (sample data)</span>
-    </span>
-  ) : (
-    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-success/10 border border-success/30 text-success text-[11px] font-mono font-medium">
-      <Wifi className="w-3.5 h-3.5" />
-      <span>Live backend</span>
+const DATA_SOURCE_BADGE = {
+  demo: { icon: FlaskConical, label: 'Demo dataset (sample data)', styles: 'bg-medium/12 border-medium/35 text-medium' },
+  checking: { icon: Loader2, label: 'Checking backend', styles: 'bg-surface-2 border-line text-fg-subtle' },
+  offline: { icon: ServerCrash, label: 'Backend offline', styles: 'bg-critical/8 border-critical/30 text-critical' },
+  degraded: { icon: AlertTriangle, label: 'Live data unavailable', styles: 'bg-medium/12 border-medium/35 text-medium' },
+  live: { icon: Wifi, label: 'Live backend', styles: 'bg-success/10 border-success/30 text-success' },
+} as const;
+
+export function DataSourceBadge({ isDemo, state }: { isDemo: boolean; state?: DataSourceState }) {
+  const resolvedState = state ?? (isDemo ? 'demo' : 'live');
+  const badge = DATA_SOURCE_BADGE[resolvedState];
+  const Icon = badge.icon;
+  return (
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-mono font-medium ${badge.styles}`}>
+      <Icon className={`w-3.5 h-3.5 ${resolvedState === 'checking' ? 'animate-spin' : ''}`} />
+      <span>{badge.label}</span>
     </span>
   );
 }

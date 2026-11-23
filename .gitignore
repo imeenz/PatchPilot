@@ -15,6 +15,7 @@ env/
 # Local databases
 *.db
 *.sqlite3
+backend/.runtime/
 
 # OS files
 .DS_Store

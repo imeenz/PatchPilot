@@ -33,7 +33,7 @@ async def lifespan(app: FastAPI):
     logger.info("Shutting down PatchPilot backend...")
 
 
-app = FastAPI(
+api_app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
     description=(
@@ -49,26 +49,18 @@ app = FastAPI(
 )
 
 # CORS Middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 # Root-level health check (in addition to /api/v1/health)
-app.include_router(health_router, tags=["Health"])
+api_app.include_router(health_router, tags=["Health"])
 
 # API v1 routes
-app.include_router(health_router, prefix=settings.API_V1_PREFIX)
-app.include_router(findings_router, prefix=settings.API_V1_PREFIX)
-app.include_router(tasks_router, prefix=settings.API_V1_PREFIX)
-app.include_router(dashboard_router, prefix=settings.API_V1_PREFIX)
-app.include_router(chat_router, prefix=settings.API_V1_PREFIX)
+api_app.include_router(health_router, prefix=settings.API_V1_PREFIX)
+api_app.include_router(findings_router, prefix=settings.API_V1_PREFIX)
+api_app.include_router(tasks_router, prefix=settings.API_V1_PREFIX)
+api_app.include_router(dashboard_router, prefix=settings.API_V1_PREFIX)
+api_app.include_router(chat_router, prefix=settings.API_V1_PREFIX)
 
 
-@app.get("/", tags=["Root"])
+@api_app.get("/", tags=["Root"])
 def root():
     return {
         "message": "Welcome to PatchPilot — Intelligent Security Remediation Assistant API",
@@ -76,3 +68,14 @@ def root():
         "api_v1": settings.API_V1_PREFIX,
         "health": "/health",
     }
+
+
+# Wrapping the complete ASGI app ensures CORS headers are also added to
+# unhandled 500 responses produced by Starlette's outer ServerErrorMiddleware.
+app = CORSMiddleware(
+    app=api_app,
+    allow_origins=settings.CORS_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)

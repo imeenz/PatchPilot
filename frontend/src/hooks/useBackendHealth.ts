@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getHealth } from '@/services/api';
+import { ApiError, getHealth } from '@/services/api';
 import type { HealthResponse } from '@/services/api';
 
 export type BackendStatus = 'checking' | 'online' | 'degraded' | 'offline';
@@ -18,10 +18,12 @@ export function useBackendHealth() {
         setHealth(h);
         setStatus(h.status === 'ok' ? 'online' : 'degraded');
       })
-      .catch(() => {
+      .catch((error: unknown) => {
         if (ignore) return;
         setHealth(null);
-        setStatus('offline');
+        // A received HTTP response proves connectivity; a failing health check
+        // means the backend is reachable but not ready. Only fetch rejection is offline.
+        setStatus(error instanceof ApiError && error.kind === 'network' ? 'offline' : 'degraded');
       });
     return () => {
       ignore = true;

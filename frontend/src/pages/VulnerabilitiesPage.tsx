@@ -9,6 +9,8 @@ import { FileJson, Plus, RefreshCw, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { AddFindingModal } from '@/features/findings/AddFindingModal';
+import { useBackendHealth } from '@/hooks/useBackendHealth';
+import { getDataSourceState } from '@/services/apiPresentation.mjs';
 
 export function VulnerabilitiesPage() {
   const [findings, setFindings] = useState<FindingResponse[]>([]);
@@ -22,13 +24,16 @@ export function VulnerabilitiesPage() {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
+  const [requestStatus, setRequestStatus] = useState<'loading' | 'success' | 'failed'>('loading');
   const [isDemo, setIsDemo] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
   const [addOpen, setAddOpen] = useState(false);
   const navigate = useNavigate();
+  const { status: backendStatus } = useBackendHealth();
 
   useEffect(() => {
     let ignore = false;
+    setRequestStatus('loading');
 
     findingService
       .listFindings({
@@ -46,12 +51,14 @@ export function VulnerabilitiesPage() {
           setTotalPages(res.data.total_pages);
           setIsDemo(res.isDemo);
           setError(null);
+          setRequestStatus('success');
           setIsLoading(false);
         }
       })
       .catch((err) => {
         if (!ignore) {
           setError(err);
+          setRequestStatus('failed');
           setIsLoading(false);
         }
       });
@@ -63,6 +70,7 @@ export function VulnerabilitiesPage() {
 
   const handleRefresh = () => {
     setIsLoading(true);
+    setRequestStatus('loading');
     setReloadKey((prev) => prev + 1);
   };
 
@@ -76,6 +84,7 @@ export function VulnerabilitiesPage() {
 
   const hasFilters = Boolean(query.trim() || severity || source || hasCve !== undefined);
   const isWorkspaceEmpty = !isLoading && error == null && total === 0 && !hasFilters;
+  const dataSourceState = getDataSourceState(isDemo, backendStatus, requestStatus);
 
   return (
     <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-5">
@@ -91,7 +100,7 @@ export function VulnerabilitiesPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <DataSourceBadge isDemo={isDemo} />
+          <DataSourceBadge isDemo={isDemo} state={dataSourceState} />
           {!isDemo && (
             <>
               <Button variant="secondary" size="sm" onClick={() => navigate('/assistant?import=1')} leftIcon={<FileJson className="w-3.5 h-3.5" />}>

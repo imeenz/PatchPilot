@@ -295,6 +295,20 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 The API is now running at `http://localhost:8000` with interactive docs at `http://localhost:8000/docs`.
 
+### Isolated Local Preview Database
+
+For an isolated local preview, start the backend from `backend/` with a dedicated database path instead of the default `patchpilot.db`:
+
+```powershell
+New-Item -ItemType Directory -Force .runtime | Out-Null
+$env:DATABASE_URL = 'sqlite:///./.runtime/bug-int-001-preview.db'
+$env:AI_PROVIDER = ''
+$env:AI_API_KEY = ''
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+The database is stored at `backend/.runtime/bug-int-001-preview.db`; that runtime directory is ignored by Git. The application creates missing tables at startup and does not drop or recreate existing data. To use another isolated preview file, set `DATABASE_URL` to its SQLite URL before starting the backend.
+
 ---
 
 ## 8. Running Automated Tests
