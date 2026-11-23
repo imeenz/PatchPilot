@@ -1,5 +1,5 @@
 from typing import Dict
-from sqlalchemy import select, func, distinct
+from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
 from app.models.finding import Finding
@@ -58,11 +58,30 @@ class DashboardService:
             v.value: verif_counts.get(v.value, 0) for v in VerificationResult
         }
 
-        # Verified fixed findings count (distinct finding_ids with Verified Fixed)
-        verified_fixed_stmt = select(
-            func.count(distinct(VerificationEvidence.finding_id))
-        ).where(
-            VerificationEvidence.verification_result == VerificationResult.VERIFIED_FIXED.value
+        # Current fixed status is determined by the latest valid evidence ID
+        # for each finding, matching the detail and list endpoints.
+        valid_results = [result.value for result in VerificationResult]
+        latest_evidence_ids = (
+            select(
+                VerificationEvidence.finding_id,
+                func.max(VerificationEvidence.id).label("latest_evidence_id"),
+            )
+            .where(VerificationEvidence.verification_result.in_(valid_results))
+            .group_by(VerificationEvidence.finding_id)
+            .subquery()
+        )
+        verified_fixed_stmt = (
+            select(func.count())
+            .select_from(
+                latest_evidence_ids.join(
+                    VerificationEvidence,
+                    VerificationEvidence.id == latest_evidence_ids.c.latest_evidence_id,
+                )
+            )
+            .where(
+                VerificationEvidence.verification_result
+                == VerificationResult.VERIFIED_FIXED.value
+            )
         )
         verified_fixed_findings = db.scalar(verified_fixed_stmt) or 0
         open_findings = max(0, total_findings - verified_fixed_findings)

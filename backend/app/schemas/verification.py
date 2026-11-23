@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Any, Optional
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from app.schemas.common import VerificationResult
 
@@ -11,13 +11,13 @@ class VerificationBase(BaseModel):
     )
     evidence_url: Optional[str] = Field(None, max_length=1000, description="Optional link to PR, commit, or scan report")
     verification_result: str = Field(
-        default=VerificationResult.VERIFIED_FIXED.value,
+        default=VerificationResult.INCONCLUSIVE.value,
         description="Result of verification: Verified Fixed, Failed, Partially Fixed, Inconclusive",
     )
 
-    @field_validator("verification_result")
+    @field_validator("verification_result", mode="before")
     @classmethod
-    def validate_result(cls, v: str) -> str:
+    def validate_result(cls, v: Any) -> str:
         return VerificationResult.normalize(v).value
 
 

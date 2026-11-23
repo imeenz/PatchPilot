@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session, selectinload
 from app.models.finding import Finding
 from app.models.task import RemediationTask
 from app.models.verification import VerificationEvidence
-from app.schemas.common import SeverityLevel, VerificationResult
+from app.schemas.common import SeverityLevel, VerificationResult, latest_valid_verification_result
 from app.schemas.finding import (
     FindingResponse,
     FindingDetailResponse,
@@ -236,10 +236,10 @@ class FindingService:
 
         items: List[FindingResponse] = []
         for f in findings:
-            is_fixed = any(
-                v.verification_result == VerificationResult.VERIFIED_FIXED.value
-                for v in f.verifications
+            latest_result = latest_valid_verification_result(
+                (v.id, v.verification_result) for v in f.verifications
             )
+            is_fixed = latest_result == VerificationResult.VERIFIED_FIXED
             items.append(
                 FindingResponse(
                     id=f.id,

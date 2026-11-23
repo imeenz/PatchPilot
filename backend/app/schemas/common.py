@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Iterable, Optional
 
 
 class SeverityLevel(str, Enum):
@@ -64,9 +65,9 @@ class VerificationResult(str, Enum):
     INCONCLUSIVE = "Inconclusive"
 
     @classmethod
-    def normalize(cls, value: str) -> "VerificationResult":
-        if not value or not isinstance(value, str):
-            return cls.VERIFIED_FIXED
+    def normalize(cls, value: object) -> "VerificationResult":
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError("Verification result must be a non-empty string.")
         cleaned = value.strip().lower()
         mapping = {
             "verified fixed": cls.VERIFIED_FIXED,
@@ -83,4 +84,24 @@ class VerificationResult(str, Enum):
         }
         if cleaned in mapping:
             return mapping[cleaned]
-        return cls.VERIFIED_FIXED
+        raise ValueError(
+            "Invalid verification result. Allowed: Verified Fixed, Failed, "
+            "Partially Fixed, Inconclusive."
+        )
+
+
+def latest_valid_verification_result(
+    evidence: Iterable[tuple[int, str]],
+) -> Optional[VerificationResult]:
+    """Return the result attached to the highest-ID valid evidence record."""
+    latest: Optional[tuple[int, VerificationResult]] = None
+    for evidence_id, result in evidence:
+        try:
+            normalized = VerificationResult(result)
+        except ValueError:
+            # Ignore non-canonical legacy data; new API input is normalized by
+            # VerificationResult.normalize before it can be persisted.
+            continue
+        if latest is None or evidence_id > latest[0]:
+            latest = (evidence_id, normalized)
+    return latest[1] if latest is not None else None

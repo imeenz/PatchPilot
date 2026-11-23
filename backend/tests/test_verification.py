@@ -1,3 +1,15 @@
+import pytest
+
+
+def _create_finding(client):
+    response = client.post(
+        "/api/v1/findings/import",
+        json={"title": "Verification test finding", "description": "Test evidence status.", "severity": "High"},
+    )
+    assert response.status_code == 201
+    return response.json()["imported_findings"][0]["id"]
+
+
 def test_verification_creation_and_listing(client):
     # Setup finding
     import_resp = client.post(
@@ -144,3 +156,118 @@ def test_verification_error_handling(client):
         },
     )
     assert mismatch_resp.status_code == 400
+
+
+@pytest.mark.parametrize(
+    ("submitted", "canonical"),
+    [
+        ("Verified Fixed", "Verified Fixed"),
+        ("Failed", "Failed"),
+        ("Partially Fixed", "Partially Fixed"),
+        ("Inconclusive", "Inconclusive"),
+        ("verified fixed", "Verified Fixed"),
+        ("verified_fixed", "Verified Fixed"),
+        ("verified", "Verified Fixed"),
+        ("fixed", "Verified Fixed"),
+        ("passed", "Verified Fixed"),
+        ("fail", "Failed"),
+        ("partially_fixed", "Partially Fixed"),
+        ("partial", "Partially Fixed"),
+        ("inconclusive", "Inconclusive"),
+    ],
+)
+def test_verification_accepts_canonical_results_and_aliases(client, submitted, canonical):
+    finding_id = _create_finding(client)
+    response = client.post(
+        f"/api/v1/findings/{finding_id}/verification",
+        json={"evidence_description": "Result normalization check.", "verification_result": submitted},
+    )
+
+    assert response.status_code == 201
+    assert response.json()["verification_result"] == canonical
+
+
+@pytest.mark.parametrize("submitted", ["unknown", "", "   ", None])
+def test_invalid_verification_results_are_rejected_without_persisting(client, submitted):
+    finding_id = _create_finding(client)
+    response = client.post(
+        f"/api/v1/findings/{finding_id}/verification",
+        json={"evidence_description": "Invalid result must not be stored.", "verification_result": submitted},
+    )
+
+    assert response.status_code == 422
+    history = client.get(f"/api/v1/findings/{finding_id}/verification")
+    assert history.status_code == 200
+    assert history.json() == []
+    detail = client.get(f"/api/v1/findings/{finding_id}").json()
+    assert detail["is_verified_fixed"] is False
+
+
+def test_omitted_verification_result_defaults_to_inconclusive(client):
+    finding_id = _create_finding(client)
+    response = client.post(
+        f"/api/v1/findings/{finding_id}/verification",
+        json={"evidence_description": "No result was supplied."},
+    )
+
+    assert response.status_code == 201
+    assert response.json()["verification_result"] == "Inconclusive"
+    assert client.get(f"/api/v1/findings/{finding_id}").json()["is_verified_fixed"] is False
+
+
+def test_verification_history_is_ordered_by_descending_evidence_id(client):
+    finding_id = _create_finding(client)
+    created_ids = []
+    for result in ("Failed", "Inconclusive", "Verified Fixed"):
+        response = client.post(
+            f"/api/v1/findings/{finding_id}/verification",
+            json={"evidence_description": f"Evidence {result}.", "verification_result": result},
+        )
+        assert response.status_code == 201
+        created_ids.append(response.json()["id"])
+
+    history = client.get(f"/api/v1/findings/{finding_id}/verification").json()
+    assert [item["id"] for item in history] == list(reversed(created_ids))
+    assert [item["verification_result"] for item in history] == [
+        "Verified Fixed",
+        "Inconclusive",
+        "Failed",
+    ]
+
+
+@pytest.mark.parametrize(
+    ("sequence", "expected_fixed"),
+    [
+        (["Verified Fixed", "Failed"], False),
+        (["Verified Fixed", "Inconclusive"], False),
+        (["Failed", "Verified Fixed"], True),
+        (["Verified Fixed", "Partially Fixed"], False),
+        (["Verified Fixed", "Verified Fixed"], True),
+    ],
+)
+def test_latest_evidence_controls_detail_list_and_dashboard(client, sequence, expected_fixed):
+    finding_id = _create_finding(client)
+    for result in sequence:
+        response = client.post(
+            f"/api/v1/findings/{finding_id}/verification",
+            json={"evidence_description": f"Evidence {result}.", "verification_result": result},
+        )
+        assert response.status_code == 201
+
+    detail_response = client.get(f"/api/v1/findings/{finding_id}")
+    list_response = client.get("/api/v1/findings")
+    dashboard_response = client.get("/api/v1/dashboard/summary")
+    assert detail_response.status_code == 200
+    assert list_response.status_code == 200
+    assert dashboard_response.status_code == 200
+
+    detail = detail_response.json()
+    listed = next(item for item in list_response.json()["items"] if item["id"] == finding_id)
+    dashboard = dashboard_response.json()
+    assert detail["is_verified_fixed"] is expected_fixed
+    assert listed["is_verified_fixed"] is expected_fixed
+    assert dashboard["verified_fixed_findings"] == int(expected_fixed)
+    assert dashboard["open_findings"] == 1 - int(expected_fixed)
+    assert dashboard["verified_fixed_findings"] + dashboard["open_findings"] == dashboard["total_findings"]
+    assert dashboard["total_verifications"] == len(sequence)
+    assert sum(dashboard["verification_breakdown"].values()) == len(sequence)

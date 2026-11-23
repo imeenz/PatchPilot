@@ -121,3 +121,28 @@ Recorded by Developer 2 (Frontend). Backend entries (AI-001, AI-002, …) live o
 | Validation result | Lint: 0 warnings, 0 errors. Typecheck: pass. Build: pass. Parser tests: 13/13 pass. Manual checks passed against the backend-offline state and the contract stub. Not validated against the real backend. |
 | Commit | `cccd47b6c2a864b7cc37ab1d079ea6e3497bf875` on `feature/frontend` — "feat(frontend): redesign PatchPilot workspace and AI experience" (92 files). |
 | Status | Under Review |
+
+---
+
+### Interaction BUG-P0-001
+
+| Field | Entry |
+|---|---|
+| Interaction ID | BUG-P0-001 |
+| Date | 2026-11-24 |
+| Team member / role | Backend implementation / Senior Backend Engineer |
+| Task | Investigate and implement the approved P0 verification integrity corrections on `backend-review`. |
+| AI model | The exact model identifier was not exposed in this session; not guessed. |
+| AI tool | Codex (OpenAI coding agent in this session). |
+| Prompt | Faithful summary of the investigation and approved implementation requests: inspect verification normalization, storage, status calculations, and tests; preserve four canonical results and documented aliases; reject unknown, empty, whitespace-only, and explicit null values with HTTP 422; default an omitted result to Inconclusive; use the highest verification evidence ID as current status consistently for finding detail, finding list, and dashboard; preserve history and historical breakdowns; add tests; modify only the seven authorized files; do not switch branches, migrate, modify the database, commit, push, or merge. |
+| AI output summary / evidence | Investigated both reported defects: invalid or blank inputs could normalize to `Verified Fixed`, and status calculations counted any historical `Verified Fixed` evidence even when newer evidence was negative or inconclusive. Implemented strict normalization and the Inconclusive default. Added a shared latest-valid-evidence-by-ID rule for finding detail/list and a matching latest-evidence query for dashboard current status. Added tests for canonical values, aliases, invalid/blank/null inputs, omitted result, no persistence on rejected requests, history ordering, the five requested evidence sequences, cross-surface consistency, and dashboard historical counts. The full evidence and implementation report are in the conversation for BUG-P0-001. |
+| Files modified | `backend/app/schemas/common.py`; `backend/app/schemas/verification.py`; `backend/app/routers/findings.py`; `backend/app/services/finding_service.py`; `backend/app/services/dashboard_service.py`; `backend/tests/test_verification.py`; `backend/tests/test_dashboard.py`. |
+| Problem or limitation | Implementation and runtime verification are complete. Existing records were not rewritten; previously misclassified records cannot be distinguished from intentionally recorded `Verified Fixed` evidence using the stored result alone. |
+| Human intervention | Supervisor approval specified the accepted values and aliases, strict rejection behavior, Inconclusive omission default, latest-evidence-by-ID semantics, preservation of history, authorized file list, and restrictions against database changes, migrations, branch changes, commits, pushes, merges, and unrelated work. |
+| Validation method | Read-only Python AST syntax parsing for the seven changed files; `git diff --check`; attempted focused pytest run for `backend/tests/test_verification.py` and `backend/tests/test_dashboard.py` with `DATABASE_URL=sqlite://` and pytest cache/bytecode writes disabled. |
+| Validation result | Initial implementation-stage checks: Python syntax parsing passed for all seven changed files; `git diff --check` passed. The initial pytest attempt did not start because pytest was unavailable (`No module named pytest`). Subsequent runtime verification results are recorded below. |
+| Runtime verification results | Focused verification and dashboard tests: 30 passed, 1 warning, 0 failures. Full backend regression suite: 64 passed, 2 warnings, 0 failures. Final warning inspection run duration: 4.26 seconds. |
+| Warnings | Both observed warnings are non-blocking technical debt, not test failures: (1) Starlette TestClient deprecation for using httpx with Starlette TestClient; warning recommends httpx2. (2) FastAPI telemetry deprecation: `HTTP_422_UNPROCESSABLE_ENTITY` should be replaced with `HTTP_422_UNPROCESSABLE_CONTENT`. No application code or dependencies were changed for these warnings. |
+| Remaining limitations / next steps | Runtime verification is complete. Supervisor approval remains pending. Review existing stored verification records for possible historical false-success status; no automatic rewrite was authorized or performed. |
+| Git and database actions | No commit, push, merge, migration, or database modification occurred. Branch remained `backend-review`. |
+| Status | Implementation: Complete.<br>Self-review: Passed.<br>Focused runtime tests: Passed.<br>Full backend regression tests: Passed.<br>Warnings: Documented, non-blocking.<br>Supervisor approval: Pending. |

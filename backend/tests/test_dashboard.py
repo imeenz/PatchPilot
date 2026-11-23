@@ -56,3 +56,38 @@ def test_dashboard_with_data(client):
     assert data["total_verifications"] == 1
     assert data["verified_fixed_findings"] == 1
     assert data["open_findings"] == 4
+
+
+def test_dashboard_uses_latest_evidence_but_keeps_historical_breakdown(client):
+    imported = client.post(
+        "/api/v1/findings/import",
+        json=[
+            {"title": "Finding A", "description": "First finding", "severity": "High"},
+            {"title": "Finding B", "description": "Second finding", "severity": "Medium"},
+        ],
+    )
+    assert imported.status_code == 201
+    finding_a, finding_b = [item["id"] for item in imported.json()["imported_findings"]]
+
+    evidence_sequences = [
+        (finding_a, ["Verified Fixed", "Inconclusive"]),
+        (finding_b, ["Failed", "Verified Fixed"]),
+    ]
+    for finding_id, results in evidence_sequences:
+        for result in results:
+            response = client.post(
+                f"/api/v1/findings/{finding_id}/verification",
+                json={"evidence_description": f"Recorded result: {result}.", "verification_result": result},
+            )
+            assert response.status_code == 201
+
+    response = client.get("/api/v1/dashboard/summary")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total_findings"] == 2
+    assert data["verified_fixed_findings"] == 1
+    assert data["open_findings"] == 1
+    assert data["total_verifications"] == 4
+    assert data["verification_breakdown"]["Verified Fixed"] == 2
+    assert data["verification_breakdown"]["Failed"] == 1
+    assert data["verification_breakdown"]["Inconclusive"] == 1

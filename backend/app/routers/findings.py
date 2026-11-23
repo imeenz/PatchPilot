@@ -11,6 +11,7 @@ from app.schemas.finding import (
 )
 from app.schemas.task import TaskCreate, TaskResponse
 from app.schemas.verification import VerificationCreate, VerificationResponse
+from app.schemas.common import VerificationResult, latest_valid_verification_result
 from app.schemas.remediation import RemediationGuidanceResponse
 from app.services.finding_service import FindingService
 from app.services.task_service import TaskService
@@ -82,7 +83,10 @@ def get_finding(id: int, db: Session = Depends(get_db)):
     if not finding:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Finding with ID {id} not found.")
 
-    is_fixed = any(v.verification_result == "Verified Fixed" for v in finding.verifications)
+    latest_result = latest_valid_verification_result(
+        (v.id, v.verification_result) for v in finding.verifications
+    )
+    is_fixed = latest_result == VerificationResult.VERIFIED_FIXED
 
     return FindingDetailResponse(
         id=finding.id,
