@@ -23,6 +23,7 @@ import type {
   VerificationResponse,
 } from '@/types';
 import { buildDemoFindings } from './demoDataset';
+import { isVerifiedFixedFromLatest } from '../verificationState.mjs';
 
 type Listener = () => void;
 
@@ -61,7 +62,7 @@ const clone = <T>(v: T): T => structuredClone(v);
 function toSummary(f: FindingDetailResponse): FindingResponse {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { tasks, verifications, original_data, ...rest } = f;
-  return { ...rest, tasks_count: tasks.length, is_verified_fixed: verifications.some((v) => v.verification_result === 'Verified Fixed') };
+  return { ...rest, tasks_count: tasks.length, is_verified_fixed: isVerifiedFixedFromLatest(verifications) };
 }
 
 function requireFinding(id: number): FindingDetailResponse {
@@ -187,7 +188,7 @@ export const demoApi = {
       f.verifications.forEach(
         (v) => (verification_breakdown[v.verification_result] = (verification_breakdown[v.verification_result] ?? 0) + 1)
       );
-      if (f.verifications.some((v) => v.verification_result === 'Verified Fixed')) fixed++;
+      if (isVerifiedFixedFromLatest(f.verifications)) fixed++;
     }
     const total = findings.length;
     return {

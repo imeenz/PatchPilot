@@ -19,17 +19,18 @@ class AIRemediationService:
     @classmethod
     def generate_guidance(cls, finding: Finding) -> RemediationGuidanceResponse:
         # Check if an external AI provider is configured and an API key is present
-        if settings.AI_PROVIDER and settings.AI_API_KEY:
+        if settings.ai_configuration_ready:
             try:
                 return cls._call_external_ai(finding)
             except Exception as e:
                 logger.warning(
-                    f"External AI provider '{settings.AI_PROVIDER}' failed: {e}. "
-                    "Engaging deterministic rule-based fallback."
+                    "External AI provider '%s' failed (%s); using rule-based fallback.",
+                    settings.configured_ai_provider,
+                    type(e).__name__,
                 )
                 fallback = cls._generate_rule_based_fallback(finding)
                 fallback.uncertainty_or_missing_information = (
-                    f"Note: Configured AI provider ({settings.AI_PROVIDER}) was unreachable or returned an error ({type(e).__name__}). "
+                    f"Note: Configured AI provider ({settings.configured_ai_provider}) was unreachable or returned an error ({type(e).__name__}). "
                     f"Engaged local rule-based remediation engine. {fallback.uncertainty_or_missing_information}"
                 )
                 return fallback
@@ -145,8 +146,8 @@ class AIRemediationService:
         External LLM provider call (e.g. OpenAI-compatible API).
         Constructs prompt, requests structured JSON response, parses and returns.
         """
-        provider = (settings.AI_PROVIDER or "").lower()
-        api_key = settings.AI_API_KEY
+        provider = (settings.configured_ai_provider or "").lower()
+        api_key = (settings.AI_API_KEY or "").strip()
         model = settings.AI_MODEL or "gpt-4o-mini"
         endpoint = settings.AI_API_URL or "https://api.openai.com/v1/chat/completions"
 

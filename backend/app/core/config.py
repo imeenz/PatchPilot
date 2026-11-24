@@ -36,6 +36,23 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    @property
+    def configured_ai_provider(self) -> Optional[str]:
+        provider = self.AI_PROVIDER.strip() if self.AI_PROVIDER else ""
+        return provider.lower() or None
+
+    @property
+    def ai_api_key_configured(self) -> bool:
+        return bool(self.AI_API_KEY and self.AI_API_KEY.strip())
+
+    @property
+    def ai_configuration_ready(self) -> bool:
+        """Whether enough nonblank settings exist to attempt an external call.
+
+        This does not verify that the key is valid or the provider is reachable.
+        """
+        return self.configured_ai_provider is not None and self.ai_api_key_configured
+
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
     def assemble_db_connection(cls, v: Optional[str]) -> str:

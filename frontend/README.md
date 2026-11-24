@@ -1,100 +1,56 @@
-# PatchPilot Frontend
+# PatchPilot frontend
 
-AI-first conversational security assistant client application built with React, TypeScript, Vite, Tailwind CSS, and React Router.
+The frontend is a React and TypeScript single-page application. It provides the landing page, overview, vulnerability catalog and detail pages, assistant, remediation tasks, verification records, and settings.
 
-## Tech Stack
+## Requirements
 
-- **Framework**: React 19 + TypeScript (strict mode)
-- **Build Tool**: Vite 8 with `@vitejs/plugin-react`
-- **Styling**: Tailwind CSS v4 with `@tailwindcss/vite`
-- **Routing**: React Router v7 (`react-router-dom`)
-- **Icons**: Lucide React
-- **Linter**: Oxlint
-- **Type Checker**: TypeScript Compiler (`tsc`)
+Node.js is required. The locked Vite and React plugin packages specify Node `^20.19.0` or `>=22.12.0`. The parser test file documents Node 22.18 or 24; Node 22.13 was also used for the recorded combined tests with `--experimental-strip-types`. Tester 2 recorded Node 24.15. The package lock file is used for reproducible dependency installation. The repository does not pin an npm version.
 
-## Folder Structure
+## Install and run
 
-```text
-frontend/
-├── public/              # Static public assets
-├── src/
-│   ├── assets/          # Application assets (images, SVGs)
-│   ├── components/      # Reusable UI & common presentation components
-│   │   ├── common/      # Global layout components (Header, Footer)
-│   │   └── ui/          # Atomic UI primitives (Badge, Card)
-│   ├── features/        # Feature domain modules (vulnerabilities, remediation, verification)
-│   ├── hooks/           # Custom reusable React hooks
-│   ├── layouts/         # Page shell layouts (RootLayout)
-│   ├── pages/           # Route-level views (HomePage, NotFoundPage)
-│   ├── router/          # Client-side router definition
-│   ├── services/        # HTTP API client and external services
-│   ├── types/           # Shared TypeScript interfaces and env declarations
-│   ├── App.tsx          # Root provider component
-│   ├── main.tsx         # Application entry point
-│   └── index.css        # Global Tailwind CSS imports
-├── .env.example         # Template for environment configuration
-├── .gitignore           # Git ignore rules for frontend dependencies and local env files
-├── package.json         # Package configuration and scripts
-├── tsconfig.json        # TypeScript configuration root
-├── tsconfig.app.json    # Application TypeScript configuration with path aliases (@/*)
-├── tsconfig.node.json   # Node/Vite toolchain TypeScript configuration
-└── vite.config.ts       # Vite configuration with Tailwind CSS & path aliases
+From `frontend/`:
+
+```powershell
+npm ci
+npm run dev
 ```
 
-## Environment Configuration
+Vite normally serves at <http://localhost:5173>. Set `VITE_API_BASE_URL` in a local `.env` to change the backend API base; default is `http://localhost:8000/api/v1`. Copy `.env.example` only if `.env` does not already exist. If Vite selects a different port, add that exact origin to the backend `CORS_ORIGINS` setting.
 
-Copy `.env.example` to `.env` for local development:
+## Routes
 
-```bash
-cp .env.example .env
-```
-
-| Variable | Description | Default |
-| :--- | :--- | :--- |
-| `VITE_API_BASE_URL` | Backend FastAPI service base URL | `http://localhost:8000/api/v1` |
-
-> Note: `.env` and `.env.*.local` files are ignored by git to avoid committing secrets or machine-specific URLs.
-
-## Available Scripts
-
-In the `frontend` directory, you can run:
-
-- `npm run dev`: Starts the local Vite development server with HMR.
-- `npm run build`: Runs TypeScript project compilation (`tsc -b`) and produces an optimized Vite production bundle in `dist/`.
-- `npm run typecheck`: Runs TypeScript compiler in check-only mode (`tsc -b --noEmit`).
-- `npm run lint`: Fast linting using Oxlint.
-- `npm run preview`: Locally previews the production build.
-- `npm run test:parsers`: Runs the scanner report parser tests (Node built-in test runner, Trivy/ZAP fixtures in `tests/fixtures/`).
-
-## Phase 3: Product experience
-
-### Routes
-
-| Route | Experience |
+| Route | Page |
 |---|---|
-| `/` | Public landing page (Features, How It Works, About) |
-| `/overview` | Workspace overview (live dashboard summary) |
-| `/assistant` | AI Assistant. `?c=<conversation id>` reloads a conversation from the backend, `?finding=<id>` starts a conversation about a finding, `?import=1` opens the report import dialog |
-| `/vulnerabilities`, `/vulnerabilities/:id` | Findings catalog and details |
+| `/` | Landing page |
+| `/overview` | Workspace dashboard |
+| `/assistant` | Assistant and report import |
+| `/vulnerabilities` | Findings catalog |
+| `/vulnerabilities/:id` | Finding details |
 | `/tasks` | Remediation tasks |
 | `/verification` | Verification evidence |
-| `/settings` | Theme, backend connection, demo mode |
+| `/settings` | Theme and backend connection settings |
 
-### Theme
+## Scanner imports and data behavior
 
-Design tokens live in `src/index.css` (`--pp-*` variables mapped to Tailwind colours such as `bg-surface`,
-`text-fg-muted`, `border-line`, `bg-primary`, `text-critical`). Dark is the default; light is fully supported.
-The preference is stored in `localStorage` (`patchpilot.theme`) and applied before first paint (`index.html`).
+PatchPilot imports Trivy JSON and OWASP ZAP traditional JSON. Parsing and field mapping happen in the frontend; the application does not execute scanners. Unsupported or invalid entries are identified by the import flow. The optional presentation dataset is in-memory demo content, labelled as demo, and is separate from persisted backend records. It is not a substitute for a backend connection or imported findings.
 
-### Data honesty rules
+## Scripts
 
-- Services never fall back to sample data. If the backend is unreachable, pages show a connection error with Retry.
-- A fresh workspace is empty ("Your security workspace is ready.").
-- **Demo dataset** (optional, Overview/Settings): sample records held in memory in the current tab only, labelled
-  `demo-dataset`, never sent to the backend, cleared on exit or refresh. Chat context, guidance and import are
-  disabled for demo records.
-- Assistant answers show whether they came from the configured AI provider or the rule-based fallback,
-  using the `is_fallback` / `provider` / `model` fields returned by the backend.
-- Conversation content is never stored in the browser; the backend is the source of truth.
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Start Vite development server |
+| `npm run build` | TypeScript build and optimized Vite bundle |
+| `npm run preview` | Preview the built frontend locally |
+| `npm run lint` | Run Oxlint |
+| `npm run typecheck` | Run TypeScript checking without emitting application output |
+| `npm run test:parsers` | Run `tests/scannerParsers.test.mjs` (the file documents Node 22.18 or 24) |
+| `npm run test:verification-state` | Run verification-state replacement tests |
+| `node --experimental-strip-types --test tests/apiPresentation.test.mjs tests/scannerParsers.test.mjs` | Run both retained Node test files on Node versions that need built-in TypeScript stripping |
 
-Backend coordination items for Developer 1: see [`docs/BACKEND_REQUESTS.md`](docs/BACKEND_REQUESTS.md).
+The combined Node command has recorded results of 16 passing tests. The `test:parsers` npm script runs the parser test file only; it does not run the API presentation test file. Run commands from the `frontend/` directory.
+
+## Backend integration and limitations
+
+The frontend talks to the FastAPI API; it does not provide authentication or authorization. There is no user isolation or private conversation ownership. Conversations can be opened by ID, but there is no backend endpoint to list all conversations. AI output may come from a configured external provider or the backend's rule-based fallback; inspect the response metadata rather than inferring live AI availability from settings alone.
+
+PatchPilot does not integrate with GitHub, apply patches, run scanners, or deploy changes. Risk scores are deterministic severity-based triage scores, not CVSS. Completing a task does not prove a finding is fixed; verification evidence is recorded separately.

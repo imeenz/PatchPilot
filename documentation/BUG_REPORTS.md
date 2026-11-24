@@ -15,8 +15,8 @@ This register reconciles confirmed historical defects with their implementation 
 
 | ID | Title | Severity | Priority | Status | Related test | Fix commit | Retest status |
 |---|---|---|---|---|---|---|---|
-| BUG-P0-001 | Reject invalid verification results and derive finding status from latest evidence | Undocumented | Undocumented | Fixed | `backend/tests/test_verification.py`; `backend/tests/test_dashboard.py` | `03423ee29088ffcc79bc97d343061bc5365fd8cd` | Developer regression reported passing; independent Tester 1 retest undocumented |
-| BUG-INT-001 | Backend Database Isolation and Frontend Integration Failure | Undocumented | Undocumented | Fixed | `backend/tests/test_integration_isolation.py`; `backend/tests/test_health.py`; `backend/tests/test_chat.py`; `frontend/tests/apiPresentation.test.mjs` | `f65628bf048fe740d70fc18403f5f073730a8372` | Automated regression reported passing; browser verification and independent Tester 1 retest pending |
+| BUG-P0-001 | Reject invalid verification results and derive finding status from latest evidence | Undocumented | Undocumented | Fixed (developer regression reported passing) | `backend/tests/test_verification.py`; `backend/tests/test_dashboard.py` | `03423ee29088ffcc79bc97d343061bc5365fd8cd` | Independent Tester 1 retest not recorded; not closed by automation alone |
+| BUG-INT-001 | Backend Database Isolation and Frontend Integration Failure | Undocumented | Undocumented | Fixed (automated regression reported passing) | `backend/tests/test_integration_isolation.py`; `backend/tests/test_health.py`; `backend/tests/test_chat.py`; `frontend/tests/apiPresentation.test.mjs` | `f65628bf048fe740d70fc18403f5f073730a8372` | Browser verification and independent Tester 1 retest pending; not closed by automation alone |
 
 ## BUG-P0-001 — Reject invalid verification results and derive finding status from latest evidence
 
@@ -90,7 +90,7 @@ Code inspection suggests that whitespace-only `evidence_description` may pass th
 - Developer regression results are not independent Tester 1 retests.
 - BUG-INT-001's browser verification remains pending. The exact historical chat traceback was not captured.
 - BUG-P0-001's evidence-description whitespace scenario is distinct from its whitespace-only `verification_result` regression test. The latter does not provide runtime evidence for BUG-VER-001.
-- No separate test-output artifact paths, bug reporter names, assignees, or severity/priority values were documented for these historical records.
+- No separate test-output artifact paths, bug reporter names, assignees, or severity/priority values were documented for these historical records. The severity and priority fields remain **Undocumented** for both confirmed bugs; neither identifier nor fix history is sufficient evidence to assign them. Neither bug has a recorded independent Tester 1 retest, and BUG-INT-001 browser verification remains pending.
 
 ## Bug report template for future confirmed defects
 

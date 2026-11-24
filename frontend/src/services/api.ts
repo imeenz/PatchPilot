@@ -101,6 +101,12 @@ export interface HealthResponse {
   version: string;
   database: string;
   ai_provider: string;
+  ai_configuration?: {
+    status: 'configured_unverified' | 'rule-based-fallback';
+    configured_provider: string | null;
+    api_key_configured: boolean;
+    provider_reachability: 'not_checked';
+  };
 }
 
 /** GET /api/v1/health */

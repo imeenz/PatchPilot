@@ -40,7 +40,7 @@ Do not treat the following as existing product capabilities or as acceptance cri
 
 The production PostgreSQL deployment path is not exercised by the local SQLite test environment unless a separate approved environment is provided. No test should use the developer's default `backend/patchpilot.db`.
 
-The existing `documentation/TEST_CASES.md` is a case register, not evidence that its cases have run or that every proposed behavior is implemented; its listed cases are marked `Not Run`. This is separate from the developer automation results below. Before execution, defer or revise cases that assume user authentication/identity, unsupported fields such as CVSS input, or an unspecified duplicate-import policy.
+The existing `documentation/TEST_CASES.md` is a case register, not evidence that every proposed behavior is implemented. Its current Tester 1 manual results are 5 Passed, 0 Failed, 0 Blocked, and 48 Not Run among 53 executable MVP cases; TC-007 is Deferred, and TC-026 and TC-029 are Out of MVP. Tester 1's results are recorded separately from developer and Tester 2 automation. TC-010 currently tests the implemented source filter, and TC-016 tests the supported severity-based score boundaries; neither is deferred. Revise or defer cases only when current requirements or implementation make them inapplicable, and retain unrun cases as Not Run.
 
 ## 3. Test strategy
 
@@ -119,7 +119,7 @@ Automated provider tests may use mocks. Live-provider testing is optional and re
 
 ### Frontend automation
 
-- Use the existing Node/npm environment and installed frontend dependencies. Do not install packages for QA.
+- Use Node/npm with the existing frontend dependencies. The locked Vite toolchain specifies Node `^20.19.0` or `>=22.12.0`; the parser test documents Node 22.18 or 24. Node 22.13 was used for the combined test command with `--experimental-strip-types`, and Tester 2 evidence records Node 24.15. Do not install packages as part of a QA run.
 - Current scripts: `npm run lint`, `npm run typecheck`, `npm run build`, and `npm run test:parsers`. The API-presentation tests are also in `frontend/tests/apiPresentation.test.mjs`.
 - The combined Node test command used for the current baseline is `node --experimental-strip-types --test tests/apiPresentation.test.mjs tests/scannerParsers.test.mjs`. On Node versions that require it, the type-stripping flag is needed by the parser tests that import TypeScript; Node reports this as experimental.
 
@@ -200,14 +200,14 @@ This is a planned sequence for each QA cycle, not a dated completion record. Ass
 | 0. Scope and readiness | Confirm build, requirements, supported inputs, test data, isolated databases, and entry criteria. Review candidate test cases for unsupported assumptions. | Tester 1, Tester 2, Developers | Planned per cycle |
 | 1. Developer and component checks | Run backend unit/API tests and frontend parser/helper tests, lint, typecheck, and build. Triage failures before tester handoff. | Backend Developer, Frontend Developer | Baseline automation results are recorded below; repeat for each target build |
 | 2. API and data validation | Exercise import, validation, filters, scoring, task states, evidence outcomes, chat limits, error responses, and persistence boundaries. | Tester 2; developers support | Planned |
-| 3. Integration and system workflows | Test import-to-review-to-task-to-evidence workflows, finding-linked chat, latest-evidence status, health/CORS, and actual frontend/backend behavior using the isolated preview. | Tester 1, Tester 2 | Planned; real-backend browser verification remains outstanding in the interaction log |
+| 3. Integration and system workflows | Test import-to-review-to-task-to-evidence workflows, finding-linked chat, latest-evidence status, health/CORS, and actual frontend/backend behavior using the isolated preview. | Tester 1, Tester 2 | Partially evidenced: Tester 1 recorded TC-005, TC-006, TC-008, TC-009, and TC-011 as Pass; 48 executable MVP cases remain Not Run. Tester 2 has API/integration automation evidence. Full browser verification against the integrated FastAPI backend and remaining workflows are not established by these records |
 | 4. AI evaluation | Assess curated prompts for accuracy, context, uncertainty, safety, verification advice, and fallback/provider failures. | Tester 1, Tester 2; developers support | Planned; live provider use is optional and controlled |
 | 5. Exploratory, regression, and retest | Explore UI/error states, rerun relevant regression checks, retest fixes, and update defect evidence. | Tester 1, Tester 2 | Planned |
 | 6. Exit review and reporting | Reconcile results, blockers, defect dispositions, limitations, and sign-off; publish no unsupported coverage or completion claims. | Testers, Developers, release owner | Planned |
 
 ### Previously executed developer validation
 
-The following results were recorded for the approved QA baseline at `f65628bf048fe740d70fc18403f5f073730a8372`; they are developer validation, not independent Tester 1 sign-off:
+The following historical results were recorded for the QA baseline at `f65628bf048fe740d70fc18403f5f073730a8372`; they are developer validation, not Tester 1 manual results or a substitute for Tester 2's separate report:
 
 - Full backend pytest suite: 71 passed, 2 deprecation warnings, 0 failures, with launcher `DATABASE_URL` unset.
 - Frontend Node tests: 16 passed, 0 failed, using `--experimental-strip-types`; Node emitted the corresponding experimental-feature warning.
@@ -215,4 +215,4 @@ The following results were recorded for the approved QA baseline at `f65628bf048
 - TypeScript checking and production build: passed.
 - No coverage percentage was measured. The interaction log records earlier frontend browser checks against an offline backend and a contract stub; visual browser verification against the integrated FastAPI backend remains outstanding.
 
-These results do not mark the planned manual, exploratory, AI-evaluation, or independent QA phases complete. Record new results against the exact commit tested.
+Tester 1's current manual summary is 5 passed, 0 failed, 0 blocked, and 48 not run among the 53 executable MVP cases; TC-007 remains Deferred and TC-026/TC-029 remain Out of MVP. These results do not complete the remaining manual, exploratory, AI-evaluation, or full browser integration work. Record future results against the exact commit tested.

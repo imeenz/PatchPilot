@@ -12,15 +12,15 @@
 
 ## Section A — Execution Summary
 
-| Test Area | Total | Passed | Failed | Blocked | Not Run |
-|---|---:|---:|---:|---:|---:|
-| Backend automation (pytest) | 71 | 71 | 0 | 0 | 0 |
-| Frontend automation | 20 | 20 | 0 | 0 | 0 |
-| API testing | 43 | 43 | 0 | 0 | 0 |
-| Integration testing | 18 | 18 | 0 | 0 | 0 |
-| Regression testing | 10 | 10 | 0 | 0 | 0 |
-| White-box testing | 43 | 43 | 0 | 0 | 0 |
-| **Grand Total** | **205** | **205** | **0** | **0** | **0** |
+| Test Area | Recorded unit | Total | Passed | Failed | Blocked | Not Run |
+|---|---|---:|---:|---:|---:|---:|
+| Backend automation (pytest) | Tests | 71 | 71 | 0 | 0 | 0 |
+| Frontend automation | 4 checks + 16 tests | 20 | 20 | 0 | 0 | 0 |
+| API testing | Test cases/probes | 43 | 43 | 0 | 0 | 0 |
+| Integration testing | Workflow steps | 18 | 18 | 0 | 0 | 0 |
+| Regression testing | Checks | 10 | 10 | 0 | 0 | 0 |
+| White-box testing | Branch/condition evaluations | 43 | 43 | 0 | 0 | 0 |
+> Across the six categories, 205 recorded outcomes/checks/steps/branch evaluations passed. This aggregate combines different measurement units and is **not** a count of 205 test cases. No aggregate case total is reported.
 
 ---
 
@@ -30,7 +30,7 @@
 
 **Command:** `python -m pytest tests -q`  
 **Duration:** 5.07s  
-**Evidence:** [`pytest_run_quiet.txt`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/backend/pytest_run_quiet.txt) · [`pytest_run_verbose.txt`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/backend/pytest_run_verbose.txt)
+**Evidence:** [`pytest_run_quiet.txt`](backend/pytest_run_quiet.txt) · [`pytest_run_verbose.txt`](backend/pytest_run_verbose.txt)
 
 **Coverage by test module:**
 
@@ -56,7 +56,7 @@ Both are upstream dependency deprecation warnings, not application defects.
 
 ### B.2 Frontend Automation (20 checks, 0 failures)
 
-**Evidence:** [`lint_run.txt`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/frontend/lint_run.txt) · [`typecheck_run.txt`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/frontend/typecheck_run.txt) · [`build_run.txt`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/frontend/build_run.txt) · [`tests_run.txt`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/frontend/tests_run.txt)
+**Evidence:** [`lint_run.txt`](frontend/lint_run.txt) · [`typecheck_run.txt`](frontend/typecheck_run.txt) · [`build_run.txt`](frontend/build_run.txt) · [`tests_run.txt`](frontend/tests_run.txt)
 
 | Check | Command | Result | Details |
 |---|---|---|---|
@@ -100,8 +100,8 @@ Both are upstream dependency deprecation warnings, not application defects.
 
 ### C.1 API Testing (43 passed, 0 failed)
 
-**Test Script:** [`test_api_endpoints.py`](file:///c:/Users/DELL/Desktop/TrustChain/tests/automation/test_api_endpoints.py)  
-**Evidence:** [`api_test_results.json`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/api/api_test_results.json) · [`api_test_report.txt`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/api/api_test_report.txt) · [`live_api_probe.txt`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/api/live_api_probe.txt)
+**Test Script:** [`test_api_endpoints.py`](../../../tests/automation/test_api_endpoints.py)
+**Evidence:** [`api_test_results.json`](api/api_test_results.json) · [`api_test_report.txt`](api/api_test_report.txt) · [`live_api_probe.txt`](api/live_api_probe.txt)
 
 **Endpoints tested by category:**
 
@@ -124,8 +124,8 @@ Separate live HTTP probe was executed against a fresh uvicorn instance using an 
 
 ### C.2 Integration Testing (18 steps, 0 failed)
 
-**Test Script:** [`test_integration_workflows.py`](file:///c:/Users/DELL/Desktop/TrustChain/tests/integration/test_integration_workflows.py)  
-**Evidence:** [`integration_test_results.json`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/integration/integration_test_results.json) · [`integration_test_report.txt`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/integration/integration_test_report.txt)
+**Test Script:** [`test_integration_workflows.py`](../../../tests/integration/test_integration_workflows.py)
+**Evidence:** [`integration_test_results.json`](integration/integration_test_results.json) · [`integration_test_report.txt`](integration/integration_test_report.txt)
 
 | Integration Workflow | Steps | Result | Description |
 |---|---:|---|---|
@@ -149,8 +149,8 @@ Separate live HTTP probe was executed against a fresh uvicorn instance using an 
 
 ### 10 regression checks passed, 0 failed
 
-**Test Script:** [`test_regression_defects.py`](file:///c:/Users/DELL/Desktop/TrustChain/tests/automation/test_regression_defects.py)  
-**Evidence:** [`regression_test_results.json`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/regression/regression_test_results.json) · [`regression_test_report.txt`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/regression/regression_test_report.txt)
+**Test Script:** [`test_regression_defects.py`](../../../tests/automation/test_regression_defects.py)
+**Evidence:** [`regression_test_results.json`](regression/regression_test_results.json) · [`regression_test_report.txt`](regression/regression_test_report.txt)
 
 ### BUG-P0-001 — Verification Result Normalization (commit `03423ee`)
 
@@ -178,8 +178,8 @@ Separate live HTTP probe was executed against a fresh uvicorn instance using an 
 
 ### 43 internal branches exercised, 0 failures
 
-**Test Script:** [`test_whitebox_paths.py`](file:///c:/Users/DELL/Desktop/TrustChain/tests/automation/test_whitebox_paths.py)  
-**Evidence:** [`whitebox_test_results.json`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/coverage/whitebox_test_results.json) · [`whitebox_coverage_report.txt`](file:///c:/Users/DELL/Desktop/TrustChain/documentation/evidence/tester-2/coverage/whitebox_coverage_report.txt)
+**Test Script:** [`test_whitebox_paths.py`](../../../tests/automation/test_whitebox_paths.py)
+**Evidence:** [`whitebox_test_results.json`](coverage/whitebox_test_results.json) · [`whitebox_coverage_report.txt`](coverage/whitebox_coverage_report.txt)
 
 | Category | Branches | Description |
 |---|---:|---|
@@ -193,15 +193,15 @@ Separate live HTTP probe was executed against a fresh uvicorn instance using an 
 
 ## Section F — Remaining Warnings & Limitations
 
-### Deferred Test Cases (per assignment Section 8)
+### Scope notes for the current Test Case Register
 
 | ID | Description | Reason |
 |---|---|---|
-| TC-007 | Duplicate import policy | Feature not implemented in MVP |
-| TC-010 | Status filtering on findings | Filter parameter not supported |
-| TC-016 | CVSS input scoring | Score is severity-based triage, not CVSS |
-| TC-026 | Assignee validation on tasks | Not implemented in MVP |
-| TC-029 | Authorization / user ownership | Not implemented in MVP |
+| TC-007 | Duplicate import policy | Deferred in the current register until duplicate-import policy is specified |
+| TC-010 | Source filtering | Current register defines an MVP source-filter case; the findings API implements a `source` filter. The earlier status-filter disposition is obsolete. This Tester 2 report records no execution result for the revised case. |
+| TC-016 | Risk-score boundaries | Current register defines an MVP case for supported severity-based score boundaries, not CVSS input. The implementation provides severity bases and CVE/fix adjustments. The earlier CVSS disposition is obsolete. This Tester 2 report records no execution result for the revised case. |
+| TC-026 | Assignee validation on tasks | Out of MVP; assignee is free text and there is no user identity directory |
+| TC-029 | Authorization / user ownership | Out of MVP; authentication and authorization are not implemented |
 
 ### Non-Blocking Warnings
 
@@ -224,7 +224,7 @@ Separate live HTTP probe was executed against a fresh uvicorn instance using an 
 
 **No new defects were discovered during this testing cycle.**
 
-All 205 test cases across 6 test areas passed. The two previously reported defects (BUG-P0-001 and BUG-INT-001) have been confirmed as fixed through dedicated regression testing.
+All recorded Tester 2 outcomes in the six categories passed (71 backend tests, 20 frontend checks/tests, 43 API cases/probes, 18 integration steps, 10 regression checks, and 43 white-box branch/condition evaluations). These unlike units are not 205 test cases. Automated regression evidence supports the fixes for BUG-P0-001 and BUG-INT-001; independent Tester 1 retests are not recorded, and BUG-INT-001 browser verification remains pending.
 
 ---
 
@@ -256,9 +256,9 @@ The FastAPI `TestClient` requires loopback socket access (`socket.socketpair()` 
 
 ## Section I — Recommendation
 
-> **Ready with documented limitations.**
+> **Tester 2 results recorded; release readiness not assessed.**
 
-All 205 automated, API, integration, white-box, and regression tests pass with execution evidence preserved. Two known deprecation warnings in backend dependencies are non-blocking. The five deferred test cases (TC-007, TC-010, TC-016, TC-026, TC-029) have clear rationale tied to unimplemented MVP features. No critical or high-priority defects remain. Both previously reported defects have confirmed fixes.
+Tester 2 recorded passing evidence for 205 outcomes across six categories, using the category-specific units shown above; this is not 205 test cases. Two backend deprecation warnings and one frontend lint warning are recorded. In the current case register, TC-007 is Deferred, TC-026 and TC-029 are Out of MVP, and TC-010 and TC-016 are MVP cases with no Tester 2 execution result recorded here. Defect severity and priority remain undocumented in `documentation/BUG_REPORTS.md`, so this report makes no claim that no critical/high-priority defects remain. Automated regression evidence is recorded for both historical fixes, while independent Tester 1 retesting and BUG-INT-001 browser verification remain outstanding. Release readiness is not assessed by this Tester 2 report.
 
 ---
 

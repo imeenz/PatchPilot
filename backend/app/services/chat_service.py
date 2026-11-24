@@ -248,22 +248,27 @@ class ChatService:
             try:
                 structured_guidance = AIRemediationService.generate_guidance(finding)
             except Exception as e:
-                logger.warning(f"Could not generate structured guidance for finding {finding.id}: {e}")
+                logger.warning(
+                    "Could not generate structured guidance for finding %s (%s).",
+                    finding.id,
+                    type(e).__name__,
+                )
 
         # Check external AI provider
-        if settings.AI_PROVIDER and settings.AI_API_KEY:
+        if settings.ai_configuration_ready:
             try:
                 content, model = cls._call_external_ai(history_messages, finding)
-                return content, False, settings.AI_PROVIDER, model, structured_guidance
+                return content, False, settings.configured_ai_provider, model, structured_guidance
             except Exception as e:
                 logger.warning(
-                    f"External AI chat call failed for provider '{settings.AI_PROVIDER}': {e}. "
-                    "Engaging deterministic rule-based fallback."
+                    "External AI chat call failed for provider '%s' (%s); using rule-based fallback.",
+                    settings.configured_ai_provider,
+                    type(e).__name__,
                 )
                 fallback_content = cls._generate_rule_based_fallback(
                     history_messages=history_messages,
                     finding=finding,
-                    error_notice=f"Note: Configured AI provider ({settings.AI_PROVIDER}) was unavailable ({type(e).__name__}). Engaged local rule-based assistant.",
+                    error_notice=f"Note: Configured AI provider ({settings.configured_ai_provider}) was unavailable ({type(e).__name__}). Engaged local rule-based assistant.",
                 )
                 return fallback_content, True, "rule-based-fallback", None, structured_guidance
 
@@ -280,8 +285,8 @@ class ChatService:
         history_messages: List[ConversationMessage],
         finding: Optional[Finding] = None,
     ) -> Tuple[str, str]:
-        provider = (settings.AI_PROVIDER or "").lower()
-        api_key = settings.AI_API_KEY
+        provider = (settings.configured_ai_provider or "").lower()
+        api_key = (settings.AI_API_KEY or "").strip()
         model = settings.AI_MODEL or "gpt-4o-mini"
         endpoint = settings.AI_API_URL or "https://api.openai.com/v1/chat/completions"
 

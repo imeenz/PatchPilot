@@ -18,6 +18,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardBody } from '@/components/ui/Card';
 import { SubmitVerificationModal } from '@/features/verification/SubmitVerificationModal';
+import { applyRefreshedVerificationState } from '@/services/verificationState.mjs';
 
 export function VerificationPage() {
   const [findings, setFindings] = useState<FindingResponse[]>([]);
@@ -33,6 +34,7 @@ export function VerificationPage() {
   const [reloadKey, setReloadKey] = useState(0);
   const [feedFailures, setFeedFailures] = useState(0);
   const [selectedError, setSelectedError] = useState<unknown>(null);
+  const [verificationRefreshWarning, setVerificationRefreshWarning] = useState<string | null>(null);
 
   // Load workspace data
   useEffect(() => {
@@ -130,12 +132,17 @@ export function VerificationPage() {
       ...prev,
     ]);
 
-    // If marked Verified Fixed, update local finding state
-    if (res.data.verification_result === 'Verified Fixed') {
-      setFindings((prev) =>
-        prev.map((f) => (f.id === fId ? { ...f, is_verified_fixed: true } : f))
-      );
+    // Use the server's latest-evidence calculation; never keep a stale fixed flag.
+    let latestIsFixed = res.data.verification_result === 'Verified Fixed';
+    try {
+      const refreshed = await findingService.getFinding(fId);
+      latestIsFixed = refreshed.data.is_verified_fixed === true;
+      setVerifications(refreshed.data.verifications);
+      setVerificationRefreshWarning(null);
+    } catch {
+      setVerificationRefreshWarning('Evidence was recorded, but the latest finding status could not be refreshed. The displayed status reflects the evidence just submitted.');
     }
+    setFindings((prev) => applyRefreshedVerificationState(prev, { id: fId, is_verified_fixed: latestIsFixed }));
   };
 
   const selectedFinding = findings.find((f) => f.id === selectedFindingId);
@@ -200,6 +207,11 @@ export function VerificationPage() {
       </div>
 
       {/* Verification Metrics Overview */}
+      {verificationRefreshWarning && (
+        <p role="status" className="rounded-lg border border-medium/30 bg-medium/10 p-3 text-xs text-fg-muted">
+          {verificationRefreshWarning}
+        </p>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="p-4 flex items-center justify-between">
           <div>

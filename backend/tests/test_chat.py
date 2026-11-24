@@ -130,6 +130,40 @@ def test_rule_based_fallback_when_no_provider(client):
         assert "disclaimer" in data
 
 
+def test_provider_without_api_key_uses_rule_based_fallback(client):
+    with patch.object(settings, "AI_PROVIDER", "openai"), patch.object(settings, "AI_API_KEY", " "):
+        with patch.object(ChatService, "_call_external_ai") as external_call:
+            response = client.post("/api/v1/chat", json={"message": "How should I review this issue?"})
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["is_fallback"] is True
+    assert data["provider"] == "rule-based-fallback"
+    assert data["model"] is None
+    external_call.assert_not_called()
+
+
+def test_provider_failure_does_not_log_exception_secret(client, caplog):
+    secret = "test-api-key-must-not-appear"
+    with patch.object(settings, "AI_PROVIDER", "openai"), patch.object(settings, "AI_API_KEY", secret):
+        with patch.object(ChatService, "_call_external_ai", side_effect=RuntimeError(secret)):
+            response = client.post("/api/v1/chat", json={"message": "How should I review this issue?"})
+
+    assert response.status_code == 200
+    assert response.json()["provider"] == "rule-based-fallback"
+    assert secret not in caplog.text
+
+
+def test_unexpected_chat_error_does_not_log_exception_secret(client, caplog):
+    secret = "test-api-key-must-not-appear"
+    with patch.object(ChatService, "send_message", side_effect=RuntimeError(secret)):
+        response = client.post("/api/v1/chat", json={"message": "A safe test message"})
+
+    assert response.status_code == 500
+    assert response.json()["detail"] == "An unexpected error occurred while processing the chat message."
+    assert secret not in caplog.text
+
+
 def test_ai_provider_configured_success(client):
     """Test external AI provider flow when configured and mock succeeds."""
     mock_llm_json = {

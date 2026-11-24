@@ -1,3 +1,8 @@
+from unittest.mock import patch
+
+from app.services.finding_service import FindingService
+
+
 def test_import_array_payload(client):
     payload = [
         {
@@ -106,6 +111,21 @@ def test_import_missing_required_fields_and_invalid_severity(client):
 def test_import_invalid_payload_type(client):
     response = client.post("/api/v1/findings/import", json="not a list or dict")
     assert response.status_code == 422
+
+
+def test_import_unexpected_error_does_not_expose_exception_or_report_content(client, caplog):
+    sensitive_detail = "private-report-value-and-db-credential"
+    with patch.object(FindingService, "import_findings", side_effect=RuntimeError(sensitive_detail)):
+        response = client.post(
+            "/api/v1/findings/import",
+            json=[{"title": "safe test", "description": "test", "severity": "Low"}],
+        )
+
+    assert response.status_code == 500
+    assert response.json()["detail"] == "An unexpected error occurred while importing findings."
+    assert sensitive_detail not in response.text
+    assert sensitive_detail not in caplog.text
+    assert "RuntimeError" in caplog.text
 
 
 def test_import_alias_handling(client):

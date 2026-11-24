@@ -2,32 +2,32 @@
 
 ## Report purpose and status
 
-This is a **blank execution template** for recording manual QA, API/integration automation, regression, exploratory, and AI-evaluation work against a specific PatchPilot build. No manual case result is recorded in this template. The case statuses below reproduce the current register state; they are not execution claims. Keep developer automation results separate from Tester 1/Tester 2 execution results.
+This report records the manual execution of TC-005, TC-006, TC-008, TC-009, and TC-011 by Tester 1 on 2026-11-25. All other manual case results remain unrecorded. The case statuses below preserve the register state except for TC-005, TC-006, TC-008, TC-009, and TC-011. Keep developer automation results separate from Tester 1/Tester 2 execution results.
 
-Template prepared against branch `qa/integration-baseline`, repository HEAD `59ad73a96ab70aaa4f73181d63ed3e33e0f0d03d`. This is the report-template revision, **not a claim that this build was tested**. Replace the execution fields for each QA run and retain a copy of the report for each tested build.
+Execution record updated against branch `qa/integration-baseline`, repository HEAD `e69aa79278467e0bfbf6486e0dac2bc6d5e930ea`. TC-005, TC-006, TC-008, TC-009, and TC-011 were manually executed on 2026-11-25; other execution fields remain pending.
 
 ## 1. Execution information
 
 | Field | Execution record |
 |---|---|
 | Project | PatchPilot |
-| Report/run identifier | [Assign for this execution] |
-| Build/version | [Record application version/build identifier, or state undocumented] |
-| Tested commit SHA | [Record exact tested SHA] |
-| Branch | [Record tested branch; planned branch: `qa/integration-baseline`] |
-| Test environment | [OS/version, browser/version, network/origin, relevant configuration] |
-| Backend version | [Record Python, FastAPI, SQLAlchemy and relevant runtime versions] |
-| Frontend version | [Record Node.js, npm, browser and relevant runtime versions] |
-| Execution period | [Start date/time and end date/time with timezone] |
-| Tester 1 | [Name/identifier; manual QA, exploratory testing, defect reports and retesting] |
-| Tester 2 | [Name/identifier; automated, API/integration, regression and white-box testing] |
-| Developer support | [Backend/Frontend Developer names or Not involved] |
-| Test data | [Synthetic records, exact fixture paths, generated seed data and any sanitized inputs] |
-| Database setup | [Record isolated DB type/path and setup/reset procedure. Planned local preview DB: `backend/.runtime/bug-int-001-preview.db`; never use `backend/patchpilot.db`.] |
-| AI configuration | [Record provider/model or rule-based fallback; never include secrets] |
-| Execution notes | [Constraints, deviations, unavailable services, warnings] |
+| Report/run identifier | Tester 1 manual QA record for TC-005, TC-006, TC-008, TC-009, and TC-011; formal run ID undocumented |
+| Build/version | Undocumented |
+| Tested commit SHA | `e69aa79278467e0bfbf6486e0dac2bc6d5e930ea` (recorded in the Tester 1 evidence register for the five executed cases) |
+| Branch | `qa/integration-baseline` (recorded with the Tester 1 evidence) |
+| Test environment | Undocumented (OS, browser/version, network/origin, and relevant configuration not recorded) |
+| Backend version | Undocumented for this manual run |
+| Frontend version | Undocumented for this manual run |
+| Execution period | 2026-11-25 (time and timezone undocumented) |
+| Tester 1 | Tester 1 - QA Test Analyst; personal name undocumented |
+| Tester 2 | Separate contribution recorded in `documentation/evidence/tester-2/TESTER_2_FINAL_REPORT.md`; personal name undocumented |
+| Developer support | Undocumented |
+| Test data | Per-case data is described in the individual case records; complete run-level data inventory undocumented |
+| Database setup | Undocumented for this manual run. The preview database path in the plan is guidance, not evidence of use. |
+| AI configuration | Undocumented for this manual run |
+| Execution notes | Run-level constraints and deviations are undocumented. |
 
-The local preview path above is documented setup guidance, not evidence that a database was created or used during this report run. Record the actual isolated database and confirm it does not target production or the developer default database.
+The preview database path documented in the test plan is setup guidance, not evidence that a database was created or used during this report run. Record the actual isolated database and confirm it does not target production or the developer default database.
 
 ## 2. Execution summary
 
@@ -36,26 +36,26 @@ The local preview path above is documented setup guidance, not evidence that a d
 - **Total cases** is the unique case count in the register: 56.
 - The 53 cases classified `MVP` are executable in this build scope. Each has exactly one execution state: Passed, Failed, Blocked, or Not Run. These four counts must sum to 53.
 - Deferred and Out of MVP are scope classifications, not execution outcomes, and are counted separately: TC-007 is Deferred; TC-026 and TC-029 are Out of MVP. They must not also be counted in the 53 executable-case state totals.
-- The current source register marks all cases `Not Run`. The initial register-derived state is therefore 0 Passed, 0 Failed, 0 Blocked, 53 Not Run, 1 Deferred, and 2 Out of MVP. These are starting register counts, not newly executed results. Update the status counts only with recorded evidence.
+- The initial register-derived state was 0 Passed, 0 Failed, 0 Blocked, 53 Not Run, 1 Deferred, and 2 Out of MVP. The run result reflects TC-005, TC-006, TC-008, TC-009, and TC-011 only; update other statuses only with recorded evidence.
 - Recalculate after each run. `Total cases = Passed + Failed + Blocked + Not Run + Deferred + Out of MVP`.
 
 | Measure | Initial register state | Run result |
 |---|---:|---:|
-| Total cases | 56 | [Formula: sum the six category counts] |
-| Passed (executable MVP) | 0 | [Count rows with status Passed] |
-| Failed (executable MVP) | 0 | [Count rows with status Failed] |
-| Blocked (executable MVP) | 0 | [Count rows with status Blocked; record blocker] |
-| Not Run (executable MVP) | 53 | [Count MVP rows with status Not Run] |
-| Deferred | 1 | [Count cases classified Deferred; currently TC-007] |
-| Out of MVP | 2 | [Count cases classified Out of MVP; currently TC-026, TC-029] |
+| Total cases | 56 | 56 |
+| Passed (executable MVP) | 0 | 5 |
+| Failed (executable MVP) | 0 | 0 |
+| Blocked (executable MVP) | 0 | 0 |
+| Not Run (executable MVP) | 53 | 48 |
+| Deferred | 1 | 1 |
+| Out of MVP | 2 | 2 |
 
 **Reconciliation check:** `Passed + Failed + Blocked + Not Run = 53`; `Deferred + Out of MVP = 3`; the two subtotals sum to 56. Report any mismatch as a documentation error before sign-off.
 
 ## 3. Test results
 
-The objective and scope labels below are carried over from `documentation/TEST_CASES.md`. Tester, execution date, actual result, evidence, and retest fields are intentionally blank. Record `Pass`, `Fail`, `Blocked`, or `Not Run` only after evaluating the case against the specified build. Use the separate scope tables for deferred/out-of-MVP cases; do not treat them as executable MVP results.
+The objective and scope labels below are carried over from `documentation/TEST_CASES.md`. Tester, execution date, actual result, evidence, and retest fields remain blank for cases not yet run. Record `Pass`, `Fail`, `Blocked`, or `Not Run` only after evaluating the case against the specified build. Use the separate scope tables for deferred/out-of-MVP cases; do not treat them as executable MVP results.
 
-### 3.1 Executable MVP cases (53; currently Not Run)
+### 3.1 Executable MVP cases (53)
 
 | Test ID | Test objective | Priority | Tester | Execution date | Actual result | Status | Evidence reference | Related bug ID | Retest status |
 |---|---|---|---|---|---|---|---|---|---|
@@ -63,16 +63,16 @@ The objective and scope labels below are carried over from `documentation/TEST_C
 | TC-002 | Reject syntactically malformed JSON | High / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
 | TC-003 | Report and omit a native import record missing title | High / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
 | TC-004 | Import an empty native array | Medium / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
-| TC-005 | Reject a file that is neither named JSON nor typed as JSON | Medium / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
-| TC-006 | Check report-size limit immediately below, at, and above 10 MiB | Medium / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
+| TC-005 | Reject a file that is neither named JSON nor typed as JSON | Medium / MVP | Tester 1 — QA Test Analyst | 2026-11-25 | `"unsupported.txt" is not a .json file. Export the report from your scanner in JSON format.` No finding was imported. No defect discovered. | Passed | `documentation/evidence/tester-1/TC-005/TC-005_02_unsupported-file-rejected.png` | — | Not applicable |
+| TC-006 | Reject a scanner report exceeding 10 MB | Medium / MVP | Tester 1 — QA Test Analyst | 2026-11-25 | `The file is 11.0 MB. The maximum supported size is 10 MB.` No report was imported. No defect discovered. | Passed | `documentation/evidence/tester-1/TC-006/TC-006_01_oversized-file-rejected.png` | — | Not applicable |
 | TC-037 | Assert Trivy parser classifications and mapped fields without running a scanner | High / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
 | TC-038 | Assert OWASP ZAP parser risk mapping and alert fields without running ZAP | High / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
 | TC-039 | Assert parser rejection and entry-level invalid/unsupported handling | High / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
 | TC-040 | Exercise file extension/MIME acceptance independently of parsing | Medium / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
-| TC-008 | Verify dashboard totals and severity counts with known findings | High / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
-| TC-009 | Filter findings by severity | Medium / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
+| TC-008 | Verify dashboard totals and severity counts with known findings | High / MVP | Tester 1 — QA Test Analyst | 2026-11-25 | PASS: 2 findings imported, 0 rejected. Critical risk score 95; Low risk score 25. Dashboard: total 2; Critical 1; High 0; Medium 0; Low 1; Informational 0; average risk score 60.0. | Passed | `documentation/evidence/tester-1/TC-008/TC-008_01_import-preview.png`; `documentation/evidence/tester-1/TC-008/TC-008_02_import-result.png`; `documentation/evidence/tester-1/TC-008/TC-008_03_dashboard-metrics.png` | — | Not applicable |
+| TC-009 | Filter findings by severity | Medium / MVP | Tester 1 — QA Test Analyst | 2026-11-25 | The severity filter worked correctly. The catalog displayed one Critical finding, matching the selected filter. | Passed | `documentation/evidence/tester-1/TC-009/TC-009_Filter_Findings_By_Severity.png` | — | Not applicable |
 | TC-010 | Filter findings by source (replaces unsupported status filter) | Medium / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
-| TC-011 | Open a finding detail and verify returned fields | High / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
+| TC-011 | View Finding Details | High / MVP | Tester 1 — QA Test Analyst | 2026-11-25 | Title: Prototype pollution in minimist; severity: Critical; CVE: CVE-2021-44906; package: minimist; affected version: 1.2.5; fixed version: 1.2.6; risk score: 98.0; source: Trivy; vulnerable path: package-lock.json. | Passed | `documentation/evidence/tester-1/TC-011/TC-011_Finding_Details.png` | — | Not applicable |
 | TC-012 | View dashboard when workspace has no findings | Low / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
 | TC-013 | Check Critical base score and adjustments | High / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
 | TC-014 | Check Low severity base score without adjustments | Medium / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
@@ -112,6 +112,92 @@ The objective and scope labels below are carried over from `documentation/TEST_C
 | TC-054 | Check backend health when ready and when required tables are missing | Medium / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
 | TC-055 | Check observable loading, empty, filtered-empty, and error/retry UI states | Medium / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
 | TC-056 | Verify CORS and safe API error presentation | High / MVP | [ ] | [ ] | [ ] | Not Run | [ ] | — | [ ] |
+
+#### TC-005 execution detail
+
+| Field | Execution record |
+|---|---|
+| Test ID | TC-005 |
+| Tester | Tester 1 — QA Test Analyst |
+| Date | 2026-11-25 |
+| Objective | Reject unsupported file type in scanner report import. |
+| Input | `unsupported.txt` |
+| Expected result | Unsupported file rejected. |
+| Actual result | PatchPilot displayed: `"unsupported.txt" is not a .json file. Export the report from your scanner in JSON format.` No finding was imported. |
+| Verdict | PASS |
+| Finding / defect | No finding was imported. No defect discovered. |
+| Evidence | `documentation/evidence/tester-1/TC-005/TC-005_02_unsupported-file-rejected.png` |
+
+#### TC-006 execution detail
+
+| Field | Execution record |
+|---|---|
+| Test ID | TC-006 |
+| Tester | Tester 1 — QA Test Analyst |
+| Date | 2026-11-25 |
+| Objective | Verify the 10 MB scanner-report upload limit. |
+| Input | Valid JSON file of 11 MB (`oversized-valid.json`). |
+| Expected result | Files exceeding 10 MB are rejected. |
+| Actual result | PatchPilot displayed: `The file is 11.0 MB. The maximum supported size is 10 MB.` No report was imported. |
+| Verdict | PASS |
+| Finding / defect | No report was imported. No defect discovered. |
+| Evidence | `documentation/evidence/tester-1/TC-006/TC-006_01_oversized-file-rejected.png` |
+
+#### TC-008 execution detail
+
+| Field | Execution record |
+|---|---|
+| Test ID | TC-008 |
+| Tester | Tester 1 — QA Test Analyst |
+| Date | 2026-11-25 |
+| Objective | Verify dashboard totals and severity counts with known findings. |
+| Import preview | 2 valid findings; 0 unsupported; 0 invalid. |
+| Import result | 2 imported; 0 rejected. |
+| Critical finding risk score | 95 |
+| Low finding risk score | 25 |
+| Total findings | 2 |
+| Critical | 1 |
+| High | 0 |
+| Medium | 0 |
+| Low | 1 |
+| Informational | 0 |
+| Average risk score | 60.0 |
+| Verdict | PASS |
+| Evidence | `TC-008_01_import-preview.png`; `TC-008_02_import-result.png`; `TC-008_03_dashboard-metrics.png` (under `documentation/evidence/tester-1/TC-008/`) |
+
+#### TC-009 execution detail
+
+| Field | Execution record |
+|---|---|
+| Test ID | TC-009 |
+| Tester | Tester 1 — QA Test Analyst |
+| Date | 2026-11-25 |
+| Feature | Vulnerabilities Catalog |
+| Test type | Functional / UI |
+| Priority | Medium |
+| Precondition | The application contains imported vulnerability findings. |
+| Test steps | Opened the Vulnerabilities Catalog, selected Critical in the Severity dropdown, and observed the displayed findings. |
+| Expected result | Only findings matching the selected Critical severity should be displayed. |
+| Actual result | The severity filter worked correctly. The catalog displayed one Critical finding, matching the selected filter. |
+| Verdict | PASS |
+| Evidence | `documentation/evidence/tester-1/TC-009/TC-009_Filter_Findings_By_Severity.png` |
+
+#### TC-011 execution detail
+
+| Field | Execution record |
+|---|---|
+| Test ID | TC-011 |
+| Tester | Tester 1 — QA Test Analyst |
+| Date | 2026-11-25 |
+| Feature | Finding Details |
+| Test type | Functional / UI |
+| Priority | High |
+| Precondition | At least one vulnerability finding has been imported. |
+| Test steps | Opened the Vulnerabilities Catalog, located the Critical minimist vulnerability, clicked Inspect, and reviewed the displayed vulnerability details. |
+| Expected result | The finding detail page should correctly display the vulnerability title, severity, CVE identifier, affected package and version, fixed version, risk score, detection source, and vulnerable path. |
+| Actual result | Title: Prototype pollution in minimist; severity: Critical; CVE: CVE-2021-44906; package: minimist; affected version: 1.2.5; fixed version: 1.2.6; risk score: 98.0; source: Trivy; vulnerable path: package-lock.json. |
+| Verdict | PASS |
+| Evidence | `documentation/evidence/tester-1/TC-011/TC-011_Finding_Details.png` |
 
 ### 3.2 Deferred case (1)
 
@@ -163,7 +249,13 @@ Assign evidence IDs during execution. Use real repository-relative paths or appr
 
 | Evidence ID | Related test/bug | Description | File/path or approved reference | Date | Tester | Build/commit |
 |---|---|---|---|---|---|---|
-| [Assign during execution] | [ ] | [Describe captured request/response, screenshot, log, fixture, or observation] | [Actual path/reference, or Not captured] | [ ] | [ ] | [ ] |
+| TC-005-E02 | TC-005 | Screenshot of unsupported `.txt` rejection message | `documentation/evidence/tester-1/TC-005/TC-005_02_unsupported-file-rejected.png` | 2026-11-25 | Tester 1 — QA Test Analyst | `e69aa79278467e0bfbf6486e0dac2bc6d5e930ea` |
+| TC-006-E01 | TC-006 | Screenshot of oversized JSON file rejection message | `documentation/evidence/tester-1/TC-006/TC-006_01_oversized-file-rejected.png` | 2026-11-25 | Tester 1 — QA Test Analyst | `e69aa79278467e0bfbf6486e0dac2bc6d5e930ea` |
+| TC-008-E01 | TC-008 | Import preview: two valid findings, zero unsupported and invalid | `documentation/evidence/tester-1/TC-008/TC-008_01_import-preview.png` | 2026-11-25 | Tester 1 — QA Test Analyst | `e69aa79278467e0bfbf6486e0dac2bc6d5e930ea` |
+| TC-008-E02 | TC-008 | Import result: two imported, zero rejected | `documentation/evidence/tester-1/TC-008/TC-008_02_import-result.png` | 2026-11-25 | Tester 1 — QA Test Analyst | `e69aa79278467e0bfbf6486e0dac2bc6d5e930ea` |
+| TC-008-E03 | TC-008 | Overview dashboard metrics and average risk score 60.0 | `documentation/evidence/tester-1/TC-008/TC-008_03_dashboard-metrics.png` | 2026-11-25 | Tester 1 — QA Test Analyst | `e69aa79278467e0bfbf6486e0dac2bc6d5e930ea` |
+| TC-009-E01 | TC-009 | Vulnerabilities Catalog with Critical severity selected and one matching finding displayed | `documentation/evidence/tester-1/TC-009/TC-009_Filter_Findings_By_Severity.png` | 2026-11-25 | Tester 1 — QA Test Analyst | `e69aa79278467e0bfbf6486e0dac2bc6d5e930ea` |
+| TC-011-E01 | TC-011 | Finding details for Critical minimist vulnerability, including package, versions, risk score, source, and vulnerable path | `documentation/evidence/tester-1/TC-011/TC-011_Finding_Details.png` | 2026-11-25 | Tester 1 — QA Test Analyst | `e69aa79278467e0bfbf6486e0dac2bc6d5e930ea` |
 
 Evidence should be sufficient for another tester to reproduce the observation. Record exact commands and outputs for automation separately from manual UI/API observations.
 

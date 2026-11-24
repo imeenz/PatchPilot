@@ -95,10 +95,11 @@ export function SettingsPage() {
               ],
               ['Database', <span key="d" className="text-fg-muted">{health?.database ?? 'unknown'}</span>],
               [
-                'AI provider (reported by backend)',
+                'AI configuration',
                 <span key="a" className="font-mono text-xs text-fg-muted">
                   {health?.ai_provider ?? 'unknown'}
-                  {health?.ai_provider === 'rule-based-fallback' && ' · answers come from deterministic rules, not an AI model'}
+                  {health?.ai_configuration?.status === 'configured_unverified' && ' — credentials are configured; provider reachability is checked only during a response'}
+                  {health?.ai_configuration?.status === 'rule-based-fallback' && ' — using deterministic rule-based fallback; no live provider is configured'}
                 </span>,
               ],
               ['Backend version', <span key="v" className="text-fg-muted">{health ? `${health.app} ${health.version}` : 'unknown'}</span>],

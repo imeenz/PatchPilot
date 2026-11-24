@@ -90,7 +90,7 @@ def test_ai_configured_provider_success(client):
         assert "Java 8 or higher" in guidance["compatibility_considerations"]
 
 
-def test_ai_provider_failure_graceful_fallback(client):
+def test_ai_provider_failure_graceful_fallback(client, caplog):
     import_resp = client.post(
         "/api/v1/findings/import",
         json=[
@@ -104,9 +104,10 @@ def test_ai_provider_failure_graceful_fallback(client):
     finding_id = import_resp.json()["imported_findings"][0]["id"]
 
     # Simulate network failure or timeout during external AI call
+    secret = "test-api-key-must-not-appear"
     with patch.object(settings, "AI_PROVIDER", "openai"), \
-         patch.object(settings, "AI_API_KEY", "test-key-mock"), \
-         patch.object(AIRemediationService, "_post_to_provider", side_effect=httpx.ConnectError("Network unreachable")):
+         patch.object(settings, "AI_API_KEY", secret), \
+         patch.object(AIRemediationService, "_post_to_provider", side_effect=httpx.ConnectError(f"Network unreachable {secret}")):
 
         guidance_resp = client.post(f"/api/v1/findings/{finding_id}/remediation-guidance")
         assert guidance_resp.status_code == 200
@@ -117,3 +118,4 @@ def test_ai_provider_failure_graceful_fallback(client):
         assert guidance["provider"] == "rule-based-fallback"
         assert "Configured AI provider" in guidance["uncertainty_or_missing_information"]
         assert "ConnectError" in guidance["uncertainty_or_missing_information"]
+        assert secret not in caplog.text

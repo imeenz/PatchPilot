@@ -1,3 +1,4 @@
+import logging
 from typing import Optional, List, Any
 from fastapi import APIRouter, Depends, HTTPException, Query, Body, status
 from sqlalchemy.orm import Session
@@ -19,6 +20,7 @@ from app.services.verification_service import VerificationService
 from app.services.ai_service import AIRemediationService
 
 router = APIRouter(prefix="/findings", tags=["Findings"])
+logger = logging.getLogger(__name__)
 
 
 @router.post(
@@ -39,9 +41,12 @@ def import_findings(
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
     except Exception as e:
+        # Exception text can contain database details or imported report data.
+        # Keep a useful failure category in logs without recording that content.
+        logger.error("Unexpected findings import failure (%s).", type(e).__name__)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while importing findings: {str(e)}",
+            detail="An unexpected error occurred while importing findings.",
         )
 
 

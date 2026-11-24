@@ -31,10 +31,20 @@ def health_check(response: Response, db: Session = Depends(get_db)):
         health_status = "degraded"
         response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
 
+    ai_configuration_ready = settings.ai_configuration_ready
+    configured_provider = settings.configured_ai_provider
     return {
         "status": health_status,
         "app": settings.PROJECT_NAME,
         "version": settings.VERSION,
         "database": database_status,
-        "ai_provider": settings.AI_PROVIDER or "rule-based-fallback",
+        # Preserve the existing field, but report the mode used when required
+        # configuration is absent. A ready configuration is not a live probe.
+        "ai_provider": configured_provider if ai_configuration_ready else "rule-based-fallback",
+        "ai_configuration": {
+            "status": "configured_unverified" if ai_configuration_ready else "rule-based-fallback",
+            "configured_provider": configured_provider,
+            "api_key_configured": settings.ai_api_key_configured,
+            "provider_reachability": "not_checked",
+        },
     }

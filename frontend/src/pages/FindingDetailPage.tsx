@@ -43,6 +43,7 @@ export function FindingDetailPage() {
   const [isGuidanceLoading, setIsGuidanceLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [guidanceError, setGuidanceError] = useState<string | null>(null);
+  const [verificationRefreshError, setVerificationRefreshError] = useState<string | null>(null);
   const [isDemo, setIsDemo] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
 
@@ -127,16 +128,24 @@ export function FindingDetailPage() {
 
   // Record verification evidence
   const handleRecordVerification = async (fId: number, verification: VerificationCreate) => {
-    const res = await verificationService.createVerification(fId, verification);
+    const created = await verificationService.createVerification(fId, verification);
     setFinding((prev) => {
       if (!prev) return prev;
-      const isFixed = res.data.verification_result === 'Verified Fixed' || prev.is_verified_fixed;
       return {
         ...prev,
-        verifications: [res.data, ...prev.verifications],
-        is_verified_fixed: isFixed,
+        verifications: [created.data, ...prev.verifications],
+        // Do not retain an older fixed state when newer evidence contradicts it.
+        is_verified_fixed: created.data.verification_result === 'Verified Fixed',
       };
     });
+    try {
+      const refreshed = await findingService.getFinding(fId);
+      setFinding(refreshed.data);
+      setIsDemo(refreshed.isDemo);
+      setVerificationRefreshError(null);
+    } catch {
+      setVerificationRefreshError('Evidence was recorded, but the latest finding status could not be refreshed. The displayed status reflects the evidence just submitted.');
+    }
   };
 
   if (!findingId || isNaN(findingId)) {
@@ -397,6 +406,11 @@ export function FindingDetailPage() {
           </Button>
         </CardHeader>
         <CardBody>
+          {verificationRefreshError && (
+            <p role="status" className="mb-3 rounded-lg border border-medium/30 bg-medium/10 p-3 text-xs text-fg-muted">
+              {verificationRefreshError}
+            </p>
+          )}
           <VerificationList verifications={finding.verifications} />
         </CardBody>
       </Card>

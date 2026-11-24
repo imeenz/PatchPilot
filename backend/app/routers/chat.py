@@ -43,7 +43,7 @@ def send_chat_message(
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error in chat endpoint: {e}", exc_info=True)
+        logger.error("Unexpected error in chat endpoint (%s).", type(e).__name__)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred while processing the chat message.",
@@ -73,7 +73,7 @@ def get_conversation(
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error retrieving conversation '{id}': {e}", exc_info=True)
+        logger.error("Unexpected error retrieving conversation (%s).", type(e).__name__)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred while retrieving the conversation.",
