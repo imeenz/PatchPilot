@@ -1,0 +1,56 @@
+PATCHPILOT TESTER 2 — FORMAL REGRESSION TEST REPORT
+Execution Date: 2026-11-24 17:43:01 UTC
+Total Regression Cases Executed: 10
+Passed: 10 | Failed: 0
+================================================================================
+
+[PASS] BUG-P0-001 :: Canonical Values & Aliases Normalization
+  Expected: 201 Created and normalized to canonical Enum
+  Actual:   All 13 canonical & alias variants normalized correctly
+  Details:  Tested 13 variations
+--------------------------------------------------------------------------------
+[PASS] BUG-P0-001 :: Invalid/Blank/Null Rejection (No Persistence)
+  Expected: HTTP 422 rejected with zero persistence
+  Actual:   Rejected: True, Count unchanged: True (13==13)
+  Details:  Tested inputs: ['unknown_status', '', '   ', None]
+--------------------------------------------------------------------------------
+[PASS] BUG-P0-001 :: Omitted Result Defaults to Inconclusive
+  Expected: Status 201, result 'Inconclusive'
+  Actual:   Status 201, result 'Inconclusive'
+  Details:  Omitted verification_result safely defaulted
+--------------------------------------------------------------------------------
+[PASS] BUG-P0-001 :: Latest Evidence Controls Status (5 Sequences)
+  Expected: All 5 sequences match expected resolution state
+  Actual:   5/5 sequences verified accurately
+  Details:  Tested sequences: [VF,F]->False, [VF,Inc]->False, [F,VF]->True, [VF,PF]->False, [Inc,VF]->True
+--------------------------------------------------------------------------------
+[PASS] BUG-P0-001 :: Dashboard Historical Breakdown Preserved
+  Expected: All 4 results present in verification_breakdown with accurate counts
+  Actual:   Breakdown counts: {'Verified Fixed': 11, 'Failed': 4, 'Partially Fixed': 4, 'Inconclusive': 5}
+  Details:  Verified dashboard retains full historical counts
+--------------------------------------------------------------------------------
+[PASS] BUG-INT-001 :: Database Engine Isolation
+  Expected: app engine: sqlite:// (StaticPool), request engine database: :memory:
+  Actual:   app: sqlite://, request database: :memory:
+  Details:  Verified separate engines with StaticPool in-memory isolation
+--------------------------------------------------------------------------------
+[PASS] BUG-INT-001 :: Multi-thread Schema Visibility
+  Expected: Tables visible across worker threads: {'remediation_tasks', 'findings', 'conversation_messages', 'conversations', 'verification_evidence'}
+  Actual:   Worker sees 5 tables ({'remediation_tasks', 'findings', 'conversation_messages', 'conversations', 'verification_evidence'})
+  Details:  Verified ThreadPoolExecutor worker sees initialized SQLite tables
+--------------------------------------------------------------------------------
+[PASS] BUG-INT-001 :: Chat Persistence Across Requests
+  Expected: Multi-turn conversation persists 4 messages
+  Actual:   Status: 200, messages: 4
+  Details:  Verified conversation and messages persist across separate HTTP calls
+--------------------------------------------------------------------------------
+[PASS] BUG-INT-001 :: Health Degraded on Missing Tables
+  Expected: HTTP 503 Service Unavailable, status 'degraded'
+  Actual:   Status 503, body: {'status': 'degraded', 'app': 'PatchPilot — Intelligent Security Remediation Assistant', 'version': '1.0.0', 'database': 'unready: missing required application tables', 'ai_provider': 'rule-based-fallback'}
+  Details:  Verified database unreadiness gracefully returns degraded 503
+--------------------------------------------------------------------------------
+[PASS] BUG-INT-001 :: CORS Headers on 500 & Stacktrace Obfuscation
+  Expected: HTTP 500, CORS header present, no internal traceback leaked
+  Actual:   Status: 500, CORS: http://localhost:5173, Leaked traceback: False
+  Details:  Starlette outer CORS wrapper protects client and conceals internal errors
+--------------------------------------------------------------------------------

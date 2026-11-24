@@ -1,0 +1,90 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.13, pytest-8.4.2, pluggy-1.7.0 -- C:\Users\DELL\Desktop\TrustChain\backend\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\DELL\Desktop\TrustChain\backend
+plugins: anyio-4.16.0
+collecting ... collected 71 items
+
+tests/test_ai_remediation.py::test_ai_fallback_when_no_api_key PASSED    [  1%]
+tests/test_ai_remediation.py::test_ai_configured_provider_success PASSED [  2%]
+tests/test_ai_remediation.py::test_ai_provider_failure_graceful_fallback PASSED [  4%]
+tests/test_chat.py::test_new_conversation_creation PASSED                [  5%]
+tests/test_chat.py::test_continuing_existing_conversation PASSED         [  7%]
+tests/test_chat.py::test_conversation_history_persistence PASSED         [  8%]
+tests/test_chat.py::test_finding_linked_conversation PASSED              [  9%]
+tests/test_chat.py::test_invalid_finding_id PASSED                       [ 11%]
+tests/test_chat.py::test_rule_based_fallback_when_no_provider PASSED     [ 12%]
+tests/test_chat.py::test_ai_provider_configured_success PASSED           [ 14%]
+tests/test_chat.py::test_ai_provider_failure_graceful_fallback PASSED    [ 15%]
+tests/test_chat.py::test_invalid_or_oversized_message PASSED             [ 16%]
+tests/test_chat.py::test_conversation_retrieval PASSED                   [ 18%]
+tests/test_chat.py::test_nonexistent_conversation PASSED                 [ 19%]
+tests/test_chat.py::test_invalid_uuid_format PASSED                      [ 21%]
+tests/test_chat.py::test_message_limit_enforcement PASSED                [ 22%]
+tests/test_chat.py::test_malformed_provider_response PASSED              [ 23%]
+tests/test_dashboard.py::test_dashboard_empty_state PASSED               [ 25%]
+tests/test_dashboard.py::test_dashboard_with_data PASSED                 [ 26%]
+tests/test_dashboard.py::test_dashboard_uses_latest_evidence_but_keeps_historical_breakdown PASSED [ 28%]
+tests/test_findings.py::test_finding_retrieval_and_404 PASSED            [ 29%]
+tests/test_findings.py::test_finding_filters_and_pagination PASSED       [ 30%]
+tests/test_health.py::test_health_endpoints PASSED                       [ 32%]
+tests/test_health.py::test_root_endpoint PASSED                          [ 33%]
+tests/test_import.py::test_import_array_payload PASSED                   [ 35%]
+tests/test_import.py::test_import_object_payload_with_findings_key PASSED [ 36%]
+tests/test_import.py::test_import_missing_required_fields_and_invalid_severity PASSED [ 38%]
+tests/test_import.py::test_import_invalid_payload_type PASSED            [ 39%]
+tests/test_import.py::test_import_alias_handling PASSED                  [ 40%]
+tests/test_integration_isolation.py::test_application_startup_engine_is_in_memory_and_request_dependency_is_separate PASSED [ 42%]
+tests/test_integration_isolation.py::test_startup_database_schema_is_visible_from_request_worker_thread PASSED [ 43%]
+tests/test_integration_isolation.py::test_chat_create_follow_up_and_history_use_isolated_application_database PASSED [ 45%]
+tests/test_integration_isolation.py::test_in_memory_sqlite_uses_one_shared_database_across_threads[sqlite://] PASSED [ 46%]
+tests/test_integration_isolation.py::test_in_memory_sqlite_uses_one_shared_database_across_threads[sqlite:///:memory:] PASSED [ 47%]
+tests/test_integration_isolation.py::test_health_reports_missing_application_tables_as_not_ready PASSED [ 49%]
+tests/test_integration_isolation.py::test_unhandled_api_errors_keep_cors_headers_and_hide_exception_details PASSED [ 50%]
+tests/test_risk_scoring.py::test_baseline_risk_scores PASSED             [ 52%]
+tests/test_risk_scoring.py::test_risk_scoring_case_insensitivity PASSED  [ 53%]
+tests/test_risk_scoring.py::test_risk_scoring_adjustments PASSED         [ 54%]
+tests/test_risk_scoring.py::test_risk_scoring_capping PASSED             [ 56%]
+tests/test_risk_scoring.py::test_invalid_severity PASSED                 [ 57%]
+tests/test_tasks.py::test_task_creation_and_listing PASSED               [ 59%]
+tests/test_tasks.py::test_task_status_updates PASSED                     [ 60%]
+tests/test_tasks.py::test_task_invalid_status_and_not_found PASSED       [ 61%]
+tests/test_verification.py::test_verification_creation_and_listing PASSED [ 63%]
+tests/test_verification.py::test_separation_between_task_completion_and_vulnerability_verification PASSED [ 64%]
+tests/test_verification.py::test_verification_error_handling PASSED      [ 66%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[Verified Fixed-Verified Fixed] PASSED [ 67%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[Failed-Failed] PASSED [ 69%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[Partially Fixed-Partially Fixed] PASSED [ 70%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[Inconclusive-Inconclusive] PASSED [ 71%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[verified fixed-Verified Fixed] PASSED [ 73%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[verified_fixed-Verified Fixed] PASSED [ 74%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[verified-Verified Fixed] PASSED [ 76%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[fixed-Verified Fixed] PASSED [ 77%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[passed-Verified Fixed] PASSED [ 78%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[fail-Failed] PASSED [ 80%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[partially_fixed-Partially Fixed] PASSED [ 81%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[partial-Partially Fixed] PASSED [ 83%]
+tests/test_verification.py::test_verification_accepts_canonical_results_and_aliases[inconclusive-Inconclusive] PASSED [ 84%]
+tests/test_verification.py::test_invalid_verification_results_are_rejected_without_persisting[unknown] PASSED [ 85%]
+tests/test_verification.py::test_invalid_verification_results_are_rejected_without_persisting[] PASSED [ 87%]
+tests/test_verification.py::test_invalid_verification_results_are_rejected_without_persisting[   ] PASSED [ 88%]
+tests/test_verification.py::test_invalid_verification_results_are_rejected_without_persisting[None] PASSED [ 90%]
+tests/test_verification.py::test_omitted_verification_result_defaults_to_inconclusive PASSED [ 91%]
+tests/test_verification.py::test_verification_history_is_ordered_by_descending_evidence_id PASSED [ 92%]
+tests/test_verification.py::test_latest_evidence_controls_detail_list_and_dashboard[sequence0-False] PASSED [ 94%]
+tests/test_verification.py::test_latest_evidence_controls_detail_list_and_dashboard[sequence1-False] PASSED [ 95%]
+tests/test_verification.py::test_latest_evidence_controls_detail_list_and_dashboard[sequence2-True] PASSED [ 97%]
+tests/test_verification.py::test_latest_evidence_controls_detail_list_and_dashboard[sequence3-False] PASSED [ 98%]
+tests/test_verification.py::test_latest_evidence_controls_detail_list_and_dashboard[sequence4-True] PASSED [100%]
+
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\DELL\Desktop\TrustChain\backend\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/test_import.py::test_import_invalid_payload_type
+  C:\Users\DELL\Desktop\TrustChain\backend\.venv\Lib\site-packages\fastapi\telemetry\_api.py:244: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    return function(**arguments)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 71 passed, 2 warnings in 4.70s ========================

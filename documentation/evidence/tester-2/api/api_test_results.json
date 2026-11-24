@@ -1,0 +1,1243 @@
+[
+  {
+    "test_id": "API-HLTH-01",
+    "category": "Health",
+    "method": "GET",
+    "endpoint": "/health",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Root health check returns status ok and connected db",
+    "response_sample": {
+      "status": "ok",
+      "app": "PatchPilot \u2014 Intelligent Security Remediation Assistant",
+      "version": "1.0.0",
+      "database": "connected",
+      "ai_provider": "rule-based-fallback"
+    },
+    "timestamp": "2026-11-24T17:29:55.786540+00:00"
+  },
+  {
+    "test_id": "API-HLTH-02",
+    "category": "Health",
+    "method": "GET",
+    "endpoint": "/api/v1/health",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "API v1 health check returns connected database",
+    "response_sample": {
+      "status": "ok",
+      "app": "PatchPilot \u2014 Intelligent Security Remediation Assistant",
+      "version": "1.0.0",
+      "database": "connected",
+      "ai_provider": "rule-based-fallback"
+    },
+    "timestamp": "2026-11-24T17:29:55.828223+00:00"
+  },
+  {
+    "test_id": "API-HLTH-03",
+    "category": "Health",
+    "method": "GET",
+    "endpoint": "/",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "API root endpoint returns welcome and documentation links",
+    "response_sample": {
+      "message": "Welcome to PatchPilot \u2014 Intelligent Security Remediation Assistant API",
+      "docs": "/docs",
+      "api_v1": "/api/v1",
+      "health": "/health"
+    },
+    "timestamp": "2026-11-24T17:29:55.892869+00:00"
+  },
+  {
+    "test_id": "API-IMP-01",
+    "category": "Import",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/import",
+    "request_body": "[5 findings]",
+    "expected_status": 201,
+    "actual_status": 201,
+    "passed": true,
+    "notes": "Import valid array of 5 findings across severities",
+    "response_sample": {
+      "total_records": 5,
+      "imported_count": 5,
+      "rejected_count": 0,
+      "imported_findings": [
+        {
+          "title": "Remote Code Execution in Apache Log4j",
+          "description": "Apache Log4j2 JNDI features do not protect against attacker controlled LDAP.",
+          "severity": "Critical",
+          "cve_id": "CVE-2021-44228",
+          "package_name": "log4j-core",
+          "installed_version": "2.14.1",
+          "fixed_version": "2.17.1",
+          "source": "trivy",
+          "file_path": "pom.xml",
+          "id": 1,
+          "risk_score": 98.0,
+          "created_at": "2026-11-24T17:29:55.944049",
+          "tasks_count": 0,
+          "is_verified_fixed": false
+        },
+        {
+          "title": "SQL Injection in User Authentication",
+          "description": "User input concatenated directly into SQL statement.",
+          "severity": "High",
+          "cve_id": "CVE-2022-12345",
+          "package_name": "auth-service",
+          "installed_version": "1.0.0",
+          "fixed_version": "1.0.1",
+          "source": "manual",
+          "file_path": "src/auth.py",
+          "id": 2,
+          "risk_score": 78.0,
+          "created_at": "2026-11-24T17:29:55.944811",
+          "tasks_count": 0,
+          "is_verified_fixed": false
+        },
+        {
+          "title": "Cross-Site Scripting (XSS) in Comments",
+          "description": "Unsanitized user comment rendered directly in HTML.",
+          "severity": "Medium",
+          "cve_id": null,
+          "package_name": "comment-widget",
+          "installed_version": null,
+          "fixed_version": null,
+          "source": "owasp-zap",
+          "file_path": "views/comment.html",
+          "id": 3,
+          "risk_score": 50.0,
+          "created_at": "2026-11-24T17:29:55.944811",
+          "tasks_count": 0,
+          "is_verified_fixed": false
+        },
+        {
+          "title": "Information Disclosure in Error Pages",
+          "description": "Server stack traces displayed to unauthenticated clients.",
+          "severity": "Low",
+          "cve_id": null,
+          "package_name": null,
+          "installed_version": null,
+          "fixed_version": null,
+          "source": "manual",
+          "file_path": null,
+          "id": 4,
+          "risk_score": 25.0,
+          "created_at": "2026-11-24T17:29:55.944811",
+          "tasks_count": 0,
+          "is_verified_fixed": false
+        },
+        {
+          "title": "Missing Security Headers",
+          "description": "X-Frame-Options header not set.",
+          "severity": "Informational",
+          "cve_id": null,
+          "package_name": null,
+          "installed_version": null,
+          "fixed_version": null,
+          "source": "owasp-zap",
+          "file_path": null,
+          "id": 5,
+          "risk_score": 5.0,
+          "created_at": "2026-11-24T17:29:55.944811",
+          "tasks_count": 0,
+          "is_verified_fixed": false
+        }
+      ],
+      "rejected_findings": []
+    },
+    "timestamp": "2026-11-24T17:29:55.959237+00:00"
+  },
+  {
+    "test_id": "API-IMP-02",
+    "category": "Import",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/import",
+    "request_body": "{'findings': [1 item]}",
+    "expected_status": 201,
+    "actual_status": 201,
+    "passed": true,
+    "notes": "Import object payload containing 'findings' key",
+    "response_sample": {
+      "total_records": 1,
+      "imported_count": 1,
+      "rejected_count": 0,
+      "imported_findings": [
+        {
+          "title": "Remote Code Execution in Apache Log4j",
+          "description": "Apache Log4j2 JNDI features do not protect against attacker controlled LDAP.",
+          "severity": "Critical",
+          "cve_id": "CVE-2021-44228",
+          "package_name": "log4j-core",
+          "installed_version": "2.14.1",
+          "fixed_version": "2.17.1",
+          "source": "trivy",
+          "file_path": "pom.xml",
+          "id": 6,
+          "risk_score": 98.0,
+          "created_at": "2026-11-24T17:29:55.966136",
+          "tasks_count": 0,
+          "is_verified_fixed": false
+        }
+      ],
+      "rejected_findings": []
+    },
+    "timestamp": "2026-11-24T17:29:55.972615+00:00"
+  },
+  {
+    "test_id": "API-IMP-03",
+    "category": "Import",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/import",
+    "request_body": "[]",
+    "expected_status": 201,
+    "actual_status": 201,
+    "passed": true,
+    "notes": "Import empty array handles gracefully with 0 imported",
+    "response_sample": {
+      "total_records": 0,
+      "imported_count": 0,
+      "rejected_count": 0,
+      "imported_findings": [],
+      "rejected_findings": []
+    },
+    "timestamp": "2026-11-24T17:29:55.982329+00:00"
+  },
+  {
+    "test_id": "API-IMP-04",
+    "category": "Import",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/import",
+    "request_body": "\"not a valid payload\"",
+    "expected_status": 422,
+    "actual_status": 422,
+    "passed": true,
+    "notes": "Reject non-collection payload with HTTP 422",
+    "response_sample": {
+      "detail": "Payload must be a JSON array or an object containing a 'findings' array."
+    },
+    "timestamp": "2026-11-24T17:29:55.994994+00:00"
+  },
+  {
+    "test_id": "API-IMP-05",
+    "category": "Import",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/import",
+    "request_body": "[4 records with 3 invalid]",
+    "expected_status": 201,
+    "actual_status": 201,
+    "passed": true,
+    "notes": "Import partial batch accepts valid record and documents rejected records with reasons",
+    "response_sample": {
+      "total_records": 4,
+      "imported_count": 1,
+      "rejected_count": 3,
+      "imported_findings": [
+        {
+          "title": "Valid In Batch",
+          "description": "Good finding",
+          "severity": "Low",
+          "cve_id": null,
+          "package_name": null,
+          "installed_version": null,
+          "fixed_version": null,
+          "source": "json_import",
+          "file_path": null,
+          "id": 7,
+          "risk_score": 25.0,
+          "created_at": "2026-11-24T17:29:56.007809",
+          "tasks_count": 0,
+          "is_verified_fixed": false
+        }
+      ],
+      "rejected_findings": [
+        {
+          "index": 0,
+          "raw_data": {
+            "title": "Missing desc",
+            "severity": "High"
+          },
+          "reason": "Missing or empty required field(s): description."
+        },
+        {
+          "index": 1,
+          "raw_data": {
+            "description": "Missing title",
+            "severity": "Low"
+          },
+          "reason": "Missing or empty required field(s): title."
+        },
+        {
+          "index": 2,
+          "raw_data": {
+            "title": "Bad Severity",
+            "description": "Desc",
+            "severity": "SuperCritical"
+          },
+          "reason": "Invalid severity 'SuperCritical'. Allowed: Critical, High, Medium, Low, Informational."
+        }
+      ]
+    },
+    "timestamp": "2026-11-24T17:29:56.022398+00:00"
+  },
+  {
+    "test_id": "API-IMP-06",
+    "category": "Import",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/import",
+    "request_body": "[1 record with aliases]",
+    "expected_status": 201,
+    "actual_status": 201,
+    "passed": true,
+    "notes": "Import handles field aliases (cve->cve_id, package->package_name, etc.)",
+    "response_sample": {
+      "total_records": 1,
+      "imported_count": 1,
+      "rejected_count": 0,
+      "imported_findings": [
+        {
+          "title": "Alias Finding",
+          "description": "Testing aliases cve, package, version, path",
+          "severity": "High",
+          "cve_id": "CVE-2024-5555",
+          "package_name": "openssl",
+          "installed_version": "1.1.1",
+          "fixed_version": null,
+          "source": "json_import",
+          "file_path": "src/ssl.c",
+          "id": 8,
+          "risk_score": 77.0,
+          "created_at": "2026-11-24T17:29:56.035699",
+          "tasks_count": 0,
+          "is_verified_fixed": false
+        }
+      ],
+      "rejected_findings": []
+    },
+    "timestamp": "2026-11-24T17:29:56.048614+00:00"
+  },
+  {
+    "test_id": "API-FIND-01",
+    "category": "Findings",
+    "method": "GET",
+    "endpoint": "/api/v1/findings",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "List all findings returns items and total count",
+    "response_sample": {
+      "total": 8
+    },
+    "timestamp": "2026-11-24T17:29:56.116541+00:00"
+  },
+  {
+    "test_id": "API-FIND-02",
+    "category": "Findings",
+    "method": "GET",
+    "endpoint": "/api/v1/findings?severity=Critical",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Filter by severity=Critical returns only Critical findings",
+    "response_sample": {
+      "count": 2
+    },
+    "timestamp": "2026-11-24T17:29:56.163128+00:00"
+  },
+  {
+    "test_id": "API-FIND-03",
+    "category": "Findings",
+    "method": "GET",
+    "endpoint": "/api/v1/findings?has_cve=true",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Filter by has_cve=true returns only findings with registered CVE",
+    "response_sample": {
+      "count": 4
+    },
+    "timestamp": "2026-11-24T17:29:56.203543+00:00"
+  },
+  {
+    "test_id": "API-FIND-04",
+    "category": "Findings",
+    "method": "GET",
+    "endpoint": "/api/v1/findings?query=Log4j",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Search query finds matching records by keyword",
+    "response_sample": {
+      "count": 2
+    },
+    "timestamp": "2026-11-24T17:29:56.251128+00:00"
+  },
+  {
+    "test_id": "API-FIND-05",
+    "category": "Findings",
+    "method": "GET",
+    "endpoint": "/api/v1/findings?page=1&size=2",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Pagination limits page size correctly",
+    "response_sample": {
+      "page": 1,
+      "size": 2,
+      "items": 2
+    },
+    "timestamp": "2026-11-24T17:29:56.291225+00:00"
+  },
+  {
+    "test_id": "API-FIND-06",
+    "category": "Findings",
+    "method": "GET",
+    "endpoint": "/api/v1/findings/1",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Retrieve single finding detail by valid ID",
+    "response_sample": {
+      "title": "Remote Code Execution in Apache Log4j",
+      "description": "Apache Log4j2 JNDI features do not protect against attacker controlled LDAP.",
+      "severity": "Critical",
+      "cve_id": "CVE-2021-44228",
+      "package_name": "log4j-core",
+      "installed_version": "2.14.1",
+      "fixed_version": "2.17.1",
+      "source": "trivy",
+      "file_path": "pom.xml",
+      "id": 1,
+      "risk_score": 98.0,
+      "created_at": "2026-11-24T17:29:55.944049",
+      "tasks_count": 0,
+      "is_verified_fixed": false,
+      "original_data": {
+        "title": "Remote Code Execution in Apache Log4j",
+        "description": "Apache Log4j2 JNDI features do not protect against attacker controlled LDAP.",
+        "severity": "Critical",
+        "cve_id": "CVE-2021-44228",
+        "package_name": "log4j-core",
+        "installed_version": "2.14.1",
+        "fixed_version": "2.17.1",
+        "source": "trivy",
+        "file_path": "pom.xml"
+      },
+      "tasks": [],
+      "verifications": []
+    },
+    "timestamp": "2026-11-24T17:29:56.324756+00:00"
+  },
+  {
+    "test_id": "API-FIND-07",
+    "category": "Findings",
+    "method": "GET",
+    "endpoint": "/api/v1/findings/999999",
+    "request_body": null,
+    "expected_status": 404,
+    "actual_status": 404,
+    "passed": true,
+    "notes": "Nonexistent finding ID returns HTTP 404 Not Found",
+    "response_sample": {
+      "detail": "Finding with ID 999999 not found."
+    },
+    "timestamp": "2026-11-24T17:29:56.346998+00:00"
+  },
+  {
+    "test_id": "API-DASH-01",
+    "category": "Dashboard",
+    "method": "GET",
+    "endpoint": "/api/v1/dashboard/summary",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Dashboard summary returns accurate severity breakdown and resolution metrics",
+    "response_sample": {
+      "total_findings": 8,
+      "severity_breakdown": {
+        "Critical": 2,
+        "High": 2,
+        "Medium": 1,
+        "Low": 2,
+        "Informational": 1
+      },
+      "average_risk_score": 57.0,
+      "total_tasks": 0,
+      "task_status_breakdown": {
+        "Open": 0,
+        "In Progress": 0,
+        "Blocked": 0,
+        "Completed": 0
+      },
+      "total_verifications": 0,
+      "verification_breakdown": {
+        "Verified Fixed": 0,
+        "Failed": 0,
+        "Partially Fixed": 0,
+        "Inconclusive": 0
+      },
+      "verified_fixed_findings": 0,
+      "open_findings": 8
+    },
+    "timestamp": "2026-11-24T17:29:56.413121+00:00"
+  },
+  {
+    "test_id": "API-REMED-01",
+    "category": "Remediation",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/1/remediation-guidance",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Remediation guidance generated with fallback transparency and actionable steps",
+    "response_sample": {
+      "finding_id": 1,
+      "title": "Remote Code Execution in Apache Log4j",
+      "severity": "Critical",
+      "risk_score": 98.0,
+      "vulnerability_explanation": "Vulnerability 'Remote Code Execution in Apache Log4j' identified in log4j-core (2.14.1). Classification: Critical severity with a prioritization score of 98.0/100. Details: Apache Log4j2 JNDI features do not protect against attacker controlled LDAP.",
+      "potential_impact": "High risk of immediate system compromise, remote code execution, unauthorized data exfiltration, or complete loss of service confidentiality/integrity. Affected source path: pom.xml.",
+      "recommended_remediation_steps": [
+        "Update 'log4j-core' from version 2.14.1 to fixed version 2.17.1 in your package manager manifest.",
+        "Audit dependent packages for version locking or peer dependency conflicts.",
+        "Run dependency lockfile regenerators (e.g., npm install, pip compile, or uv lock).",
+        "Execute your unit and integration test suite to verify backwards compatibility.",
+        "Create a dedicated remediation task and record verification evidence upon testing."
+      ],
+      "compatibility_considerations": "Upgrading 'log4j-core' may introduce breaking API changes if stepping across major semver versions. Review changelogs and release notes for deprecation notices before deploying to production.",
+      "verification_steps": [
+        "Inspect the lockfile or build artifact to ensure 'log4j-core' reflects the patched version.",
+        "Execute the security scanner or dependency audit tool to verify the vulnerability is no longer flagged.",
+        "Perform smoke tests on features that directly invoke the affected code paths.",
+        "Record manual or automated test logs as Verification Evidence in PatchPilot."
+      ],
+      "uncertainty_or_missing_information": "Known facts: Provided scan data only. All primary scan fields were populated. No external runtime telemetry or exploit confirmation was performed.",
+      "is_fallback": true,
+      "provider": "rule-based-fallback",
+      "model": null,
+      "disclaimer": "AI and rule-based guidance requires human review. PatchPilot does not automatically modify source code or systems."
+    },
+    "timestamp": "2026-11-24T17:29:56.441078+00:00"
+  },
+  {
+    "test_id": "API-REMED-02",
+    "category": "Remediation",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/999999/remediation-guidance",
+    "request_body": null,
+    "expected_status": 404,
+    "actual_status": 404,
+    "passed": true,
+    "notes": "Remediation guidance for nonexistent ID returns HTTP 404",
+    "response_sample": {
+      "detail": "Finding with ID 999999 not found."
+    },
+    "timestamp": "2026-11-24T17:29:56.463069+00:00"
+  },
+  {
+    "test_id": "API-TASK-01",
+    "category": "Tasks",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/1/tasks",
+    "request_body": {
+      "title": "Upgrade Log4j to 2.17.1 in pom.xml",
+      "description": "Update Maven dependency and rebuild project container.",
+      "assignee": "Alex Dev",
+      "status": "Open"
+    },
+    "expected_status": 201,
+    "actual_status": 201,
+    "passed": true,
+    "notes": "Create remediation task linked to finding",
+    "response_sample": {
+      "title": "Upgrade Log4j to 2.17.1 in pom.xml",
+      "description": "Update Maven dependency and rebuild project container.",
+      "assignee": "Alex Dev",
+      "status": "Open",
+      "id": 1,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:29:56.484823",
+      "updated_at": "2026-11-24T17:29:56.484823"
+    },
+    "timestamp": "2026-11-24T17:29:56.499433+00:00"
+  },
+  {
+    "test_id": "API-TASK-02",
+    "category": "Tasks",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/999999/tasks",
+    "request_body": {
+      "title": "Upgrade Log4j to 2.17.1 in pom.xml",
+      "description": "Update Maven dependency and rebuild project container.",
+      "assignee": "Alex Dev",
+      "status": "Open"
+    },
+    "expected_status": 404,
+    "actual_status": 404,
+    "passed": true,
+    "notes": "Create task for nonexistent finding returns HTTP 404",
+    "response_sample": {
+      "detail": "Finding with ID 999999 not found."
+    },
+    "timestamp": "2026-11-24T17:29:56.525414+00:00"
+  },
+  {
+    "test_id": "API-TASK-03",
+    "category": "Tasks",
+    "method": "GET",
+    "endpoint": "/api/v1/tasks?finding_id=1",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "List tasks filtered by finding_id",
+    "response_sample": [
+      {
+        "title": "Upgrade Log4j to 2.17.1 in pom.xml",
+        "description": "Update Maven dependency and rebuild project container.",
+        "assignee": "Alex Dev",
+        "status": "Open",
+        "id": 1,
+        "finding_id": 1,
+        "created_at": "2026-11-24T17:29:56.484823",
+        "updated_at": "2026-11-24T17:29:56.484823"
+      }
+    ],
+    "timestamp": "2026-11-24T17:29:56.563135+00:00"
+  },
+  {
+    "test_id": "API-TASK-04",
+    "category": "Tasks",
+    "method": "GET",
+    "endpoint": "/api/v1/tasks?status=Open",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "List all tasks with status filter returns created task",
+    "response_sample": [
+      {
+        "title": "Upgrade Log4j to 2.17.1 in pom.xml",
+        "description": "Update Maven dependency and rebuild project container.",
+        "assignee": "Alex Dev",
+        "status": "Open",
+        "id": 1,
+        "finding_id": 1,
+        "created_at": "2026-11-24T17:29:56.484823",
+        "updated_at": "2026-11-24T17:29:56.484823"
+      }
+    ],
+    "timestamp": "2026-11-24T17:29:56.593529+00:00"
+  },
+  {
+    "test_id": "API-TASK-05",
+    "category": "Tasks",
+    "method": "GET",
+    "endpoint": "/api/v1/tasks/1",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Get single task by ID",
+    "response_sample": {
+      "title": "Upgrade Log4j to 2.17.1 in pom.xml",
+      "description": "Update Maven dependency and rebuild project container.",
+      "assignee": "Alex Dev",
+      "status": "Open",
+      "id": 1,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:29:56.484823",
+      "updated_at": "2026-11-24T17:29:56.484823"
+    },
+    "timestamp": "2026-11-24T17:29:56.623863+00:00"
+  },
+  {
+    "test_id": "API-TASK-06",
+    "category": "Tasks",
+    "method": "PATCH",
+    "endpoint": "/api/v1/tasks/1",
+    "request_body": {
+      "status": "In Progress"
+    },
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Update task status to In Progress",
+    "response_sample": {
+      "title": "Upgrade Log4j to 2.17.1 in pom.xml",
+      "description": "Update Maven dependency and rebuild project container.",
+      "assignee": "Alex Dev",
+      "status": "In Progress",
+      "id": 1,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:29:56.484823",
+      "updated_at": "2026-11-24T17:29:56.645852"
+    },
+    "timestamp": "2026-11-24T17:29:56.659042+00:00"
+  },
+  {
+    "test_id": "API-TASK-07",
+    "category": "Tasks",
+    "method": "PATCH",
+    "endpoint": "/api/v1/tasks/1",
+    "request_body": {
+      "status": "Completed"
+    },
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Update task status to Completed",
+    "response_sample": {
+      "title": "Upgrade Log4j to 2.17.1 in pom.xml",
+      "description": "Update Maven dependency and rebuild project container.",
+      "assignee": "Alex Dev",
+      "status": "Completed",
+      "id": 1,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:29:56.484823",
+      "updated_at": "2026-11-24T17:29:56.678499"
+    },
+    "timestamp": "2026-11-24T17:29:56.693274+00:00"
+  },
+  {
+    "test_id": "API-TASK-08",
+    "category": "Tasks",
+    "method": "PATCH",
+    "endpoint": "/api/v1/tasks/1",
+    "request_body": {
+      "status": "InvalidStatus"
+    },
+    "expected_status": 422,
+    "actual_status": 422,
+    "passed": true,
+    "notes": "Reject invalid task status with validation error (HTTP 422)",
+    "response_sample": {
+      "detail": [
+        {
+          "type": "value_error",
+          "loc": [
+            "body",
+            "status"
+          ],
+          "msg": "Value error, Invalid status 'InvalidStatus'. Allowed: Open, In Progress, Blocked, Completed.",
+          "input": "InvalidStatus",
+          "ctx": {
+            "error": {}
+          }
+        }
+      ]
+    },
+    "timestamp": "2026-11-24T17:29:56.718950+00:00"
+  },
+  {
+    "test_id": "API-TASK-09",
+    "category": "Tasks",
+    "method": "GET",
+    "endpoint": "/api/v1/findings/1",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Task completion does not automatically mark finding as verified fixed",
+    "response_sample": {
+      "is_verified_fixed": false
+    },
+    "timestamp": "2026-11-24T17:29:56.755708+00:00"
+  },
+  {
+    "test_id": "API-VER-01",
+    "category": "Verification",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/1/verification",
+    "request_body": {
+      "verification_result": "Verified Fixed",
+      "evidence_description": "CI container build scanned with Trivy v0.45; CVE-2021-44228 no longer detected.",
+      "evidence_url": "https://ci.example.com/build/1042",
+      "task_id": 1
+    },
+    "expected_status": 201,
+    "actual_status": 201,
+    "passed": true,
+    "notes": "Record valid canonical 'Verified Fixed' verification evidence",
+    "response_sample": {
+      "task_id": 1,
+      "evidence_description": "CI container build scanned with Trivy v0.45; CVE-2021-44228 no longer detected.",
+      "evidence_url": "https://ci.example.com/build/1042",
+      "verification_result": "Verified Fixed",
+      "id": 1,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:29:56.766412"
+    },
+    "timestamp": "2026-11-24T17:29:56.775574+00:00"
+  },
+  {
+    "test_id": "API-VER-02",
+    "category": "Verification",
+    "method": "GET",
+    "endpoint": "/api/v1/findings/1",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Finding status is now verified fixed following valid evidence",
+    "response_sample": {
+      "is_verified_fixed": true
+    },
+    "timestamp": "2026-11-24T17:29:56.788865+00:00"
+  },
+  {
+    "test_id": "API-VER-03",
+    "category": "Verification",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/1/verification",
+    "request_body": {
+      "verification_result": "Failed",
+      "evidence_description": "Regression test re-detected vulnerable classes in nested uber-jar."
+    },
+    "expected_status": 201,
+    "actual_status": 201,
+    "passed": true,
+    "notes": "Record subsequent Failed verification evidence",
+    "response_sample": {
+      "task_id": null,
+      "evidence_description": "Regression test re-detected vulnerable classes in nested uber-jar.",
+      "evidence_url": null,
+      "verification_result": "Failed",
+      "id": 2,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:29:56.797429"
+    },
+    "timestamp": "2026-11-24T17:29:56.802856+00:00"
+  },
+  {
+    "test_id": "API-VER-04",
+    "category": "Verification",
+    "method": "GET",
+    "endpoint": "/api/v1/findings/1",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Latest evidence ID controls current status (switches back to False)",
+    "response_sample": {
+      "is_verified_fixed": false
+    },
+    "timestamp": "2026-11-24T17:29:56.819808+00:00"
+  },
+  {
+    "test_id": "API-VER-05",
+    "category": "Verification",
+    "method": "GET",
+    "endpoint": "/api/v1/findings/1/verification",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Verification history preserved in descending ID order",
+    "response_sample": [
+      {
+        "task_id": null,
+        "evidence_description": "Regression test re-detected vulnerable classes in nested uber-jar.",
+        "evidence_url": null,
+        "verification_result": "Failed",
+        "id": 2,
+        "finding_id": 1,
+        "created_at": "2026-11-24T17:29:56.797429"
+      },
+      {
+        "task_id": 1,
+        "evidence_description": "CI container build scanned with Trivy v0.45; CVE-2021-44228 no longer detected.",
+        "evidence_url": "https://ci.example.com/build/1042",
+        "verification_result": "Verified Fixed",
+        "id": 1,
+        "finding_id": 1,
+        "created_at": "2026-11-24T17:29:56.766412"
+      }
+    ],
+    "timestamp": "2026-11-24T17:29:56.835173+00:00"
+  },
+  {
+    "test_id": "API-VER-06",
+    "category": "Verification",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/1/verification",
+    "request_body": {
+      "verification_result": "bogus_status"
+    },
+    "expected_status": 422,
+    "actual_status": 422,
+    "passed": true,
+    "notes": "Reject unknown verification result with HTTP 422",
+    "response_sample": {
+      "detail": [
+        {
+          "type": "value_error",
+          "loc": [
+            "body",
+            "verification_result"
+          ],
+          "msg": "Value error, Invalid verification result. Allowed: Verified Fixed, Failed, Partially Fixed, Inconclusive.",
+          "input": "bogus_status",
+          "ctx": {
+            "error": {}
+          }
+        }
+      ]
+    },
+    "timestamp": "2026-11-24T17:29:56.844908+00:00"
+  },
+  {
+    "test_id": "API-VER-07",
+    "category": "Verification",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/1/verification",
+    "request_body": {
+      "verification_result": "   "
+    },
+    "expected_status": 422,
+    "actual_status": 422,
+    "passed": true,
+    "notes": "Reject whitespace-only verification result with HTTP 422",
+    "response_sample": {
+      "detail": [
+        {
+          "type": "value_error",
+          "loc": [
+            "body",
+            "verification_result"
+          ],
+          "msg": "Value error, Verification result must be a non-empty string.",
+          "input": "   ",
+          "ctx": {
+            "error": {}
+          }
+        }
+      ]
+    },
+    "timestamp": "2026-11-24T17:29:56.853037+00:00"
+  },
+  {
+    "test_id": "API-VER-08",
+    "category": "Verification",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/1/verification",
+    "request_body": {
+      "verification_result": null
+    },
+    "expected_status": 422,
+    "actual_status": 422,
+    "passed": true,
+    "notes": "Reject explicit null verification result with HTTP 422",
+    "response_sample": {
+      "detail": [
+        {
+          "type": "value_error",
+          "loc": [
+            "body",
+            "verification_result"
+          ],
+          "msg": "Value error, Verification result must be a non-empty string.",
+          "input": null,
+          "ctx": {
+            "error": {}
+          }
+        }
+      ]
+    },
+    "timestamp": "2026-11-24T17:29:56.861428+00:00"
+  },
+  {
+    "test_id": "API-VER-09",
+    "category": "Verification",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/1/verification",
+    "request_body": {
+      "evidence_description": "Follow-up"
+    },
+    "expected_status": 201,
+    "actual_status": 201,
+    "passed": true,
+    "notes": "Omitted verification result defaults safely to Inconclusive",
+    "response_sample": {
+      "task_id": null,
+      "evidence_description": "Follow-up test pending complete scan",
+      "evidence_url": null,
+      "verification_result": "Inconclusive",
+      "id": 3,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:29:56.867133"
+    },
+    "timestamp": "2026-11-24T17:29:56.873193+00:00"
+  },
+  {
+    "test_id": "API-VER-10",
+    "category": "Verification",
+    "method": "POST",
+    "endpoint": "/api/v1/findings/999999/verification",
+    "request_body": null,
+    "expected_status": 404,
+    "actual_status": 404,
+    "passed": true,
+    "notes": "Post verification to nonexistent finding returns HTTP 404",
+    "response_sample": {
+      "detail": "Finding with ID 999999 not found."
+    },
+    "timestamp": "2026-11-24T17:29:56.883377+00:00"
+  },
+  {
+    "test_id": "API-CHAT-01",
+    "category": "Chat",
+    "method": "POST",
+    "endpoint": "/api/v1/chat",
+    "request_body": {
+      "message": "Fix for Log4j",
+      "finding_id": 1
+    },
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Create chat conversation with finding context, receiving rule-based fallback response",
+    "response_sample": {
+      "conversation_id": "07aef09e-e823-43db-83fc-155410949843",
+      "message_id": "c2c6e734-2ec7-46d0-af61-90b0758fc992",
+      "role": "assistant",
+      "content": "### Finding Analysis: Remote Code Execution in Apache Log4j\n- **Severity**: Critical (Prioritization Score: 98.0/100)\n- **Affected Component**: `log4j-core` (Installed: `2.14.1`)\n- **CVE Reference**: `CVE-2021-44228`\n- **Description**: Apache Log4j2 JNDI features do not protect against attacker controlled LDAP.\n\n#### Recommended Remediation Steps:\n1. **Upgrade Dependency**: Upgrade `log4j-core` from `2.14.1` to patched version `2.17.1` in your project manifest.\n2. **Regenerate Lockfile**: Run your package manager audit or lockfile update (e.g., `npm install`, `pip compile`, `uv lock`).\n3. **Run Test Suite**: Check for backwards-incompatible breaking changes introduced by version `2.17.1`.\n4. **Create Remediation Task**: Track implementation progress in PatchPilot Tasks.\n5. **Record Verification Evidence**: Re-run your security scanner or dependency check to independently verify the vulnerability is fixed.\n\n#### Compatibility & Verification:\n- **Compatibility**: Check changelogs for breaking changes when upgrading `log4j-core`.\n- **Verification**: Completing a code change does not automatically resolve a finding. Run an independent verification scan or manual test and record evidence in PatchPilot.\n",
+      "structured_guidance": {
+        "finding_id": 1,
+        "title": "Remote Code Execution in Apache Log4j",
+        "severity": "Critical",
+        "risk_score": 98.0,
+        "vulnerability_explanation": "Vulnerability 'Remote Code Execution in Apache Log4j' identified in log4j-core (2.14.1). Classification: Critical severity with a prioritization score of 98.0/100. Details: Apache Log4j2 JNDI features do not protect against attacker controlled LDAP.",
+        "potential_impact": "High risk of immediate system compromise, remote code execution, unauthorized data exfiltration, or complete loss of service confidentiality/integrity. Affected source path: pom.xml.",
+        "recommended_remediation_steps": [
+          "Update 'log4j-core' from version 2.14.1 to fixed version 2.17.1 in your package manager manifest.",
+          "Audit dependent packages for version locking or peer dependency conflicts.",
+          "Run dependency lockfile regenerators (e.g., npm install, pip compile, or uv lock).",
+          "Execute your unit and integration test suite to verify backwards compatibility.",
+          "Create a dedicated remediation task and record verification evidence upon testing."
+        ],
+        "compatibility_considerations": "Upgrading 'log4j-core' may introduce breaking API changes if stepping across major semver versions. Review changelogs and release notes for deprecation notices before deploying to production.",
+        "verification_steps": [
+          "Inspect the lockfile or build artifact to ensure 'log4j-core' reflects the patched version.",
+          "Execute the security scanner or dependency audit tool to verify the vulnerability is no longer flagged.",
+          "Perform smoke tests on features that directly invoke the affected code paths.",
+          "Record manual or automated test logs as Verification Evidence in PatchPilot."
+        ],
+        "uncertainty_or_missing_information": "Known facts: Provided scan data only. All primary scan fields were populated. No external runtime telemetry or exploit confirmation was performed.",
+        "is_fallback": true,
+        "provider": "rule-based-fallback",
+        "model": null,
+        "disclaimer": "AI and rule-based guidance requires human review. PatchPilot does not automatically modify source code or systems."
+      },
+      "is_fallback": true,
+      "provider": "rule-based-fallback",
+      "model": null,
+      "finding_context": {
+        "id": 1,
+        "title": "Remote Code Execution in Apache Log4j",
+        "severity": "Critical",
+        "risk_score": 98.0,
+        "cve_id": "CVE-2021-44228",
+        "package_name": "log4j-core",
+        "installed_version": "2.14.1",
+        "fixed_version": "2.17.1",
+        "file_path": "pom.xml"
+      },
+      "disclaimer": "AI and rule-based guidance requires human review. PatchPilot does not automatically modify source code or systems.",
+      "created_at": "2026-11-24T17:29:56.911245"
+    },
+    "timestamp": "2026-11-24T17:29:56.919823+00:00"
+  },
+  {
+    "test_id": "API-CHAT-02",
+    "category": "Chat",
+    "method": "POST",
+    "endpoint": "/api/v1/chat",
+    "request_body": {
+      "conversation_id": "07aef09e-e823-43db-83fc-155410949843",
+      "message": "Follow up"
+    },
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Continue existing conversation with multi-turn context",
+    "response_sample": {
+      "conversation_id": "07aef09e-e823-43db-83fc-155410949843",
+      "message_id": "e248b69c-05e6-4bd8-b4e1-db204592d1ad",
+      "role": "assistant",
+      "content": "### Finding Analysis: Remote Code Execution in Apache Log4j\n- **Severity**: Critical (Prioritization Score: 98.0/100)\n- **Affected Component**: `log4j-core` (Installed: `2.14.1`)\n- **CVE Reference**: `CVE-2021-44228`\n- **Description**: Apache Log4j2 JNDI features do not protect against attacker controlled LDAP.\n\n#### Recommended Remediation Steps:\n1. **Upgrade Dependency**: Upgrade `log4j-core` from `2.14.1` to patched version `2.17.1` in your project manifest.\n2. **Regenerate Lockfile**: Run your package manager audit or lockfile update (e.g., `npm install`, `pip compile`, `uv lock`).\n3. **Run Test Suite**: Check for backwards-incompatible breaking changes introduced by version `2.17.1`.\n4. **Create Remediation Task**: Track implementation progress in PatchPilot Tasks.\n5. **Record Verification Evidence**: Re-run your security scanner or dependency check to independently verify the vulnerability is fixed.\n\n#### Compatibility & Verification:\n- **Compatibility**: Check changelogs for breaking changes when upgrading `log4j-core`.\n- **Verification**: Completing a code change does not automatically resolve a finding. Run an independent verification scan or manual test and record evidence in PatchPilot.\n",
+      "structured_guidance": {
+        "finding_id": 1,
+        "title": "Remote Code Execution in Apache Log4j",
+        "severity": "Critical",
+        "risk_score": 98.0,
+        "vulnerability_explanation": "Vulnerability 'Remote Code Execution in Apache Log4j' identified in log4j-core (2.14.1). Classification: Critical severity with a prioritization score of 98.0/100. Details: Apache Log4j2 JNDI features do not protect against attacker controlled LDAP.",
+        "potential_impact": "High risk of immediate system compromise, remote code execution, unauthorized data exfiltration, or complete loss of service confidentiality/integrity. Affected source path: pom.xml.",
+        "recommended_remediation_steps": [
+          "Update 'log4j-core' from version 2.14.1 to fixed version 2.17.1 in your package manager manifest.",
+          "Audit dependent packages for version locking or peer dependency conflicts.",
+          "Run dependency lockfile regenerators (e.g., npm install, pip compile, or uv lock).",
+          "Execute your unit and integration test suite to verify backwards compatibility.",
+          "Create a dedicated remediation task and record verification evidence upon testing."
+        ],
+        "compatibility_considerations": "Upgrading 'log4j-core' may introduce breaking API changes if stepping across major semver versions. Review changelogs and release notes for deprecation notices before deploying to production.",
+        "verification_steps": [
+          "Inspect the lockfile or build artifact to ensure 'log4j-core' reflects the patched version.",
+          "Execute the security scanner or dependency audit tool to verify the vulnerability is no longer flagged.",
+          "Perform smoke tests on features that directly invoke the affected code paths.",
+          "Record manual or automated test logs as Verification Evidence in PatchPilot."
+        ],
+        "uncertainty_or_missing_information": "Known facts: Provided scan data only. All primary scan fields were populated. No external runtime telemetry or exploit confirmation was performed.",
+        "is_fallback": true,
+        "provider": "rule-based-fallback",
+        "model": null,
+        "disclaimer": "AI and rule-based guidance requires human review. PatchPilot does not automatically modify source code or systems."
+      },
+      "is_fallback": true,
+      "provider": "rule-based-fallback",
+      "model": null,
+      "finding_context": {
+        "id": 1,
+        "title": "Remote Code Execution in Apache Log4j",
+        "severity": "Critical",
+        "risk_score": 98.0,
+        "cve_id": "CVE-2021-44228",
+        "package_name": "log4j-core",
+        "installed_version": "2.14.1",
+        "fixed_version": "2.17.1",
+        "file_path": "pom.xml"
+      },
+      "disclaimer": "AI and rule-based guidance requires human review. PatchPilot does not automatically modify source code or systems.",
+      "created_at": "2026-11-24T17:29:56.929893"
+    },
+    "timestamp": "2026-11-24T17:29:56.940508+00:00"
+  },
+  {
+    "test_id": "API-CHAT-03",
+    "category": "Chat",
+    "method": "GET",
+    "endpoint": "/api/v1/chat/conversations/07aef09e-e823-43db-83fc-155410949843",
+    "request_body": null,
+    "expected_status": 200,
+    "actual_status": 200,
+    "passed": true,
+    "notes": "Retrieve full conversation message history (4 messages persisted in sequence)",
+    "response_sample": {
+      "conversation_id": "07aef09e-e823-43db-83fc-155410949843",
+      "finding_id": 1,
+      "finding_context": {
+        "id": 1,
+        "title": "Remote Code Execution in Apache Log4j",
+        "severity": "Critical",
+        "risk_score": 98.0,
+        "cve_id": "CVE-2021-44228",
+        "package_name": "log4j-core",
+        "installed_version": "2.14.1",
+        "fixed_version": "2.17.1",
+        "file_path": "pom.xml"
+      },
+      "title": "What is the recommended fix for CVE-2021-44228?",
+      "messages": [
+        {
+          "message_id": "6cd58476-e8b7-401f-a257-e592d534a5cf",
+          "role": "user",
+          "content": "What is the recommended fix for CVE-2021-44228?",
+          "is_fallback": false,
+          "provider": null,
+          "model": null,
+          "created_at": "2026-11-24T17:29:56.904709"
+        },
+        {
+          "message_id": "c2c6e734-2ec7-46d0-af61-90b0758fc992",
+          "role": "assistant",
+          "content": "### Finding Analysis: Remote Code Execution in Apache Log4j\n- **Severity**: Critical (Prioritization Score: 98.0/100)\n- **Affected Component**: `log4j-core` (Installed: `2.14.1`)\n- **CVE Reference**: `CVE-2021-44228`\n- **Description**: Apache Log4j2 JNDI features do not protect against attacker controlled LDAP.\n\n#### Recommended Remediation Steps:\n1. **Upgrade Dependency**: Upgrade `log4j-core` from `2.14.1` to patched version `2.17.1` in your project manifest.\n2. **Regenerate Lockfile**: Run your package manager audit or lockfile update (e.g., `npm install`, `pip compile`, `uv lock`).\n3. **Run Test Suite**: Check for backwards-incompatible breaking changes introduced by version `2.17.1`.\n4. **Create Remediation Task**: Track implementation progress in PatchPilot Tasks.\n5. **Record Verification Evidence**: Re-run your security scanner or dependency check to independently verify the vulnerability is fixed.\n\n#### Compatibility & Verification:\n- **Compatibility**: Check changelogs for breaking changes when upgrading `log4j-core`.\n- **Verification**: Completing a code change does not automatically resolve a finding. Run an independent verification scan or manual test and record evidence in PatchPilot.\n",
+          "is_fallback": true,
+          "provider": "rule-based-fallback",
+          "model": null,
+          "created_at": "2026-11-24T17:29:56.911245"
+        },
+        {
+          "message_id": "352a1b0f-568b-44bb-bbba-fc92dcb61b5d",
+          "role": "user",
+          "content": "Can I use log4j 2.15.0 or is 2.17.1 required?",
+          "is_fallback": false,
+          "provider": null,
+          "model": null,
+          "created_at": "2026-11-24T17:29:56.929155"
+        },
+        {
+          "message_id": "e248b69c-05e6-4bd8-b4e1-db204592d1ad",
+          "role": "assistant",
+          "content": "### Finding Analysis: Remote Code Execution in Apache Log4j\n- **Severity**: Critical (Prioritization Score: 98.0/100)\n- **Affected Component**: `log4j-core` (Installed: `2.14.1`)\n- **CVE Reference**: `CVE-2021-44228`\n- **Description**: Apache Log4j2 JNDI features do not protect against attacker controlled LDAP.\n\n#### Recommended Remediation Steps:\n1. **Upgrade Dependency**: Upgrade `log4j-core` from `2.14.1` to patched version `2.17.1` in your project manifest.\n2. **Regenerate Lockfile**: Run your package manager audit or lockfile update (e.g., `npm install`, `pip compile`, `uv lock`).\n3. **Run Test Suite**: Check for backwards-incompatible breaking changes introduced by version `2.17.1`.\n4. **Create Remediation Task**: Track implementation progress in PatchPilot Tasks.\n5. **Record Verification Evidence**: Re-run your security scanner or dependency check to independently verify the vulnerability is fixed.\n\n#### Compatibility & Verification:\n- **Compatibility**: Check changelogs for breaking changes when upgrading `log4j-core`.\n- **Verification**: Completing a code change does not automatically resolve a finding. Run an independent verification scan or manual test and record evidence in PatchPilot.\n",
+          "is_fallback": true,
+          "provider": "rule-based-fallback",
+          "model": null,
+          "created_at": "2026-11-24T17:29:56.929893"
+        }
+      ],
+      "created_at": "2026-11-24T17:29:56.893417",
+      "updated_at": "2026-11-24T17:29:56.895484"
+    },
+    "timestamp": "2026-11-24T17:29:56.965653+00:00"
+  },
+  {
+    "test_id": "API-CHAT-04",
+    "category": "Chat",
+    "method": "GET",
+    "endpoint": "/api/v1/chat/conversations/<uuid>",
+    "request_body": null,
+    "expected_status": 404,
+    "actual_status": 404,
+    "passed": true,
+    "notes": "Nonexistent conversation UUID returns HTTP 404 Not Found",
+    "response_sample": {
+      "detail": "\"Conversation with ID 'd6f65ae3-6b90-428d-b0b5-fb3e3db3f4f0' not found.\""
+    },
+    "timestamp": "2026-11-24T17:29:56.988747+00:00"
+  },
+  {
+    "test_id": "API-CHAT-05",
+    "category": "Chat",
+    "method": "POST",
+    "endpoint": "/api/v1/chat",
+    "request_body": {
+      "message": "   "
+    },
+    "expected_status": 422,
+    "actual_status": 422,
+    "passed": true,
+    "notes": "Whitespace-only chat message rejected with validation error",
+    "response_sample": {
+      "detail": [
+        {
+          "type": "value_error",
+          "loc": [
+            "body",
+            "message"
+          ],
+          "msg": "Value error, Message cannot be empty or whitespace only.",
+          "input": "   ",
+          "ctx": {
+            "error": {}
+          }
+        }
+      ]
+    },
+    "timestamp": "2026-11-24T17:29:57.008281+00:00"
+  }
+]

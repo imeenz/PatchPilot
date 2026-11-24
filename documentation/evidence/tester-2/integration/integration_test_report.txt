@@ -1,0 +1,79 @@
+PATCHPILOT TESTER 2 — INTEGRATION WORKFLOW TEST REPORT
+Execution Date: 2026-11-24 17:32:59 UTC
+Total Steps Executed: 18
+================================================================================
+
+[PASS] INT-1 :: Scanner Parser
+  Details: Parsed Trivy report fixture into 4 importable findings
+  Response: {"parsed_count": 4}...
+--------------------------------------------------------------------------------
+[PASS] INT-1 :: Backend Import API
+  Details: Backend accepted and persisted 4 findings
+  Payload: {"count": 4}
+  Response: {"total_records": 4, "imported_count": 4, "rejected_count": 0, "imported_findings": [{"title": "libwebp: Heap buffer overflow in WebP Codec", "description": "Heap buffer overflow in libwebp allows a r...
+--------------------------------------------------------------------------------
+[PASS] INT-1 :: Database Persistence & Query
+  Details: Verified findings list displays all 4 imported records. Selected finding ID: 1
+  Response: {"total": 4}...
+--------------------------------------------------------------------------------
+[PASS] INT-2 :: Remediation Guidance Request
+  Details: Guidance returned with accurate finding context (libwebp: Heap buffer overflow in WebP Codec) and transparent rule-based fallback labels
+  Response: {"finding_id": 1, "title": "libwebp: Heap buffer overflow in WebP Codec", "severity": "High", "risk_score": 78.0, "vulnerability_explanation": "Vulnerability 'libwebp: Heap buffer overflow in WebP Cod...
+--------------------------------------------------------------------------------
+[PASS] INT-3 :: Task Creation
+  Details: Created remediation task ID 1 linked to finding 1
+  Payload: {"title": "Remediate libwebp7 vulnerability", "description": "Bump package version and verify regression suite.", "assignee": "Alex Security", "status": "Open"}
+  Response: {"title": "Remediate libwebp7 vulnerability", "description": "Bump package version and verify regression suite.", "assignee": "Alex Security", "status": "Open", "id": 1, "finding_id": 1, "created_at":...
+--------------------------------------------------------------------------------
+[PASS] INT-3 :: Task Transition -> In Progress
+  Details: Updated task status to In Progress
+  Response: {"title": "Remediate libwebp7 vulnerability", "description": "Bump package version and verify regression suite.", "assignee": "Alex Security", "status": "In Progress", "id": 1, "finding_id": 1, "creat...
+--------------------------------------------------------------------------------
+[PASS] INT-3 :: Task Transition -> Blocked
+  Details: Updated task status to Blocked
+  Response: {"title": "Remediate libwebp7 vulnerability", "description": "Bump package version and verify regression suite.", "assignee": "Alex Security", "status": "Blocked", "id": 1, "finding_id": 1, "created_a...
+--------------------------------------------------------------------------------
+[PASS] INT-3 :: Task Transition -> Completed
+  Details: Updated task status to Completed
+  Response: {"title": "Remediate libwebp7 vulnerability", "description": "Bump package version and verify regression suite.", "assignee": "Alex Security", "status": "Completed", "id": 1, "finding_id": 1, "created...
+--------------------------------------------------------------------------------
+[PASS] INT-3 :: Task Relationship Verification
+  Details: Verified task 1 remains linked to finding 1 in Completed status
+  Response: {"task_count": 1}...
+--------------------------------------------------------------------------------
+[PASS] INT-4 :: Task Separation Check
+  Details: Confirmed finding.is_verified_fixed remains False even when task is Completed
+  Response: {"is_verified_fixed": false}...
+--------------------------------------------------------------------------------
+[PASS] INT-4 :: Record Evidence 1 (Verified Fixed)
+  Details: Recorded Verified Fixed evidence (ID 1)
+  Response: {"task_id": 1, "evidence_description": "Clean scan report confirmed with patch applied.", "evidence_url": null, "verification_result": "Verified Fixed", "id": 1, "finding_id": 1, "created_at": "2026-1...
+--------------------------------------------------------------------------------
+[PASS] INT-4 :: Status Update (Verified Fixed)
+  Details: Finding status updated to is_verified_fixed=True
+  Response: {"is_verified_fixed": true}...
+--------------------------------------------------------------------------------
+[PASS] INT-4 :: Record Evidence 2 (Failed)
+  Details: Recorded subsequent Failed evidence (ID 2)
+  Response: {"task_id": 1, "evidence_description": "Re-audit found regressions in dependent microservice.", "evidence_url": null, "verification_result": "Failed", "id": 2, "finding_id": 1, "created_at": "2026-11-...
+--------------------------------------------------------------------------------
+[PASS] INT-4 :: Latest Evidence Rule Check
+  Details: Finding status reverted to is_verified_fixed=False based on latest evidence ID
+  Response: {"is_verified_fixed": false}...
+--------------------------------------------------------------------------------
+[PASS] INT-4 :: Evidence History Preservation
+  Details: Historical evidence preserved in descending ID order (2 > 1)
+  Response: {"history_count": 2}...
+--------------------------------------------------------------------------------
+[PASS] INT-5 :: Chat Turn 1 (Create)
+  Details: Created conversation c4a88141-1c28-4da8-a0dc-528b649bd91b linked to finding 1
+  Response: {"conversation_id": "c4a88141-1c28-4da8-a0dc-528b649bd91b", "message_id": "64ae07e7-95dd-4757-b7fa-dc2c122b23ad", "role": "assistant", "content": "### Finding Analysis: libwebp: Heap buffer overflow i...
+--------------------------------------------------------------------------------
+[PASS] INT-5 :: Chat Turn 2 (Follow-up)
+  Details: Continued conversation c4a88141-1c28-4da8-a0dc-528b649bd91b with multi-turn context
+  Response: {"conversation_id": "c4a88141-1c28-4da8-a0dc-528b649bd91b", "message_id": "7c4d05eb-a9b7-4a16-9d38-d7f15cc98516", "role": "assistant", "content": "### Finding Analysis: libwebp: Heap buffer overflow i...
+--------------------------------------------------------------------------------
+[PASS] INT-5 :: Chat History Retrieval
+  Details: Retrieved full conversation history (4 messages in order: user, assistant, user, assistant)
+  Response: {"message_count": 4}...
+--------------------------------------------------------------------------------

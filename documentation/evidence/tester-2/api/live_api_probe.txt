@@ -1,0 +1,44 @@
+PATCHPILOT TESTER 2 — LIVE WIRE HTTP SERVER PROBE EVIDENCE
+Timestamp: 2026-11-24T17:31:40.748455+00:00
+Database: C:\Users\DELL\Desktop\TrustChain\backend\.runtime\bug-int-001-preview.db
+================================================================================
+
+Waiting for live server to become ready on http://127.0.0.1:8000 ...
+Server is ready! Health check responded: 200
+
+--- Live Probe 1: GET /health ---
+Status: 200 | Body: {"status":"ok","app":"PatchPilot — Intelligent Security Remediation Assistant","version":"1.0.0","database":"connected","ai_provider":"openai"}
+
+--- Live Probe 2: GET /api/v1/health ---
+Status: 200 | Body: {"status":"ok","app":"PatchPilot — Intelligent Security Remediation Assistant","version":"1.0.0","database":"connected","ai_provider":"openai"}
+
+--- Live Probe 3: POST /api/v1/findings/import (Live Finding) ---
+Status: 201 | Body: {"total_records":1,"imported_count":1,"rejected_count":0,"imported_findings":[{"title":"Live Verification Finding","description":"Live HTTP probe finding across actual TCP socket.","severity":"High","cve_id":"CVE-2024-LIVE-001","package_name":"live-wire-lib","installed_version":"1.0.0","fixed_version":"1.0.1","source":"trivy","file_path":null,"id":1,"risk_score":78.0,"created_at":"2026-11-24T17:31:40.449955","tasks_count":0,"is_verified_fixed":false}],"rejected_findings":[]}
+
+--- Live Probe 4: GET /api/v1/findings/1 ---
+Status: 200 | Body: {"title":"Live Verification Finding","description":"Live HTTP probe finding across actual TCP socket.","severity":"High","cve_id":"CVE-2024-LIVE-001","package_name":"live-wire-lib","installed_version":"1.0.0","fixed_version":"1.0.1","source":"trivy","file_path":null,"id":1,"risk_score":78.0,"created_at":"2026-11-24T17:31:40.449955","tasks_count":0,"is_verified_fixed":false,"original_data":{"title":"Live Verification Finding","description":"Live HTTP probe finding across actual TCP socket.","severity":"High","cve_id":"CVE-2024-LIVE-001","package_name":"live-wire-lib","installed_version":"1.0.0","fixed_version":"1.0.1","source":"trivy"},"tasks":[],"verifications":[]}
+
+--- Live Probe 5: POST /api/v1/findings/1/remediation-guidance ---
+Status: 200 | Body: {"finding_id":1,"title":"Live Verification Finding","severity":"High","risk_score":78.0,"vulnerability_explanation":"Vulnerability 'Live Verification Finding' identified in live-wire-lib (1.0.0). Clas...
+
+--- Live Probe 6: POST /api/v1/findings/1/tasks ---
+Status: 201 | Body: {"title":"Fix Live Finding","description":null,"assignee":null,"status":"Open","id":1,"finding_id":1,"created_at":"2026-11-24T17:31:40.519788","updated_at":"2026-11-24T17:31:40.519788"}
+
+--- Live Probe 7: PATCH /api/v1/tasks/1 ---
+Status: 200 | Body: {"title":"Fix Live Finding","description":null,"assignee":null,"status":"Completed","id":1,"finding_id":1,"created_at":"2026-11-24T17:31:40.519788","updated_at":"2026-11-24T17:31:40.576036"}
+
+--- Live Probe 8: POST /api/v1/findings/1/verification ---
+Status: 201 | Body: {"task_id":null,"evidence_description":"Live TCP verification confirmed.","evidence_url":null,"verification_result":"Verified Fixed","id":1,"finding_id":1,"created_at":"2026-11-24T17:31:40.592824"}
+
+--- Live Probe 9: GET /api/v1/dashboard/summary ---
+Status: 200 | Body: {"total_findings":1,"severity_breakdown":{"Critical":0,"High":1,"Medium":0,"Low":0,"Informational":0},"average_risk_score":78.0,"total_tasks":1,"task_status_breakdown":{"Open":0,"In Progress":0,"Blocked":0,"Completed":1},"total_verifications":1,"verification_breakdown":{"Verified Fixed":1,"Failed":0,"Partially Fixed":0,"Inconclusive":0},"verified_fixed_findings":1,"open_findings":0}
+
+--- Live Probe 10: POST /api/v1/chat ---
+Status: 200 | Body: {"conversation_id":"b9199b77-bd4b-4161-8024-1f16bc41cb95","message_id":"bde25710-1768-47eb-9ef7-430ddd1f0557","role":"assistant","content":"### Finding Analysis: Live Verification Finding\n- **Severity**: High (Prioritization Score: 78.0/100)\n- **Af...
+
+--- Live Probe 11: CORS Headers Verification ---
+OPTIONS Status: 200 | Access-Control-Allow-Origin: http://localhost:5173
+
+All live wire HTTP probes succeeded!
+Terminating live backend server process...
+Live backend server stopped.
