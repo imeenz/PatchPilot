@@ -1,0 +1,24 @@
+﻿✔ network rejection is distinguished from a received HTTP 500 (4.2027ms)
+✔ HTTP status codes get distinct validation, authorization, and server labels (0.4119ms)
+✔ data source badge only reports live after successful health and data requests (0.8748ms)
+✔ Trivy JSON: detects format and classifies every entry (8.562ms)
+✔ Trivy JSON: valid vulnerability maps to backend import fields (3.3869ms)
+✔ Trivy JSON: non-CVE identifiers are never placed in cve_id (1.3647ms)
+✔ Trivy JSON: UNKNOWN severity, passed checks and secrets are unsupported, not dropped (1.3968ms)
+✔ Trivy JSON: entry missing title/description is invalid (1.5745ms)
+✔ Trivy JSON: failed misconfiguration is importable with file location (1.5729ms)
+✔ OWASP ZAP JSON: detects format and classifies every alert (2.8131ms)
+✔ OWASP ZAP JSON: risk codes, CWE and HTML handling (1.5305ms)
+✔ Invalid JSON syntax is rejected with a clear error (1.3368ms)
+✔ Unknown JSON structure is rejected, not guessed (1.161ms)
+✔ Empty file is rejected (0.2961ms)
+✔ PatchPilot native array: validates required fields like the backend (0.7963ms)
+✔ helpers (0.3071ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 499.842

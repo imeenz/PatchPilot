@@ -1,0 +1,432 @@
+[
+  {
+    "workflow": "INT-1",
+    "step": "Scanner Parser",
+    "status": "PASS",
+    "details": "Parsed Trivy report fixture into 4 importable findings",
+    "payload": null,
+    "response": {
+      "parsed_count": 4
+    },
+    "timestamp": "2026-11-24T17:32:59.246871+00:00"
+  },
+  {
+    "workflow": "INT-1",
+    "step": "Backend Import API",
+    "status": "PASS",
+    "details": "Backend accepted and persisted 4 findings",
+    "payload": {
+      "count": 4
+    },
+    "response": {
+      "total_records": 4,
+      "imported_count": 4,
+      "rejected_count": 0,
+      "imported_findings": [
+        {
+          "title": "libwebp: Heap buffer overflow in WebP Codec",
+          "description": "Heap buffer overflow in libwebp allows a remote attacker to perform an out of bounds memory write via a crafted HTML page.",
+          "severity": "High",
+          "cve_id": "CVE-2023-4863",
+          "package_name": "libwebp7",
+          "installed_version": "1.2.4-0.2",
+          "fixed_version": "1.2.4-0.2+deb12u1",
+          "source": "trivy",
+          "file_path": "example/billing-api:1.4.0 (debian 12.5)",
+          "id": 1,
+          "risk_score": 78.0,
+          "created_at": "2026-11-24T17:32:59.305109",
+          "tasks_count": 0,
+          "is_verified_fixed": false
+        },
+        {
+          "title": "It was found that apt-key in apt, all versions, do not correctly valid ...",
+          "description": "It was found that apt-key in apt, all versions, do not correctly validate gpg keys with the master keyring, leading to a potential man-in-the-middle attack.",
+          "severity": "Low",
+          "cve_id": "CVE-2011-3374",
+          "package_name": "apt",
+          "installed_version": "2.6.1",
+          "fixed_version": null,
+          "source": "trivy",
+          "file_path": "example/billing-api:1.4.0 (debian 12.5)",
+          "id": 2,
+          "risk_score": 27.0,
+          "created_at": "2026-11-24T17:32:59.305109",
+          "tasks_count": 0,
+          "is_verified_fixed": false
+        },
+        {
+          "title": "Vulnerability None in coreutils",
+          "description": "No description provided",
+          "severity": "Low",
+          "cve_id": null,
+          "package_name": "coreutils",
+          "installed_version": "9.1-1",
+          "fixed_version": null,
+          "source": "trivy",
+          "file_path": "example/billing-api:1.4.0 (debian 12.5)",
+          "id": 3,
+          "risk_score": 25.0,
+          "created_at": "2026-11-24T17:32:59.305109",
+          "tasks_count": 0,
+          "is_verified_fixed": false
+        },
+        {
+          "title": "Fixture advisory without a CVE identifier",
+          "description": "No description provided",
+          "severity": "Medium",
+          "cve_id": null,
+          "package_name": "example-lib",
+          "installed_version": "1.0.0",
+          "fixed_version": "1.0.1",
+          "source": "trivy",
+          "file_path": "app/requirements.txt",
+          "id": 4,
+          "risk_score": 51.0,
+          "created_at": "2026-11-24T17:32:59.305109",
+          "tasks_count": 0,
+          "is_verified_fixed": false
+        }
+      ],
+      "rejected_findings": []
+    },
+    "timestamp": "2026-11-24T17:32:59.320602+00:00"
+  },
+  {
+    "workflow": "INT-1",
+    "step": "Database Persistence & Query",
+    "status": "PASS",
+    "details": "Verified findings list displays all 4 imported records. Selected finding ID: 1",
+    "payload": null,
+    "response": {
+      "total": 4
+    },
+    "timestamp": "2026-11-24T17:32:59.349131+00:00"
+  },
+  {
+    "workflow": "INT-2",
+    "step": "Remediation Guidance Request",
+    "status": "PASS",
+    "details": "Guidance returned with accurate finding context (libwebp: Heap buffer overflow in WebP Codec) and transparent rule-based fallback labels",
+    "payload": null,
+    "response": {
+      "finding_id": 1,
+      "title": "libwebp: Heap buffer overflow in WebP Codec",
+      "severity": "High",
+      "risk_score": 78.0,
+      "vulnerability_explanation": "Vulnerability 'libwebp: Heap buffer overflow in WebP Codec' identified in libwebp7 (1.2.4-0.2). Classification: High severity with a prioritization score of 78.0/100. Details: Heap buffer overflow in libwebp allows a remote attacker to perform an out of bounds memory write via a crafted HTML page.",
+      "potential_impact": "Significant potential for privilege escalation, security control bypass, unauthorized data manipulation, or denial of service. Affected source path: example/billing-api:1.4.0 (debian 12.5).",
+      "recommended_remediation_steps": [
+        "Update 'libwebp7' from version 1.2.4-0.2 to fixed version 1.2.4-0.2+deb12u1 in your package manager manifest.",
+        "Audit dependent packages for version locking or peer dependency conflicts.",
+        "Run dependency lockfile regenerators (e.g., npm install, pip compile, or uv lock).",
+        "Execute your unit and integration test suite to verify backwards compatibility.",
+        "Create a dedicated remediation task and record verification evidence upon testing."
+      ],
+      "compatibility_considerations": "Upgrading 'libwebp7' may introduce breaking API changes if stepping across major semver versions. Review changelogs and release notes for deprecation notices before deploying to production.",
+      "verification_steps": [
+        "Inspect the lockfile or build artifact to ensure 'libwebp7' reflects the patched version.",
+        "Execute the security scanner or dependency audit tool to verify the vulnerability is no longer flagged.",
+        "Perform smoke tests on features that directly invoke the affected code paths.",
+        "Record manual or automated test logs as Verification Evidence in PatchPilot."
+      ],
+      "uncertainty_or_missing_information": "Known facts: Provided scan data only. All primary scan fields were populated. No external runtime telemetry or exploit confirmation was performed.",
+      "is_fallback": true,
+      "provider": "rule-based-fallback",
+      "model": null,
+      "disclaimer": "AI and rule-based guidance requires human review. PatchPilot does not automatically modify source code or systems."
+    },
+    "timestamp": "2026-11-24T17:32:59.367865+00:00"
+  },
+  {
+    "workflow": "INT-3",
+    "step": "Task Creation",
+    "status": "PASS",
+    "details": "Created remediation task ID 1 linked to finding 1",
+    "payload": {
+      "title": "Remediate libwebp7 vulnerability",
+      "description": "Bump package version and verify regression suite.",
+      "assignee": "Alex Security",
+      "status": "Open"
+    },
+    "response": {
+      "title": "Remediate libwebp7 vulnerability",
+      "description": "Bump package version and verify regression suite.",
+      "assignee": "Alex Security",
+      "status": "Open",
+      "id": 1,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:32:59.377810",
+      "updated_at": "2026-11-24T17:32:59.377810"
+    },
+    "timestamp": "2026-11-24T17:32:59.388691+00:00"
+  },
+  {
+    "workflow": "INT-3",
+    "step": "Task Transition -> In Progress",
+    "status": "PASS",
+    "details": "Updated task status to In Progress",
+    "payload": null,
+    "response": {
+      "title": "Remediate libwebp7 vulnerability",
+      "description": "Bump package version and verify regression suite.",
+      "assignee": "Alex Security",
+      "status": "In Progress",
+      "id": 1,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:32:59.377810",
+      "updated_at": "2026-11-24T17:32:59.409193"
+    },
+    "timestamp": "2026-11-24T17:32:59.418284+00:00"
+  },
+  {
+    "workflow": "INT-3",
+    "step": "Task Transition -> Blocked",
+    "status": "PASS",
+    "details": "Updated task status to Blocked",
+    "payload": null,
+    "response": {
+      "title": "Remediate libwebp7 vulnerability",
+      "description": "Bump package version and verify regression suite.",
+      "assignee": "Alex Security",
+      "status": "Blocked",
+      "id": 1,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:32:59.377810",
+      "updated_at": "2026-11-24T17:32:59.426871"
+    },
+    "timestamp": "2026-11-24T17:32:59.433271+00:00"
+  },
+  {
+    "workflow": "INT-3",
+    "step": "Task Transition -> Completed",
+    "status": "PASS",
+    "details": "Updated task status to Completed",
+    "payload": null,
+    "response": {
+      "title": "Remediate libwebp7 vulnerability",
+      "description": "Bump package version and verify regression suite.",
+      "assignee": "Alex Security",
+      "status": "Completed",
+      "id": 1,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:32:59.377810",
+      "updated_at": "2026-11-24T17:32:59.442641"
+    },
+    "timestamp": "2026-11-24T17:32:59.449960+00:00"
+  },
+  {
+    "workflow": "INT-3",
+    "step": "Task Relationship Verification",
+    "status": "PASS",
+    "details": "Verified task 1 remains linked to finding 1 in Completed status",
+    "payload": null,
+    "response": {
+      "task_count": 1
+    },
+    "timestamp": "2026-11-24T17:32:59.466340+00:00"
+  },
+  {
+    "workflow": "INT-4",
+    "step": "Task Separation Check",
+    "status": "PASS",
+    "details": "Confirmed finding.is_verified_fixed remains False even when task is Completed",
+    "payload": null,
+    "response": {
+      "is_verified_fixed": false
+    },
+    "timestamp": "2026-11-24T17:32:59.486204+00:00"
+  },
+  {
+    "workflow": "INT-4",
+    "step": "Record Evidence 1 (Verified Fixed)",
+    "status": "PASS",
+    "details": "Recorded Verified Fixed evidence (ID 1)",
+    "payload": null,
+    "response": {
+      "task_id": 1,
+      "evidence_description": "Clean scan report confirmed with patch applied.",
+      "evidence_url": null,
+      "verification_result": "Verified Fixed",
+      "id": 1,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:32:59.500345"
+    },
+    "timestamp": "2026-11-24T17:32:59.510859+00:00"
+  },
+  {
+    "workflow": "INT-4",
+    "step": "Status Update (Verified Fixed)",
+    "status": "PASS",
+    "details": "Finding status updated to is_verified_fixed=True",
+    "payload": null,
+    "response": {
+      "is_verified_fixed": true
+    },
+    "timestamp": "2026-11-24T17:32:59.530505+00:00"
+  },
+  {
+    "workflow": "INT-4",
+    "step": "Record Evidence 2 (Failed)",
+    "status": "PASS",
+    "details": "Recorded subsequent Failed evidence (ID 2)",
+    "payload": null,
+    "response": {
+      "task_id": 1,
+      "evidence_description": "Re-audit found regressions in dependent microservice.",
+      "evidence_url": null,
+      "verification_result": "Failed",
+      "id": 2,
+      "finding_id": 1,
+      "created_at": "2026-11-24T17:32:59.539612"
+    },
+    "timestamp": "2026-11-24T17:32:59.548262+00:00"
+  },
+  {
+    "workflow": "INT-4",
+    "step": "Latest Evidence Rule Check",
+    "status": "PASS",
+    "details": "Finding status reverted to is_verified_fixed=False based on latest evidence ID",
+    "payload": null,
+    "response": {
+      "is_verified_fixed": false
+    },
+    "timestamp": "2026-11-24T17:32:59.567068+00:00"
+  },
+  {
+    "workflow": "INT-4",
+    "step": "Evidence History Preservation",
+    "status": "PASS",
+    "details": "Historical evidence preserved in descending ID order (2 > 1)",
+    "payload": null,
+    "response": {
+      "history_count": 2
+    },
+    "timestamp": "2026-11-24T17:32:59.582974+00:00"
+  },
+  {
+    "workflow": "INT-5",
+    "step": "Chat Turn 1 (Create)",
+    "status": "PASS",
+    "details": "Created conversation c4a88141-1c28-4da8-a0dc-528b649bd91b linked to finding 1",
+    "payload": null,
+    "response": {
+      "conversation_id": "c4a88141-1c28-4da8-a0dc-528b649bd91b",
+      "message_id": "64ae07e7-95dd-4757-b7fa-dc2c122b23ad",
+      "role": "assistant",
+      "content": "### Finding Analysis: libwebp: Heap buffer overflow in WebP Codec\n- **Severity**: High (Prioritization Score: 78.0/100)\n- **Affected Component**: `libwebp7` (Installed: `1.2.4-0.2`)\n- **CVE Reference**: `CVE-2023-4863`\n- **Description**: Heap buffer overflow in libwebp allows a remote attacker to perform an out of bounds memory write via a crafted HTML page.\n\n#### Recommended Remediation Steps:\n1. **Upgrade Dependency**: Upgrade `libwebp7` from `1.2.4-0.2` to patched version `1.2.4-0.2+deb12u1` in your project manifest.\n2. **Regenerate Lockfile**: Run your package manager audit or lockfile update (e.g., `npm install`, `pip compile`, `uv lock`).\n3. **Run Test Suite**: Check for backwards-incompatible breaking changes introduced by version `1.2.4-0.2+deb12u1`.\n4. **Create Remediation Task**: Track implementation progress in PatchPilot Tasks.\n5. **Record Verification Evidence**: Re-run your security scanner or dependency check to independently verify the vulnerability is fixed.\n\n#### Compatibility & Verification:\n- **Compatibility**: Check changelogs for breaking changes when upgrading `libwebp7`.\n- **Verification**: Completing a code change does not automatically resolve a finding. Run an independent verification scan or manual test and record evidence in PatchPilot.\n",
+      "structured_guidance": {
+        "finding_id": 1,
+        "title": "libwebp: Heap buffer overflow in WebP Codec",
+        "severity": "High",
+        "risk_score": 78.0,
+        "vulnerability_explanation": "Vulnerability 'libwebp: Heap buffer overflow in WebP Codec' identified in libwebp7 (1.2.4-0.2). Classification: High severity with a prioritization score of 78.0/100. Details: Heap buffer overflow in libwebp allows a remote attacker to perform an out of bounds memory write via a crafted HTML page.",
+        "potential_impact": "Significant potential for privilege escalation, security control bypass, unauthorized data manipulation, or denial of service. Affected source path: example/billing-api:1.4.0 (debian 12.5).",
+        "recommended_remediation_steps": [
+          "Update 'libwebp7' from version 1.2.4-0.2 to fixed version 1.2.4-0.2+deb12u1 in your package manager manifest.",
+          "Audit dependent packages for version locking or peer dependency conflicts.",
+          "Run dependency lockfile regenerators (e.g., npm install, pip compile, or uv lock).",
+          "Execute your unit and integration test suite to verify backwards compatibility.",
+          "Create a dedicated remediation task and record verification evidence upon testing."
+        ],
+        "compatibility_considerations": "Upgrading 'libwebp7' may introduce breaking API changes if stepping across major semver versions. Review changelogs and release notes for deprecation notices before deploying to production.",
+        "verification_steps": [
+          "Inspect the lockfile or build artifact to ensure 'libwebp7' reflects the patched version.",
+          "Execute the security scanner or dependency audit tool to verify the vulnerability is no longer flagged.",
+          "Perform smoke tests on features that directly invoke the affected code paths.",
+          "Record manual or automated test logs as Verification Evidence in PatchPilot."
+        ],
+        "uncertainty_or_missing_information": "Known facts: Provided scan data only. All primary scan fields were populated. No external runtime telemetry or exploit confirmation was performed.",
+        "is_fallback": true,
+        "provider": "rule-based-fallback",
+        "model": null,
+        "disclaimer": "AI and rule-based guidance requires human review. PatchPilot does not automatically modify source code or systems."
+      },
+      "is_fallback": true,
+      "provider": "rule-based-fallback",
+      "model": null,
+      "finding_context": {
+        "id": 1,
+        "title": "libwebp: Heap buffer overflow in WebP Codec",
+        "severity": "High",
+        "risk_score": 78.0,
+        "cve_id": "CVE-2023-4863",
+        "package_name": "libwebp7",
+        "installed_version": "1.2.4-0.2",
+        "fixed_version": "1.2.4-0.2+deb12u1",
+        "file_path": "example/billing-api:1.4.0 (debian 12.5)"
+      },
+      "disclaimer": "AI and rule-based guidance requires human review. PatchPilot does not automatically modify source code or systems.",
+      "created_at": "2026-11-24T17:32:59.626992"
+    },
+    "timestamp": "2026-11-24T17:32:59.636552+00:00"
+  },
+  {
+    "workflow": "INT-5",
+    "step": "Chat Turn 2 (Follow-up)",
+    "status": "PASS",
+    "details": "Continued conversation c4a88141-1c28-4da8-a0dc-528b649bd91b with multi-turn context",
+    "payload": null,
+    "response": {
+      "conversation_id": "c4a88141-1c28-4da8-a0dc-528b649bd91b",
+      "message_id": "7c4d05eb-a9b7-4a16-9d38-d7f15cc98516",
+      "role": "assistant",
+      "content": "### Finding Analysis: libwebp: Heap buffer overflow in WebP Codec\n- **Severity**: High (Prioritization Score: 78.0/100)\n- **Affected Component**: `libwebp7` (Installed: `1.2.4-0.2`)\n- **CVE Reference**: `CVE-2023-4863`\n- **Description**: Heap buffer overflow in libwebp allows a remote attacker to perform an out of bounds memory write via a crafted HTML page.\n\n#### Recommended Remediation Steps:\n1. **Upgrade Dependency**: Upgrade `libwebp7` from `1.2.4-0.2` to patched version `1.2.4-0.2+deb12u1` in your project manifest.\n2. **Regenerate Lockfile**: Run your package manager audit or lockfile update (e.g., `npm install`, `pip compile`, `uv lock`).\n3. **Run Test Suite**: Check for backwards-incompatible breaking changes introduced by version `1.2.4-0.2+deb12u1`.\n4. **Create Remediation Task**: Track implementation progress in PatchPilot Tasks.\n5. **Record Verification Evidence**: Re-run your security scanner or dependency check to independently verify the vulnerability is fixed.\n\n#### Compatibility & Verification:\n- **Compatibility**: Check changelogs for breaking changes when upgrading `libwebp7`.\n- **Verification**: Completing a code change does not automatically resolve a finding. Run an independent verification scan or manual test and record evidence in PatchPilot.\n",
+      "structured_guidance": {
+        "finding_id": 1,
+        "title": "libwebp: Heap buffer overflow in WebP Codec",
+        "severity": "High",
+        "risk_score": 78.0,
+        "vulnerability_explanation": "Vulnerability 'libwebp: Heap buffer overflow in WebP Codec' identified in libwebp7 (1.2.4-0.2). Classification: High severity with a prioritization score of 78.0/100. Details: Heap buffer overflow in libwebp allows a remote attacker to perform an out of bounds memory write via a crafted HTML page.",
+        "potential_impact": "Significant potential for privilege escalation, security control bypass, unauthorized data manipulation, or denial of service. Affected source path: example/billing-api:1.4.0 (debian 12.5).",
+        "recommended_remediation_steps": [
+          "Update 'libwebp7' from version 1.2.4-0.2 to fixed version 1.2.4-0.2+deb12u1 in your package manager manifest.",
+          "Audit dependent packages for version locking or peer dependency conflicts.",
+          "Run dependency lockfile regenerators (e.g., npm install, pip compile, or uv lock).",
+          "Execute your unit and integration test suite to verify backwards compatibility.",
+          "Create a dedicated remediation task and record verification evidence upon testing."
+        ],
+        "compatibility_considerations": "Upgrading 'libwebp7' may introduce breaking API changes if stepping across major semver versions. Review changelogs and release notes for deprecation notices before deploying to production.",
+        "verification_steps": [
+          "Inspect the lockfile or build artifact to ensure 'libwebp7' reflects the patched version.",
+          "Execute the security scanner or dependency audit tool to verify the vulnerability is no longer flagged.",
+          "Perform smoke tests on features that directly invoke the affected code paths.",
+          "Record manual or automated test logs as Verification Evidence in PatchPilot."
+        ],
+        "uncertainty_or_missing_information": "Known facts: Provided scan data only. All primary scan fields were populated. No external runtime telemetry or exploit confirmation was performed.",
+        "is_fallback": true,
+        "provider": "rule-based-fallback",
+        "model": null,
+        "disclaimer": "AI and rule-based guidance requires human review. PatchPilot does not automatically modify source code or systems."
+      },
+      "is_fallback": true,
+      "provider": "rule-based-fallback",
+      "model": null,
+      "finding_context": {
+        "id": 1,
+        "title": "libwebp: Heap buffer overflow in WebP Codec",
+        "severity": "High",
+        "risk_score": 78.0,
+        "cve_id": "CVE-2023-4863",
+        "package_name": "libwebp7",
+        "installed_version": "1.2.4-0.2",
+        "fixed_version": "1.2.4-0.2+deb12u1",
+        "file_path": "example/billing-api:1.4.0 (debian 12.5)"
+      },
+      "disclaimer": "AI and rule-based guidance requires human review. PatchPilot does not automatically modify source code or systems.",
+      "created_at": "2026-11-24T17:32:59.653859"
+    },
+    "timestamp": "2026-11-24T17:32:59.665566+00:00"
+  },
+  {
+    "workflow": "INT-5",
+    "step": "Chat History Retrieval",
+    "status": "PASS",
+    "details": "Retrieved full conversation history (4 messages in order: user, assistant, user, assistant)",
+    "payload": null,
+    "response": {
+      "message_count": 4
+    },
+    "timestamp": "2026-11-24T17:32:59.692433+00:00"
+  }
+]

@@ -1,0 +1,179 @@
+PATCHPILOT TESTER 2 — WHITE-BOX & INTERNAL CODE PATH ANALYSIS REPORT
+Execution Date: 2026-11-24 17:49:08 UTC
+Total Internal Branches & Conditions Evaluated: 43
+Passed: 43 | Failed: 0
+Pass Rate: 100.0%
+================================================================================
+
+[PASS] SeverityLevel :: Normalize 'Critical' (Success Branch)
+  Condition: normalize('Critical') == SeverityLevel.CRITICAL
+  Details:   Mapped to Critical
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Normalize 'CRITICAL' (Success Branch)
+  Condition: normalize('CRITICAL') == SeverityLevel.CRITICAL
+  Details:   Mapped to Critical
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Normalize 'critical' (Success Branch)
+  Condition: normalize('critical') == SeverityLevel.CRITICAL
+  Details:   Mapped to Critical
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Normalize 'High' (Success Branch)
+  Condition: normalize('High') == SeverityLevel.HIGH
+  Details:   Mapped to High
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Normalize 'Medium' (Success Branch)
+  Condition: normalize('Medium') == SeverityLevel.MEDIUM
+  Details:   Mapped to Medium
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Normalize 'MODERATE' (Success Branch)
+  Condition: normalize('MODERATE') == SeverityLevel.MEDIUM
+  Details:   Mapped to Medium
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Normalize 'Low' (Success Branch)
+  Condition: normalize('Low') == SeverityLevel.LOW
+  Details:   Mapped to Low
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Normalize 'Informational' (Success Branch)
+  Condition: normalize('Informational') == SeverityLevel.INFORMATIONAL
+  Details:   Mapped to Informational
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Normalize 'INFO' (Success Branch)
+  Condition: normalize('INFO') == SeverityLevel.INFORMATIONAL
+  Details:   Mapped to Informational
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Reject '' (Failure Branch)
+  Condition: Raises ValueError
+  Details:   Successfully caught invalid input
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Reject '   ' (Failure Branch)
+  Condition: Raises ValueError
+  Details:   Successfully caught invalid input
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Reject 'Severe' (Failure Branch)
+  Condition: Raises ValueError
+  Details:   Successfully caught invalid input
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Reject 'Catastrophic' (Failure Branch)
+  Condition: Raises ValueError
+  Details:   Successfully caught invalid input
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Reject 'None' (Failure Branch)
+  Condition: Raises ValueError
+  Details:   Successfully caught invalid input
+--------------------------------------------------------------------------------
+[PASS] SeverityLevel :: Reject '123' (Failure Branch)
+  Condition: Raises ValueError
+  Details:   Successfully caught invalid input
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Normalize 'Open' (Success Branch)
+  Condition: normalize('Open') == TaskStatus.OPEN
+  Details:   Mapped to Open
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Normalize 'In Progress' (Success Branch)
+  Condition: normalize('In Progress') == TaskStatus.IN_PROGRESS
+  Details:   Mapped to In Progress
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Normalize 'in_progress' (Success Branch)
+  Condition: normalize('in_progress') == TaskStatus.IN_PROGRESS
+  Details:   Mapped to In Progress
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Normalize 'inprogress' (Success Branch)
+  Condition: normalize('inprogress') == TaskStatus.IN_PROGRESS
+  Details:   Mapped to In Progress
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Normalize 'Blocked' (Success Branch)
+  Condition: normalize('Blocked') == TaskStatus.BLOCKED
+  Details:   Mapped to Blocked
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Normalize 'Completed' (Success Branch)
+  Condition: normalize('Completed') == TaskStatus.COMPLETED
+  Details:   Mapped to Completed
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Normalize 'done' (Success Branch)
+  Condition: normalize('done') == TaskStatus.COMPLETED
+  Details:   Mapped to Completed
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Normalize 'closed' (Success Branch)
+  Condition: normalize('closed') == TaskStatus.COMPLETED
+  Details:   Mapped to Completed
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Reject '' (Failure Branch)
+  Condition: Raises ValueError
+  Details:   Successfully caught invalid input
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Reject '   ' (Failure Branch)
+  Condition: Raises ValueError
+  Details:   Successfully caught invalid input
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Reject 'pending' (Failure Branch)
+  Condition: Raises ValueError
+  Details:   Successfully caught invalid input
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Reject 'archived' (Failure Branch)
+  Condition: Raises ValueError
+  Details:   Successfully caught invalid input
+--------------------------------------------------------------------------------
+[PASS] TaskStatus :: Reject 'None' (Failure Branch)
+  Condition: Raises ValueError
+  Details:   Successfully caught invalid input
+--------------------------------------------------------------------------------
+[PASS] RiskScoring :: Base score: Critical (Base Calculation)
+  Condition: score == 95.0
+  Details:   Base score of 95.0 derived from 'Critical' severity. No secondary adjustments applied. Final prioritization score: 95.0/100. (Note: This is a severity-based prioritization score, not a verified exploitability assessment or an official CVSS score.)
+--------------------------------------------------------------------------------
+[PASS] RiskScoring :: Base score: High (Base Calculation)
+  Condition: score == 75.0
+  Details:   Base score of 75.0 derived from 'High' severity. No secondary adjustments applied. Final prioritization score: 75.0/100. (Note: This is a severity-based prioritization score, not a verified exploitability assessment or an official CVSS score.)
+--------------------------------------------------------------------------------
+[PASS] RiskScoring :: Base score: Medium (Base Calculation)
+  Condition: score == 50.0
+  Details:   Base score of 50.0 derived from 'Medium' severity. No secondary adjustments applied. Final prioritization score: 50.0/100. (Note: This is a severity-based prioritization score, not a verified exploitability assessment or an official CVSS score.)
+--------------------------------------------------------------------------------
+[PASS] RiskScoring :: Base score: Low (Base Calculation)
+  Condition: score == 25.0
+  Details:   Base score of 25.0 derived from 'Low' severity. No secondary adjustments applied. Final prioritization score: 25.0/100. (Note: This is a severity-based prioritization score, not a verified exploitability assessment or an official CVSS score.)
+--------------------------------------------------------------------------------
+[PASS] RiskScoring :: Base score: Informational (Base Calculation)
+  Condition: score == 5.0
+  Details:   Base score of 5.0 derived from 'Informational' severity. No secondary adjustments applied. Final prioritization score: 5.0/100. (Note: This is a severity-based prioritization score, not a verified exploitability assessment or an official CVSS score.)
+--------------------------------------------------------------------------------
+[PASS] RiskScoring :: Adjustment: has_cve (+2.0) (Condition: True/False)
+  Condition: 50 + 2 == 52.0
+  Details:   Score: 52.0
+--------------------------------------------------------------------------------
+[PASS] RiskScoring :: Adjustment: has_fix (+1.0) (Condition: False/True)
+  Condition: 50 + 1 == 51.0
+  Details:   Score: 51.0
+--------------------------------------------------------------------------------
+[PASS] RiskScoring :: Adjustment: has_cve and has_fix (+3.0) (Condition: True/True)
+  Condition: 50 + 3 == 53.0
+  Details:   Score: 53.0
+--------------------------------------------------------------------------------
+[PASS] RiskScoring :: Score calculation cap (Boundary Condition)
+  Condition: min(100.0, 95 + 3) == 98.0 <= 100.0
+  Details:   Score: 98.0
+--------------------------------------------------------------------------------
+[PASS] VerificationAlgorithm :: Empty Evidence List (Boundary Branch)
+  Condition: returns None
+  Details:   Empty collection handled safely
+--------------------------------------------------------------------------------
+[PASS] VerificationAlgorithm :: All Invalid Records (Error Tolerance Branch)
+  Condition: ignores non-canonical strings and returns None
+  Details:   Graceful fallback without exception
+--------------------------------------------------------------------------------
+[PASS] VerificationAlgorithm :: Mixed Valid and Invalid (Filtering Branch)
+  Condition: ignores invalid, selects latest valid ID 1
+  Details:   Result: VerificationResult.VERIFIED_FIXED
+--------------------------------------------------------------------------------
+[PASS] VerificationAlgorithm :: Max ID Selection (Decision Branch)
+  Condition: Highest ID 10 controls status
+  Details:   Selected: VerificationResult.PARTIALLY_FIXED
+--------------------------------------------------------------------------------
+[PASS] AIRemediation :: Rule-Based Fallback Path (Default Path)
+  Condition: is_fallback == True, provider == 'rule-based-fallback'
+  Details:   Deterministic guidance generated
+--------------------------------------------------------------------------------
+[PASS] AIRemediation :: Provider Failure Graceful Recovery (Exception Recovery Path)
+  Condition: Catches provider exception, engages labeled fallback with error note
+  Details:   Note: Configured AI provider (openai) was unreachable or returned an error (RuntimeError). Engaged l
+--------------------------------------------------------------------------------

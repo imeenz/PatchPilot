@@ -1,0 +1,102 @@
+[
+  {
+    "bug_id": "BUG-P0-001",
+    "test_case": "Canonical Values & Aliases Normalization",
+    "status": "PASS",
+    "passed": true,
+    "expected": "201 Created and normalized to canonical Enum",
+    "actual": "All 13 canonical & alias variants normalized correctly",
+    "details": "Tested 13 variations",
+    "timestamp": "2026-11-24T17:43:00.590226+00:00"
+  },
+  {
+    "bug_id": "BUG-P0-001",
+    "test_case": "Invalid/Blank/Null Rejection (No Persistence)",
+    "status": "PASS",
+    "passed": true,
+    "expected": "HTTP 422 rejected with zero persistence",
+    "actual": "Rejected: True, Count unchanged: True (13==13)",
+    "details": "Tested inputs: ['unknown_status', '', '   ', None]",
+    "timestamp": "2026-11-24T17:43:00.658767+00:00"
+  },
+  {
+    "bug_id": "BUG-P0-001",
+    "test_case": "Omitted Result Defaults to Inconclusive",
+    "status": "PASS",
+    "passed": true,
+    "expected": "Status 201, result 'Inconclusive'",
+    "actual": "Status 201, result 'Inconclusive'",
+    "details": "Omitted verification_result safely defaulted",
+    "timestamp": "2026-11-24T17:43:00.673343+00:00"
+  },
+  {
+    "bug_id": "BUG-P0-001",
+    "test_case": "Latest Evidence Controls Status (5 Sequences)",
+    "status": "PASS",
+    "passed": true,
+    "expected": "All 5 sequences match expected resolution state",
+    "actual": "5/5 sequences verified accurately",
+    "details": "Tested sequences: [VF,F]->False, [VF,Inc]->False, [F,VF]->True, [VF,PF]->False, [Inc,VF]->True",
+    "timestamp": "2026-11-24T17:43:00.970515+00:00"
+  },
+  {
+    "bug_id": "BUG-P0-001",
+    "test_case": "Dashboard Historical Breakdown Preserved",
+    "status": "PASS",
+    "passed": true,
+    "expected": "All 4 results present in verification_breakdown with accurate counts",
+    "actual": "Breakdown counts: {'Verified Fixed': 11, 'Failed': 4, 'Partially Fixed': 4, 'Inconclusive': 5}",
+    "details": "Verified dashboard retains full historical counts",
+    "timestamp": "2026-11-24T17:43:01.012094+00:00"
+  },
+  {
+    "bug_id": "BUG-INT-001",
+    "test_case": "Database Engine Isolation",
+    "status": "PASS",
+    "passed": true,
+    "expected": "app engine: sqlite:// (StaticPool), request engine database: :memory:",
+    "actual": "app: sqlite://, request database: :memory:",
+    "details": "Verified separate engines with StaticPool in-memory isolation",
+    "timestamp": "2026-11-24T17:43:01.012094+00:00"
+  },
+  {
+    "bug_id": "BUG-INT-001",
+    "test_case": "Multi-thread Schema Visibility",
+    "status": "PASS",
+    "passed": true,
+    "expected": "Tables visible across worker threads: {'remediation_tasks', 'findings', 'conversation_messages', 'conversations', 'verification_evidence'}",
+    "actual": "Worker sees 5 tables ({'remediation_tasks', 'findings', 'conversation_messages', 'conversations', 'verification_evidence'})",
+    "details": "Verified ThreadPoolExecutor worker sees initialized SQLite tables",
+    "timestamp": "2026-11-24T17:43:01.013972+00:00"
+  },
+  {
+    "bug_id": "BUG-INT-001",
+    "test_case": "Chat Persistence Across Requests",
+    "status": "PASS",
+    "passed": true,
+    "expected": "Multi-turn conversation persists 4 messages",
+    "actual": "Status: 200, messages: 4",
+    "details": "Verified conversation and messages persist across separate HTTP calls",
+    "timestamp": "2026-11-24T17:43:01.103294+00:00"
+  },
+  {
+    "bug_id": "BUG-INT-001",
+    "test_case": "Health Degraded on Missing Tables",
+    "status": "PASS",
+    "passed": true,
+    "expected": "HTTP 503 Service Unavailable, status 'degraded'",
+    "actual": "Status 503, body: {'status': 'degraded', 'app': 'PatchPilot \u2014 Intelligent Security Remediation Assistant', 'version': '1.0.0', 'database': 'unready: missing required application tables', 'ai_provider': 'rule-based-fallback'}",
+    "details": "Verified database unreadiness gracefully returns degraded 503",
+    "timestamp": "2026-11-24T17:43:01.121158+00:00"
+  },
+  {
+    "bug_id": "BUG-INT-001",
+    "test_case": "CORS Headers on 500 & Stacktrace Obfuscation",
+    "status": "PASS",
+    "passed": true,
+    "expected": "HTTP 500, CORS header present, no internal traceback leaked",
+    "actual": "Status: 500, CORS: http://localhost:5173, Leaked traceback: False",
+    "details": "Starlette outer CORS wrapper protects client and conceals internal errors",
+    "timestamp": "2026-11-24T17:43:01.147556+00:00"
+  }
+]

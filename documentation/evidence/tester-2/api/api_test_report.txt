@@ -1,0 +1,266 @@
+PATCHPILOT TESTER 2 — AUTOMATED API TEST REPORT
+Execution Date: 2026-11-24 17:29:57 UTC
+Total Endpoints / Tests Executed: 43
+Passed: 43
+Failed: 0
+Success Rate: 100.0%
+================================================================================
+
+[PASS] API-HLTH-01 | GET /health
+  Category: Health
+  Expected Status: 200 | Actual Status: 200
+  Notes: Root health check returns status ok and connected db
+  Sample Response: {"status": "ok", "app": "PatchPilot \u2014 Intelligent Security Remediation Assistant", "version": "1.0.0", "database": "connected", "ai_provider": "rule-based-fallback"}...
+--------------------------------------------------------------------------------
+[PASS] API-HLTH-02 | GET /api/v1/health
+  Category: Health
+  Expected Status: 200 | Actual Status: 200
+  Notes: API v1 health check returns connected database
+  Sample Response: {"status": "ok", "app": "PatchPilot \u2014 Intelligent Security Remediation Assistant", "version": "1.0.0", "database": "connected", "ai_provider": "rule-based-fallback"}...
+--------------------------------------------------------------------------------
+[PASS] API-HLTH-03 | GET /
+  Category: Health
+  Expected Status: 200 | Actual Status: 200
+  Notes: API root endpoint returns welcome and documentation links
+  Sample Response: {"message": "Welcome to PatchPilot \u2014 Intelligent Security Remediation Assistant API", "docs": "/docs", "api_v1": "/api/v1", "health": "/health"}...
+--------------------------------------------------------------------------------
+[PASS] API-IMP-01 | POST /api/v1/findings/import
+  Category: Import
+  Expected Status: 201 | Actual Status: 201
+  Notes: Import valid array of 5 findings across severities
+  Sample Response: {"total_records": 5, "imported_count": 5, "rejected_count": 0, "imported_findings": [{"title": "Remote Code Execution in Apache Log4j", "description": "Apache Log4j2 JNDI features do not protect again...
+--------------------------------------------------------------------------------
+[PASS] API-IMP-02 | POST /api/v1/findings/import
+  Category: Import
+  Expected Status: 201 | Actual Status: 201
+  Notes: Import object payload containing 'findings' key
+  Sample Response: {"total_records": 1, "imported_count": 1, "rejected_count": 0, "imported_findings": [{"title": "Remote Code Execution in Apache Log4j", "description": "Apache Log4j2 JNDI features do not protect again...
+--------------------------------------------------------------------------------
+[PASS] API-IMP-03 | POST /api/v1/findings/import
+  Category: Import
+  Expected Status: 201 | Actual Status: 201
+  Notes: Import empty array handles gracefully with 0 imported
+  Sample Response: {"total_records": 0, "imported_count": 0, "rejected_count": 0, "imported_findings": [], "rejected_findings": []}...
+--------------------------------------------------------------------------------
+[PASS] API-IMP-04 | POST /api/v1/findings/import
+  Category: Import
+  Expected Status: 422 | Actual Status: 422
+  Notes: Reject non-collection payload with HTTP 422
+  Sample Response: {"detail": "Payload must be a JSON array or an object containing a 'findings' array."}...
+--------------------------------------------------------------------------------
+[PASS] API-IMP-05 | POST /api/v1/findings/import
+  Category: Import
+  Expected Status: 201 | Actual Status: 201
+  Notes: Import partial batch accepts valid record and documents rejected records with reasons
+  Sample Response: {"total_records": 4, "imported_count": 1, "rejected_count": 3, "imported_findings": [{"title": "Valid In Batch", "description": "Good finding", "severity": "Low", "cve_id": null, "package_name": null,...
+--------------------------------------------------------------------------------
+[PASS] API-IMP-06 | POST /api/v1/findings/import
+  Category: Import
+  Expected Status: 201 | Actual Status: 201
+  Notes: Import handles field aliases (cve->cve_id, package->package_name, etc.)
+  Sample Response: {"total_records": 1, "imported_count": 1, "rejected_count": 0, "imported_findings": [{"title": "Alias Finding", "description": "Testing aliases cve, package, version, path", "severity": "High", "cve_i...
+--------------------------------------------------------------------------------
+[PASS] API-FIND-01 | GET /api/v1/findings
+  Category: Findings
+  Expected Status: 200 | Actual Status: 200
+  Notes: List all findings returns items and total count
+  Sample Response: {"total": 8}...
+--------------------------------------------------------------------------------
+[PASS] API-FIND-02 | GET /api/v1/findings?severity=Critical
+  Category: Findings
+  Expected Status: 200 | Actual Status: 200
+  Notes: Filter by severity=Critical returns only Critical findings
+  Sample Response: {"count": 2}...
+--------------------------------------------------------------------------------
+[PASS] API-FIND-03 | GET /api/v1/findings?has_cve=true
+  Category: Findings
+  Expected Status: 200 | Actual Status: 200
+  Notes: Filter by has_cve=true returns only findings with registered CVE
+  Sample Response: {"count": 4}...
+--------------------------------------------------------------------------------
+[PASS] API-FIND-04 | GET /api/v1/findings?query=Log4j
+  Category: Findings
+  Expected Status: 200 | Actual Status: 200
+  Notes: Search query finds matching records by keyword
+  Sample Response: {"count": 2}...
+--------------------------------------------------------------------------------
+[PASS] API-FIND-05 | GET /api/v1/findings?page=1&size=2
+  Category: Findings
+  Expected Status: 200 | Actual Status: 200
+  Notes: Pagination limits page size correctly
+  Sample Response: {"page": 1, "size": 2, "items": 2}...
+--------------------------------------------------------------------------------
+[PASS] API-FIND-06 | GET /api/v1/findings/1
+  Category: Findings
+  Expected Status: 200 | Actual Status: 200
+  Notes: Retrieve single finding detail by valid ID
+  Sample Response: {"title": "Remote Code Execution in Apache Log4j", "description": "Apache Log4j2 JNDI features do not protect against attacker controlled LDAP.", "severity": "Critical", "cve_id": "CVE-2021-44228", "p...
+--------------------------------------------------------------------------------
+[PASS] API-FIND-07 | GET /api/v1/findings/999999
+  Category: Findings
+  Expected Status: 404 | Actual Status: 404
+  Notes: Nonexistent finding ID returns HTTP 404 Not Found
+  Sample Response: {"detail": "Finding with ID 999999 not found."}...
+--------------------------------------------------------------------------------
+[PASS] API-DASH-01 | GET /api/v1/dashboard/summary
+  Category: Dashboard
+  Expected Status: 200 | Actual Status: 200
+  Notes: Dashboard summary returns accurate severity breakdown and resolution metrics
+  Sample Response: {"total_findings": 8, "severity_breakdown": {"Critical": 2, "High": 2, "Medium": 1, "Low": 2, "Informational": 1}, "average_risk_score": 57.0, "total_tasks": 0, "task_status_breakdown": {"Open": 0, "I...
+--------------------------------------------------------------------------------
+[PASS] API-REMED-01 | POST /api/v1/findings/1/remediation-guidance
+  Category: Remediation
+  Expected Status: 200 | Actual Status: 200
+  Notes: Remediation guidance generated with fallback transparency and actionable steps
+  Sample Response: {"finding_id": 1, "title": "Remote Code Execution in Apache Log4j", "severity": "Critical", "risk_score": 98.0, "vulnerability_explanation": "Vulnerability 'Remote Code Execution in Apache Log4j' iden...
+--------------------------------------------------------------------------------
+[PASS] API-REMED-02 | POST /api/v1/findings/999999/remediation-guidance
+  Category: Remediation
+  Expected Status: 404 | Actual Status: 404
+  Notes: Remediation guidance for nonexistent ID returns HTTP 404
+  Sample Response: {"detail": "Finding with ID 999999 not found."}...
+--------------------------------------------------------------------------------
+[PASS] API-TASK-01 | POST /api/v1/findings/1/tasks
+  Category: Tasks
+  Expected Status: 201 | Actual Status: 201
+  Notes: Create remediation task linked to finding
+  Sample Response: {"title": "Upgrade Log4j to 2.17.1 in pom.xml", "description": "Update Maven dependency and rebuild project container.", "assignee": "Alex Dev", "status": "Open", "id": 1, "finding_id": 1, "created_at...
+--------------------------------------------------------------------------------
+[PASS] API-TASK-02 | POST /api/v1/findings/999999/tasks
+  Category: Tasks
+  Expected Status: 404 | Actual Status: 404
+  Notes: Create task for nonexistent finding returns HTTP 404
+  Sample Response: {"detail": "Finding with ID 999999 not found."}...
+--------------------------------------------------------------------------------
+[PASS] API-TASK-03 | GET /api/v1/tasks?finding_id=1
+  Category: Tasks
+  Expected Status: 200 | Actual Status: 200
+  Notes: List tasks filtered by finding_id
+  Sample Response: [{"title": "Upgrade Log4j to 2.17.1 in pom.xml", "description": "Update Maven dependency and rebuild project container.", "assignee": "Alex Dev", "status": "Open", "id": 1, "finding_id": 1, "created_a...
+--------------------------------------------------------------------------------
+[PASS] API-TASK-04 | GET /api/v1/tasks?status=Open
+  Category: Tasks
+  Expected Status: 200 | Actual Status: 200
+  Notes: List all tasks with status filter returns created task
+  Sample Response: [{"title": "Upgrade Log4j to 2.17.1 in pom.xml", "description": "Update Maven dependency and rebuild project container.", "assignee": "Alex Dev", "status": "Open", "id": 1, "finding_id": 1, "created_a...
+--------------------------------------------------------------------------------
+[PASS] API-TASK-05 | GET /api/v1/tasks/1
+  Category: Tasks
+  Expected Status: 200 | Actual Status: 200
+  Notes: Get single task by ID
+  Sample Response: {"title": "Upgrade Log4j to 2.17.1 in pom.xml", "description": "Update Maven dependency and rebuild project container.", "assignee": "Alex Dev", "status": "Open", "id": 1, "finding_id": 1, "created_at...
+--------------------------------------------------------------------------------
+[PASS] API-TASK-06 | PATCH /api/v1/tasks/1
+  Category: Tasks
+  Expected Status: 200 | Actual Status: 200
+  Notes: Update task status to In Progress
+  Sample Response: {"title": "Upgrade Log4j to 2.17.1 in pom.xml", "description": "Update Maven dependency and rebuild project container.", "assignee": "Alex Dev", "status": "In Progress", "id": 1, "finding_id": 1, "cre...
+--------------------------------------------------------------------------------
+[PASS] API-TASK-07 | PATCH /api/v1/tasks/1
+  Category: Tasks
+  Expected Status: 200 | Actual Status: 200
+  Notes: Update task status to Completed
+  Sample Response: {"title": "Upgrade Log4j to 2.17.1 in pom.xml", "description": "Update Maven dependency and rebuild project container.", "assignee": "Alex Dev", "status": "Completed", "id": 1, "finding_id": 1, "creat...
+--------------------------------------------------------------------------------
+[PASS] API-TASK-08 | PATCH /api/v1/tasks/1
+  Category: Tasks
+  Expected Status: 422 | Actual Status: 422
+  Notes: Reject invalid task status with validation error (HTTP 422)
+  Sample Response: {"detail": [{"type": "value_error", "loc": ["body", "status"], "msg": "Value error, Invalid status 'InvalidStatus'. Allowed: Open, In Progress, Blocked, Completed.", "input": "InvalidStatus", "ctx": {...
+--------------------------------------------------------------------------------
+[PASS] API-TASK-09 | GET /api/v1/findings/1
+  Category: Tasks
+  Expected Status: 200 | Actual Status: 200
+  Notes: Task completion does not automatically mark finding as verified fixed
+  Sample Response: {"is_verified_fixed": false}...
+--------------------------------------------------------------------------------
+[PASS] API-VER-01 | POST /api/v1/findings/1/verification
+  Category: Verification
+  Expected Status: 201 | Actual Status: 201
+  Notes: Record valid canonical 'Verified Fixed' verification evidence
+  Sample Response: {"task_id": 1, "evidence_description": "CI container build scanned with Trivy v0.45; CVE-2021-44228 no longer detected.", "evidence_url": "https://ci.example.com/build/1042", "verification_result": "V...
+--------------------------------------------------------------------------------
+[PASS] API-VER-02 | GET /api/v1/findings/1
+  Category: Verification
+  Expected Status: 200 | Actual Status: 200
+  Notes: Finding status is now verified fixed following valid evidence
+  Sample Response: {"is_verified_fixed": true}...
+--------------------------------------------------------------------------------
+[PASS] API-VER-03 | POST /api/v1/findings/1/verification
+  Category: Verification
+  Expected Status: 201 | Actual Status: 201
+  Notes: Record subsequent Failed verification evidence
+  Sample Response: {"task_id": null, "evidence_description": "Regression test re-detected vulnerable classes in nested uber-jar.", "evidence_url": null, "verification_result": "Failed", "id": 2, "finding_id": 1, "create...
+--------------------------------------------------------------------------------
+[PASS] API-VER-04 | GET /api/v1/findings/1
+  Category: Verification
+  Expected Status: 200 | Actual Status: 200
+  Notes: Latest evidence ID controls current status (switches back to False)
+  Sample Response: {"is_verified_fixed": false}...
+--------------------------------------------------------------------------------
+[PASS] API-VER-05 | GET /api/v1/findings/1/verification
+  Category: Verification
+  Expected Status: 200 | Actual Status: 200
+  Notes: Verification history preserved in descending ID order
+  Sample Response: [{"task_id": null, "evidence_description": "Regression test re-detected vulnerable classes in nested uber-jar.", "evidence_url": null, "verification_result": "Failed", "id": 2, "finding_id": 1, "creat...
+--------------------------------------------------------------------------------
+[PASS] API-VER-06 | POST /api/v1/findings/1/verification
+  Category: Verification
+  Expected Status: 422 | Actual Status: 422
+  Notes: Reject unknown verification result with HTTP 422
+  Sample Response: {"detail": [{"type": "value_error", "loc": ["body", "verification_result"], "msg": "Value error, Invalid verification result. Allowed: Verified Fixed, Failed, Partially Fixed, Inconclusive.", "input":...
+--------------------------------------------------------------------------------
+[PASS] API-VER-07 | POST /api/v1/findings/1/verification
+  Category: Verification
+  Expected Status: 422 | Actual Status: 422
+  Notes: Reject whitespace-only verification result with HTTP 422
+  Sample Response: {"detail": [{"type": "value_error", "loc": ["body", "verification_result"], "msg": "Value error, Verification result must be a non-empty string.", "input": "   ", "ctx": {"error": {}}}]}...
+--------------------------------------------------------------------------------
+[PASS] API-VER-08 | POST /api/v1/findings/1/verification
+  Category: Verification
+  Expected Status: 422 | Actual Status: 422
+  Notes: Reject explicit null verification result with HTTP 422
+  Sample Response: {"detail": [{"type": "value_error", "loc": ["body", "verification_result"], "msg": "Value error, Verification result must be a non-empty string.", "input": null, "ctx": {"error": {}}}]}...
+--------------------------------------------------------------------------------
+[PASS] API-VER-09 | POST /api/v1/findings/1/verification
+  Category: Verification
+  Expected Status: 201 | Actual Status: 201
+  Notes: Omitted verification result defaults safely to Inconclusive
+  Sample Response: {"task_id": null, "evidence_description": "Follow-up test pending complete scan", "evidence_url": null, "verification_result": "Inconclusive", "id": 3, "finding_id": 1, "created_at": "2026-11-24T17:29...
+--------------------------------------------------------------------------------
+[PASS] API-VER-10 | POST /api/v1/findings/999999/verification
+  Category: Verification
+  Expected Status: 404 | Actual Status: 404
+  Notes: Post verification to nonexistent finding returns HTTP 404
+  Sample Response: {"detail": "Finding with ID 999999 not found."}...
+--------------------------------------------------------------------------------
+[PASS] API-CHAT-01 | POST /api/v1/chat
+  Category: Chat
+  Expected Status: 200 | Actual Status: 200
+  Notes: Create chat conversation with finding context, receiving rule-based fallback response
+  Sample Response: {"conversation_id": "07aef09e-e823-43db-83fc-155410949843", "message_id": "c2c6e734-2ec7-46d0-af61-90b0758fc992", "role": "assistant", "content": "### Finding Analysis: Remote Code Execution in Apache...
+--------------------------------------------------------------------------------
+[PASS] API-CHAT-02 | POST /api/v1/chat
+  Category: Chat
+  Expected Status: 200 | Actual Status: 200
+  Notes: Continue existing conversation with multi-turn context
+  Sample Response: {"conversation_id": "07aef09e-e823-43db-83fc-155410949843", "message_id": "e248b69c-05e6-4bd8-b4e1-db204592d1ad", "role": "assistant", "content": "### Finding Analysis: Remote Code Execution in Apache...
+--------------------------------------------------------------------------------
+[PASS] API-CHAT-03 | GET /api/v1/chat/conversations/07aef09e-e823-43db-83fc-155410949843
+  Category: Chat
+  Expected Status: 200 | Actual Status: 200
+  Notes: Retrieve full conversation message history (4 messages persisted in sequence)
+  Sample Response: {"conversation_id": "07aef09e-e823-43db-83fc-155410949843", "finding_id": 1, "finding_context": {"id": 1, "title": "Remote Code Execution in Apache Log4j", "severity": "Critical", "risk_score": 98.0, ...
+--------------------------------------------------------------------------------
+[PASS] API-CHAT-04 | GET /api/v1/chat/conversations/<uuid>
+  Category: Chat
+  Expected Status: 404 | Actual Status: 404
+  Notes: Nonexistent conversation UUID returns HTTP 404 Not Found
+  Sample Response: {"detail": "\"Conversation with ID 'd6f65ae3-6b90-428d-b0b5-fb3e3db3f4f0' not found.\""}...
+--------------------------------------------------------------------------------
+[PASS] API-CHAT-05 | POST /api/v1/chat
+  Category: Chat
+  Expected Status: 422 | Actual Status: 422
+  Notes: Whitespace-only chat message rejected with validation error
+  Sample Response: {"detail": [{"type": "value_error", "loc": ["body", "message"], "msg": "Value error, Message cannot be empty or whitespace only.", "input": "   ", "ctx": {"error": {}}}]}...
+--------------------------------------------------------------------------------

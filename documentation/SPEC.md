@@ -1,158 +1,43 @@
-﻿# PatchPilot — Project Specification
+# PatchPilot project specification
 
-## 1. Overview
-PatchPilot is an AI-assisted security remediation management platform. It helps teams import security findings, prioritize vulnerabilities, generate remediation recommendations, assign tasks, track progress, and verify resolution.
+## 1. Purpose
 
-## 2. Problem
-Security tools identify vulnerabilities, but teams still need to understand the findings, decide what to fix first, assign responsibility, and verify that remediation succeeded.
+PatchPilot is an academic security-remediation workflow application. It helps a reviewer import security findings, prioritize them, request remediation guidance, track work, and record verification evidence.
 
-PatchPilot centralizes this workflow.
+## 2. Implemented MVP scope
 
-## 3. Objectives
-- Import and validate security findings.
-- Classify vulnerabilities.
-- Calculate transparent priority scores.
-- Generate AI-assisted remediation guidance.
-- Assign and track remediation tasks.
-- Verify remediation using evidence.
+### Finding import and review
 
-## 4. Users
-- Team members: review findings and update assigned tasks.
-- Reviewers: prioritize findings and assign remediation work.
-- Administrators: manage users and workspace where implemented.
+- The frontend imports Trivy JSON and OWASP ZAP traditional JSON. It parses and maps report data; it does not execute scanners.
+- The backend accepts normalized JSON findings, validates required fields and severity, and stores accepted records.
+- The workspace provides an overview, finding catalog, details, search, severity/source/CVE filters, and pagination.
 
-## 5. Functional Requirements
+### Prioritization
 
-### F1 — Import Findings
-- Import findings from JSON files.
-- Validate required fields and data types.
-- Reject malformed files.
-- Handle invalid severity values safely.
+- A deterministic score uses severity bases: Critical 95, High 75, Medium 50, Low 25, Informational 5.
+- A CVE adds 2 points and an available fixed version adds 1 point; the score is capped at 100.
+- This is a triage score, not CVSS and not a live exploitability assessment.
 
-Minimum fields:
-- title
-- description
-- severity
-- source
-- affected_component
-- identifier
+### Guidance and assistant
 
-### F2 — Findings Dashboard
-- Display findings and severity counts.
-- List vulnerability details.
-- Filter by severity and status.
-- Open individual finding details.
+- Finding-specific remediation guidance and chat use a configured external provider only when provider and API key are configured. If no provider is configured or a provider request fails, a rule-based fallback can respond.
+- Responses identify fallback/provider metadata. Recommendations are advisory and require human review.
+- Conversations are stored and retrievable by ID. There is no endpoint to list all conversations.
 
-### F3 — Risk Prioritization
-- Normalize severity values.
-- Calculate a documented priority score.
-- Explain contributing factors.
-- Handle missing or invalid inputs.
+### Tasks and verification
 
-### F4 — AI Remediation Assistant
-- Explain the vulnerability.
-- Describe potential impact.
-- Recommend remediation steps.
-- Mention uncertainty and compatibility concerns.
-- Provide verification steps.
+- Tasks are linked to findings and support Open, In Progress, Blocked, and Completed.
+- Verification evidence is stored separately, with outcomes Verified Fixed, Failed, Partially Fixed, or Inconclusive.
+- Completing a task does not establish that a finding is fixed. Verification evidence is required to represent verification state.
 
-AI must not invent unsupported technical facts. Recommendations require human review.
+## 3. Architecture and data flow
 
-### F5 — Task Management
-- Create tasks linked to findings.
-- Assign tasks to team members.
-- Track statuses: Open, In Progress, Blocked, Completed.
-- Reject invalid assignments and status transitions.
+The browser frontend parses supported report files and sends normalized finding payloads to the FastAPI API. The backend validates payloads, calculates scores, and persists data through SQLAlchemy. Dashboard and catalog requests read those records. Task, verification, and chat actions use separate API routes and persistence models. SQLite is the default local database; PostgreSQL can be selected using `DATABASE_URL`. Alembic migration files are included; application startup also creates missing tables.
 
-### F6 — Verification
-- Record verification notes or evidence.
-- Record whether the issue is still detected or resolved.
-- Do not consider a completed task automatically resolved.
-- Require successful verification before marking a finding resolved.
+## 4. Non-goals and limitations
 
-## 6. User Stories and Acceptance Criteria
+The MVP does not provide authentication, authorization, user accounts, user isolation, private conversation ownership, GitHub integration, automatic patching, scanner execution, or deployment. It is not suitable for secure public or multi-user production use. Do not use it with sensitive findings or conversation content in an exposed environment.
 
-### US-01 Import Findings
-As a team member, I want to import JSON findings.
+## 5. Requirements for future work
 
-Acceptance:
-- Valid JSON is accepted.
-- Invalid JSON is rejected.
-- Missing required fields are handled clearly.
-- Import results are displayed.
-
-### US-02 Review Findings
-As a team member, I want to view and filter findings.
-
-Acceptance:
-- Findings are displayed correctly.
-- Details can be opened.
-- Filters return matching findings.
-
-### US-03 Prioritize Findings
-As a reviewer, I want explainable risk scores.
-
-Acceptance:
-- Scores follow documented rules.
-- Scores remain within the defined range.
-- Contributing factors are explained.
-
-### US-04 Request AI Guidance
-As a team member, I want remediation recommendations.
-
-Acceptance:
-- Recommendations include explanations and steps.
-- Verification guidance is included.
-- AI failures are handled.
-- Output is identified as advisory.
-
-### US-05 Assign Tasks
-As a reviewer, I want to assign remediation work.
-
-Acceptance:
-- Tasks reference existing findings.
-- Assignees must be valid.
-- Unauthorized actions are rejected.
-
-### US-06 Track Progress
-As a team member, I want to update task status.
-
-Acceptance:
-- Only valid statuses are accepted.
-- Updates persist.
-- Completed tasks do not automatically resolve findings.
-
-### US-07 Verify Remediation
-As a reviewer, I want to verify completed remediation.
-
-Acceptance:
-- Verification evidence is recorded.
-- Failed verification leaves the finding unresolved.
-- Successful verification updates the finding status.
-
-## 7. Non-Functional Requirements
-- Backend input validation.
-- Authorization for protected operations.
-- Clear error handling.
-- Maintainable code structure.
-- Explainable risk calculations.
-- Traceable task and verification history.
-
-## 8. Technology Stack
-- React, TypeScript, Vite, Tailwind CSS.
-- Python, FastAPI.
-- PostgreSQL.
-- SQLAlchemy, Alembic.
-- LLM accessed through backend service.
-- pytest.
-
-## 9. Out of Scope
-- Automatic patch deployment.
-- Production system modifications.
-- Multiple commercial scanner integrations.
-- Live threat intelligence.
-- Complex enterprise permissions.
-- Multi-agent AI orchestration.
-
-## 10. Definition of Done
-A feature is complete when acceptance criteria are met, relevant tests pass, defects are documented, and the implementation is reviewed.
+Any future authentication, authorization, user ownership, duplicate-import policy, deployment, scanner integration, or automated remediation feature requires separately defined acceptance criteria, implementation, and QA evidence. The current MVP must not be described as having these capabilities.

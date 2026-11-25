@@ -1,0 +1,432 @@
+[
+  {
+    "category": "SeverityLevel",
+    "branch": "Normalize 'Critical'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('Critical') == SeverityLevel.CRITICAL",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Critical",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Normalize 'CRITICAL'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('CRITICAL') == SeverityLevel.CRITICAL",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Critical",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Normalize 'critical'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('critical') == SeverityLevel.CRITICAL",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Critical",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Normalize 'High'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('High') == SeverityLevel.HIGH",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to High",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Normalize 'Medium'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('Medium') == SeverityLevel.MEDIUM",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Medium",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Normalize 'MODERATE'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('MODERATE') == SeverityLevel.MEDIUM",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Medium",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Normalize 'Low'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('Low') == SeverityLevel.LOW",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Low",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Normalize 'Informational'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('Informational') == SeverityLevel.INFORMATIONAL",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Informational",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Normalize 'INFO'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('INFO') == SeverityLevel.INFORMATIONAL",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Informational",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Reject ''",
+    "branch_type": "Failure Branch",
+    "condition": "Raises ValueError",
+    "passed": true,
+    "status": "PASS",
+    "details": "Successfully caught invalid input",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Reject '   '",
+    "branch_type": "Failure Branch",
+    "condition": "Raises ValueError",
+    "passed": true,
+    "status": "PASS",
+    "details": "Successfully caught invalid input",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Reject 'Severe'",
+    "branch_type": "Failure Branch",
+    "condition": "Raises ValueError",
+    "passed": true,
+    "status": "PASS",
+    "details": "Successfully caught invalid input",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Reject 'Catastrophic'",
+    "branch_type": "Failure Branch",
+    "condition": "Raises ValueError",
+    "passed": true,
+    "status": "PASS",
+    "details": "Successfully caught invalid input",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Reject 'None'",
+    "branch_type": "Failure Branch",
+    "condition": "Raises ValueError",
+    "passed": true,
+    "status": "PASS",
+    "details": "Successfully caught invalid input",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "SeverityLevel",
+    "branch": "Reject '123'",
+    "branch_type": "Failure Branch",
+    "condition": "Raises ValueError",
+    "passed": true,
+    "status": "PASS",
+    "details": "Successfully caught invalid input",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Normalize 'Open'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('Open') == TaskStatus.OPEN",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Open",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Normalize 'In Progress'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('In Progress') == TaskStatus.IN_PROGRESS",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to In Progress",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Normalize 'in_progress'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('in_progress') == TaskStatus.IN_PROGRESS",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to In Progress",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Normalize 'inprogress'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('inprogress') == TaskStatus.IN_PROGRESS",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to In Progress",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Normalize 'Blocked'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('Blocked') == TaskStatus.BLOCKED",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Blocked",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Normalize 'Completed'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('Completed') == TaskStatus.COMPLETED",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Completed",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Normalize 'done'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('done') == TaskStatus.COMPLETED",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Completed",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Normalize 'closed'",
+    "branch_type": "Success Branch",
+    "condition": "normalize('closed') == TaskStatus.COMPLETED",
+    "passed": true,
+    "status": "PASS",
+    "details": "Mapped to Completed",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Reject ''",
+    "branch_type": "Failure Branch",
+    "condition": "Raises ValueError",
+    "passed": true,
+    "status": "PASS",
+    "details": "Successfully caught invalid input",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Reject '   '",
+    "branch_type": "Failure Branch",
+    "condition": "Raises ValueError",
+    "passed": true,
+    "status": "PASS",
+    "details": "Successfully caught invalid input",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Reject 'pending'",
+    "branch_type": "Failure Branch",
+    "condition": "Raises ValueError",
+    "passed": true,
+    "status": "PASS",
+    "details": "Successfully caught invalid input",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Reject 'archived'",
+    "branch_type": "Failure Branch",
+    "condition": "Raises ValueError",
+    "passed": true,
+    "status": "PASS",
+    "details": "Successfully caught invalid input",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "TaskStatus",
+    "branch": "Reject 'None'",
+    "branch_type": "Failure Branch",
+    "condition": "Raises ValueError",
+    "passed": true,
+    "status": "PASS",
+    "details": "Successfully caught invalid input",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "RiskScoring",
+    "branch": "Base score: Critical",
+    "branch_type": "Base Calculation",
+    "condition": "score == 95.0",
+    "passed": true,
+    "status": "PASS",
+    "details": "Base score of 95.0 derived from 'Critical' severity. No secondary adjustments applied. Final prioritization score: 95.0/100. (Note: This is a severity-based prioritization score, not a verified exploitability assessment or an official CVSS score.)",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "RiskScoring",
+    "branch": "Base score: High",
+    "branch_type": "Base Calculation",
+    "condition": "score == 75.0",
+    "passed": true,
+    "status": "PASS",
+    "details": "Base score of 75.0 derived from 'High' severity. No secondary adjustments applied. Final prioritization score: 75.0/100. (Note: This is a severity-based prioritization score, not a verified exploitability assessment or an official CVSS score.)",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "RiskScoring",
+    "branch": "Base score: Medium",
+    "branch_type": "Base Calculation",
+    "condition": "score == 50.0",
+    "passed": true,
+    "status": "PASS",
+    "details": "Base score of 50.0 derived from 'Medium' severity. No secondary adjustments applied. Final prioritization score: 50.0/100. (Note: This is a severity-based prioritization score, not a verified exploitability assessment or an official CVSS score.)",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "RiskScoring",
+    "branch": "Base score: Low",
+    "branch_type": "Base Calculation",
+    "condition": "score == 25.0",
+    "passed": true,
+    "status": "PASS",
+    "details": "Base score of 25.0 derived from 'Low' severity. No secondary adjustments applied. Final prioritization score: 25.0/100. (Note: This is a severity-based prioritization score, not a verified exploitability assessment or an official CVSS score.)",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "RiskScoring",
+    "branch": "Base score: Informational",
+    "branch_type": "Base Calculation",
+    "condition": "score == 5.0",
+    "passed": true,
+    "status": "PASS",
+    "details": "Base score of 5.0 derived from 'Informational' severity. No secondary adjustments applied. Final prioritization score: 5.0/100. (Note: This is a severity-based prioritization score, not a verified exploitability assessment or an official CVSS score.)",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "RiskScoring",
+    "branch": "Adjustment: has_cve (+2.0)",
+    "branch_type": "Condition: True/False",
+    "condition": "50 + 2 == 52.0",
+    "passed": true,
+    "status": "PASS",
+    "details": "Score: 52.0",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "RiskScoring",
+    "branch": "Adjustment: has_fix (+1.0)",
+    "branch_type": "Condition: False/True",
+    "condition": "50 + 1 == 51.0",
+    "passed": true,
+    "status": "PASS",
+    "details": "Score: 51.0",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "RiskScoring",
+    "branch": "Adjustment: has_cve and has_fix (+3.0)",
+    "branch_type": "Condition: True/True",
+    "condition": "50 + 3 == 53.0",
+    "passed": true,
+    "status": "PASS",
+    "details": "Score: 53.0",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "RiskScoring",
+    "branch": "Score calculation cap",
+    "branch_type": "Boundary Condition",
+    "condition": "min(100.0, 95 + 3) == 98.0 <= 100.0",
+    "passed": true,
+    "status": "PASS",
+    "details": "Score: 98.0",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "VerificationAlgorithm",
+    "branch": "Empty Evidence List",
+    "branch_type": "Boundary Branch",
+    "condition": "returns None",
+    "passed": true,
+    "status": "PASS",
+    "details": "Empty collection handled safely",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "VerificationAlgorithm",
+    "branch": "All Invalid Records",
+    "branch_type": "Error Tolerance Branch",
+    "condition": "ignores non-canonical strings and returns None",
+    "passed": true,
+    "status": "PASS",
+    "details": "Graceful fallback without exception",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "VerificationAlgorithm",
+    "branch": "Mixed Valid and Invalid",
+    "branch_type": "Filtering Branch",
+    "condition": "ignores invalid, selects latest valid ID 1",
+    "passed": true,
+    "status": "PASS",
+    "details": "Result: VerificationResult.VERIFIED_FIXED",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "VerificationAlgorithm",
+    "branch": "Max ID Selection",
+    "branch_type": "Decision Branch",
+    "condition": "Highest ID 10 controls status",
+    "passed": true,
+    "status": "PASS",
+    "details": "Selected: VerificationResult.PARTIALLY_FIXED",
+    "timestamp": "2026-11-24T17:49:08.444828+00:00"
+  },
+  {
+    "category": "AIRemediation",
+    "branch": "Rule-Based Fallback Path",
+    "branch_type": "Default Path",
+    "condition": "is_fallback == True, provider == 'rule-based-fallback'",
+    "passed": true,
+    "status": "PASS",
+    "details": "Deterministic guidance generated",
+    "timestamp": "2026-11-24T17:49:08.460943+00:00"
+  },
+  {
+    "category": "AIRemediation",
+    "branch": "Provider Failure Graceful Recovery",
+    "branch_type": "Exception Recovery Path",
+    "condition": "Catches provider exception, engages labeled fallback with error note",
+    "passed": true,
+    "status": "PASS",
+    "details": "Note: Configured AI provider (openai) was unreachable or returned an error (RuntimeError). Engaged l",
+    "timestamp": "2026-11-24T17:49:08.460943+00:00"
+  }
+]
